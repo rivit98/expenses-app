@@ -10,4 +10,4 @@ RUN npm install
 COPY ./frontend ./
 RUN npm run build
 
-CMD ["serve", "--port", "5003", "-s", "build"]
+CMD ["serve", "-l", "5003", "-s", "build"]
