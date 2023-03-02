@@ -27,4 +27,4 @@ class Expense(Model):
     date = DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
-        return f"{self.user.name} paid {self.amount} for {self.get_category_display()} ({self.comment})"
+        return f"{self.user.username} paid {self.amount} for {self.category} ({self.comment})"
