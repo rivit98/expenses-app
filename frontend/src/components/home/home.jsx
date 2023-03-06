@@ -8,14 +8,13 @@ import { ComponentStateHandler, getAggregatedState } from '../generic/componentS
 
 const Home = () => {
     const logged = useSelector(isLoggedIn) || false;
+    const expensesLoader = getAggregatedState((options) => expensesService.getCategories(options));
+    const state = useAxiosEffect(expensesLoader, [], [[]]);
+    const [categories] = state.data;
 
     if (!logged) {
         return <Login />;
     }
-
-    const expensesLoader = getAggregatedState((options) => expensesService.getCategories(options));
-    const state = useAxiosEffect(expensesLoader, [], [[]]);
-    const [categories] = state.data;
 
     return (
         <ComponentStateHandler state={state}>
