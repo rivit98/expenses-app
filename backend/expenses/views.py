@@ -14,8 +14,8 @@ class ExpensesView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.Gene
 
     def post(self, request, *args, **kwargs):
         request.data.update({"user": self.request.user.id})
-        if len(request.data.get('comment', '')) == 0:
-            del request.data['comment']
+        if len(request.data.get("comment", "")) == 0:
+            del request.data["comment"]
 
         return self.create(request, *args, **kwargs)
 
