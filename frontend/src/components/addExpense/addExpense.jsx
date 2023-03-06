@@ -1,6 +1,4 @@
 import {
-    Alert,
-    AlertIcon,
     Box,
     Button,
     FormControl,
@@ -13,6 +11,7 @@ import {
     Tbody,
     Td,
     Tr,
+    useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -31,6 +30,8 @@ const FormRow = ({ label = '', children }) => {
 };
 
 export const AddExpense = ({ categories }) => {
+    const toast = useToast();
+
     const {
         register,
         handleSubmit,
@@ -40,14 +41,18 @@ export const AddExpense = ({ categories }) => {
     } = useForm({ mode: 'all' });
 
     const [loading, setLoading] = useState(false);
-    const [result, setResult] = useState({ message: undefined, type: undefined });
 
     const resetCallback = () => {
         setLoading(false);
     };
 
     const successCallback = () => {
-        setResult({ message: `Expense added`, type: 'success' });
+        toast({
+            description: 'Expense added',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        });
         reset();
     };
 
@@ -69,7 +74,12 @@ export const AddExpense = ({ categories }) => {
                     });
                 });
         } catch {
-            setResult({ message: formTexts.genericError, type: 'error' });
+            toast({
+                description: formTexts.genericError,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
         }
     };
 
@@ -77,7 +87,6 @@ export const AddExpense = ({ categories }) => {
         if (loading) {
             return;
         }
-        setResult({ message: undefined, type: undefined });
         setLoading(true);
         expensesService.addExpense(data).then(successCallback).catch(errorCallback).finally(resetCallback);
     };
@@ -139,12 +148,6 @@ export const AddExpense = ({ categories }) => {
                                 <Button w="full" colorScheme="teal" isLoading={loading} type="submit">
                                     Submit
                                 </Button>
-                                {result.message !== undefined && (
-                                    <Alert status={result.type} mt={3}>
-                                        <AlertIcon />
-                                        {result.message}
-                                    </Alert>
-                                )}
                             </FormRow>
                         </Tbody>
                     </Table>
