@@ -1,10 +1,12 @@
-import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Badge, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import formatDate from '../../utils/dateformatter';
 import { DeleteExpense } from './deleteExpense';
 
 const byDate = (t1, t2) => {
     return t2.date.getTime() - t1.date.getTime();
 };
+
+const badges = ['blue', 'yellow', 'red', 'green', 'gray', 'purple'];
 
 export const ExpensesList = ({ expenses, categories, updateFunc }) => {
     const categoryMapping = {};
@@ -22,19 +24,22 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
                     <Tr>
                         <Th>Date</Th>
                         <Th>Amount</Th>
-                        <Th>Category</Th>
                         <Th>Comment</Th>
                         <Th />
                     </Tr>
                 </Thead>
                 <Tbody>
                     {thisMonthExpenses.map((expense) => {
-                        const { id, amount, comment, date, categoryId } = expense;
+                        const { id, amount, comment, date, category } = expense;
                         return (
                             <Tr key={id}>
                                 <Td>{formatDate(date)}</Td>
-                                <Td>{amount} zł</Td>
-                                <Td>{categories[categoryId]}</Td>
+                                <Td alignContent="center">
+                                    {amount} zł
+                                    <Badge ml={3} colorScheme={badges[category % badges.length]}>
+                                        {categoryMapping[category]}
+                                    </Badge>
+                                </Td>
                                 <Td>{comment}</Td>
                                 <Td>
                                     <DeleteExpense expense={expense} updateFunc={updateFunc} />
