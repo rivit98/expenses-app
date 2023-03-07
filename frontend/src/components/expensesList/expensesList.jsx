@@ -18,7 +18,7 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
     const thisMonthExpenses = expenses.filter(({ date }) => date.getMonth() === currentMonth).sort(byDate);
 
     return (
-        <TableContainer maxW="xl" w="full" mt={20}>
+        <TableContainer maxW="xl" w="full" mt={20} whiteSpace="break-spaces">
             <Table size="sm">
                 <Thead>
                     <Tr>
