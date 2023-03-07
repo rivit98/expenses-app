@@ -81,7 +81,13 @@ export const AddExpense = ({ categories }) => {
                         <FormErrorMessage>{errors.date && errors.date.message}</FormErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={errors.amount}>
-                        <Input type="number" placeholder="Amount" {...register('amount', {})} />
+                        <Input
+                            type="number"
+                            step={0.01}
+                            placeholder="Amount"
+                            _placeholder={{ color: 'whiteAlpha.500' }}
+                            {...register('amount', {})}
+                        />
                         <FormErrorMessage>{errors.amount && errors.amount.message}</FormErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={errors.category}>
@@ -104,6 +110,7 @@ export const AddExpense = ({ categories }) => {
                         <Input
                             type="text"
                             placeholder="Comment"
+                            _placeholder={{ color: 'whiteAlpha.500' }}
                             {...register('comment', {
                                 maxLength: 128,
                             })}

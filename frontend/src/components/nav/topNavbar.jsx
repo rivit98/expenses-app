@@ -39,7 +39,7 @@ export const TopNavbar = () => {
             </Text>
             <Box display="flex" flex={1} justifyContent="flex-end">
                 <Tooltip label={`Logged as: ${username}`}>
-                    <Button onClick={logOut} colorScheme="teal" size="sm" mx={1}>
+                    <Button onClick={logOut} colorScheme="teal" size="sm" mx={2}>
                         Log out
                     </Button>
                 </Tooltip>
