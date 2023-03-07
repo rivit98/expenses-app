@@ -2,11 +2,12 @@ import { Box, Button, Flex, Link, Text, Tooltip, useToast } from '@chakra-ui/rea
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { removeUser, currentUserData } from '../../context/userReducer';
+import { removeUser, currentUserData, isLoggedIn } from '../../context/userReducer';
 
 export const TopNavbar = () => {
     const dispatch = useDispatch();
     const { username } = useSelector(currentUserData);
+    const logged = useSelector(isLoggedIn) || false;
     const toast = useToast();
 
     const logOut = () => {
@@ -39,9 +40,11 @@ export const TopNavbar = () => {
             </Text>
             <Box display="flex" flex={1} justifyContent="flex-end">
                 <Tooltip label={`Logged as: ${username}`}>
-                    <Button onClick={logOut} colorScheme="teal" size="sm" mx={2}>
-                        Log out
-                    </Button>
+                    {logged && (
+                        <Button onClick={logOut} colorScheme="teal" size="sm" mx={2}>
+                            Log out
+                        </Button>
+                    )}
                 </Tooltip>
             </Box>
         </Flex>

@@ -1,11 +1,20 @@
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import formatDate from '../../utils/dateformatter';
+import { DeleteExpense } from './deleteExpense';
 
-export const ExpensesList = ({ expenses, categories }) => {
+const byDate = (t1, t2) => {
+    return t2.date.getTime() - t1.date.getTime();
+};
+
+export const ExpensesList = ({ expenses, categories, updateFunc }) => {
     const categoryMapping = {};
     categories.forEach((c) => {
         categoryMapping[c.id] = c.name;
     });
+
+    const currentMonth = new Date().getMonth();
+    const thisMonthExpenses = expenses.filter(({ date }) => date.getMonth() === currentMonth).sort(byDate);
+
     return (
         <TableContainer maxW="xl" w="full" mt={20}>
             <Table size="sm">
@@ -15,16 +24,21 @@ export const ExpensesList = ({ expenses, categories }) => {
                         <Th>Amount</Th>
                         <Th>Category</Th>
                         <Th>Comment</Th>
+                        <Th />
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {expenses.map(({ amount, comment, date, categoryId }) => {
+                    {thisMonthExpenses.map((expense) => {
+                        const { id, amount, comment, date, categoryId } = expense;
                         return (
-                            <Tr>
+                            <Tr key={id}>
                                 <Td>{formatDate(date)}</Td>
-                                <Td>{amount}</Td>
+                                <Td>{amount} zł</Td>
                                 <Td>{categories[categoryId]}</Td>
                                 <Td>{comment}</Td>
+                                <Td>
+                                    <DeleteExpense expense={expense} updateFunc={updateFunc} />
+                                </Td>
                             </Tr>
                         );
                     })}

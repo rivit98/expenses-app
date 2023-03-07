@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import { useAxiosEffect } from '../../hooks/useAxiosEffect';
 import { isLoggedIn } from '../../context/userReducer';
 import { expensesService } from '../../services/expenses';
@@ -13,7 +14,8 @@ const Home = () => {
         (options) => expensesService.getCategories(options),
         (options) => expensesService.getExpenses(options)
     );
-    const state = useAxiosEffect(expensesLoader, [], [[], []]);
+    const [refresher, setRefresher] = useState(0);
+    const state = useAxiosEffect(expensesLoader, [refresher], [[], []]);
     const [categories, expenses] = state.data;
 
     if (!logged) {
@@ -21,13 +23,17 @@ const Home = () => {
     }
 
     const expenses_with_date = expenses.map((exp) => {
-        return { ...exp, date: new Date(exp.date) };
+        return { ...exp, date: new Date(exp.date), comment: exp.comment || '' };
     });
+
+    const updateFunc = () => {
+        setRefresher(refresher + 1);
+    };
 
     return (
         <ComponentStateHandler state={state}>
-            <AddExpense categories={categories} />
-            <ExpensesList expenses={expenses_with_date} categories={categories} />
+            <AddExpense categories={categories} updateFunc={updateFunc} />
+            <ExpensesList expenses={expenses_with_date} categories={categories} updateFunc={updateFunc} />
         </ComponentStateHandler>
     );
 };

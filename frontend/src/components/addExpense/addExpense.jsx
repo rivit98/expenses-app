@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { expensesService } from '../../services/expenses';
 import { formTexts } from '../generic/formTexts';
 
-export const AddExpense = ({ categories }) => {
+export const AddExpense = ({ categories, updateFunc }) => {
     const toast = useToast();
 
     const {
@@ -21,7 +21,8 @@ export const AddExpense = ({ categories }) => {
         setLoading(false);
     };
 
-    const successCallback = () => {
+    const successCallback = (data) => {
+        updateFunc({ type: 'add', payload: data });
         toast({
             description: 'Expense added',
             status: 'success',
