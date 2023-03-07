@@ -18,12 +18,13 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
     const thisMonthExpenses = expenses.filter(({ date }) => date.getMonth() === currentMonth).sort(byDate);
 
     return (
-        <TableContainer maxW="xl" w="full" mt={20} whiteSpace="break-spaces">
+        <TableContainer maxW="xl" w="full" mt={20}>
             <Table size="sm">
                 <Thead>
                     <Tr>
                         <Th>Date</Th>
                         <Th>Amount</Th>
+                        <Th>Category</Th>
                         <Th>Comment</Th>
                         <Th />
                     </Tr>
@@ -34,13 +35,13 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
                         return (
                             <Tr key={id}>
                                 <Td>{formatDate(date)}</Td>
-                                <Td alignContent="center">
-                                    {amount} zł
+                                <Td>{amount} zł</Td>
+                                <Td>
                                     <Badge ml={3} colorScheme={badges[category % badges.length]}>
                                         {categoryMapping[category]}
                                     </Badge>
                                 </Td>
-                                <Td>{comment}</Td>
+                                <Td whiteSpace="break-spaces">{comment}</Td>
                                 <Td>
                                     <DeleteExpense expense={expense} updateFunc={updateFunc} />
                                 </Td>
