@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useAxiosEffect } from '../../hooks/useAxiosEffect';
 import { isLoggedIn } from '../../context/userReducer';
 import { expensesService } from '../../services/expenses';
-import { AddExpense } from '../addExpense/addExpense';
 import Login from '../auth/login';
 import { ComponentStateHandler, getAggregatedState } from '../generic/componentStateHandler';
 import { ExpensesList } from '../expensesList/expensesList';
+import { AddExpense } from '../expensesList/addExpense';
+import { CategorySummary } from '../expensesList/categorySummary';
 
 const Home = () => {
     const logged = useSelector(isLoggedIn) || false;
@@ -23,7 +24,7 @@ const Home = () => {
     }
 
     const expenses_with_date = expenses.map((exp) => {
-        return { ...exp, date: new Date(exp.date), comment: exp.comment || '' };
+        return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
     });
 
     const updateFunc = () => {
@@ -34,6 +35,7 @@ const Home = () => {
         <ComponentStateHandler state={state}>
             <AddExpense categories={categories} updateFunc={updateFunc} />
             <ExpensesList expenses={expenses_with_date} categories={categories} updateFunc={updateFunc} />
+            <CategorySummary expenses={expenses_with_date} categories={categories} />
         </ComponentStateHandler>
     );
 };
