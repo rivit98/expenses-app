@@ -1,10 +1,8 @@
-import { Badge, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Badge, HStack, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import formatDate from '../../utils/dateformatter';
+import { byDate, byNumber, reverse } from '../generic/sortUtil';
 import { DeleteExpense } from './deleteExpense';
-
-const byDate = (t1, t2) => {
-    return t2.date.getTime() - t1.date.getTime();
-};
+import { EditExpense } from './editExpense';
 
 const badges = ['blue', 'yellow', 'red', 'green', 'gray', 'purple'];
 
@@ -15,15 +13,17 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
     });
 
     const currentMonth = new Date().getMonth();
-    const thisMonthExpenses = expenses.filter(({ date }) => date.getMonth() === currentMonth).sort(byDate);
+    const thisMonthExpenses = expenses
+        .filter(({ date }) => date.getMonth() === currentMonth)
+        .sort((t1, t2) => byDate(t1.date, t2.date) || reverse(byNumber(t1.id, t2.id)));
 
     return (
         <TableContainer maxW="xl" w="full" mt={20}>
             <Table size="sm">
                 <Thead>
                     <Tr>
-                        <Th>Date</Th>
-                        <Th>Amount</Th>
+                        <Th pr={1}>Date</Th>
+                        <Th pr={1}>Amount</Th>
                         <Th>Category</Th>
                         <Th>Comment</Th>
                         <Th />
@@ -34,8 +34,8 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
                         const { id, amount, comment, date, category } = expense;
                         return (
                             <Tr key={id}>
-                                <Td>{formatDate(date)}</Td>
-                                <Td>{amount} zł</Td>
+                                <Td pr={1}>{formatDate(date)}</Td>
+                                <Td pr={1}>{amount} zł</Td>
                                 <Td>
                                     <Badge ml={3} colorScheme={badges[category % badges.length]}>
                                         {categoryMapping[category]}
@@ -43,7 +43,14 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
                                 </Td>
                                 <Td whiteSpace="break-spaces">{comment}</Td>
                                 <Td>
-                                    <DeleteExpense expense={expense} updateFunc={updateFunc} />
+                                    <HStack>
+                                        <DeleteExpense expense={expense} updateFunc={updateFunc} />
+                                        <EditExpense
+                                            expense={expense}
+                                            updateFunc={updateFunc}
+                                            categories={categories}
+                                        />
+                                    </HStack>
                                 </Td>
                             </Tr>
                         );

@@ -75,9 +75,7 @@ export const AddExpense = ({ categories, updateFunc }) => {
                         <Input
                             type="date"
                             defaultValue={new Date().toISOString().split('T')[0]}
-                            {...register('date', {
-                                defaultValue: '2023-03-12',
-                            })}
+                            {...register('date', {})}
                         />
                         <FormErrorMessage>{errors.date && errors.date.message}</FormErrorMessage>
                     </FormControl>
@@ -119,7 +117,7 @@ export const AddExpense = ({ categories, updateFunc }) => {
                         <FormErrorMessage>{errors.comment && errors.comment.message}</FormErrorMessage>
                     </FormControl>
                     <Button w="full" colorScheme="teal" isLoading={loading} type="submit">
-                        Submit
+                        Add expense
                     </Button>
                 </Stack>
             </form>
