@@ -22,11 +22,14 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
             <Table size="sm">
                 <Thead>
                     <Tr>
-                        <Th pr={1}>Date</Th>
-                        <Th pr={1}>Amount</Th>
-                        <Th>Category</Th>
+                        <Th pr={1} pl={0} w="1">
+                            Date
+                        </Th>
+                        <Th pr={1} w="1">
+                            Amount
+                        </Th>
                         <Th>Comment</Th>
-                        <Th />
+                        <Th w="1" />
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -34,16 +37,18 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
                         const { id, amount, comment, date, category } = expense;
                         return (
                             <Tr key={id}>
-                                <Td pr={1}>{formatDate(date)}</Td>
-                                <Td pr={1}>{amount} zł</Td>
-                                <Td>
-                                    <Badge ml={3} colorScheme={badges[category % badges.length]}>
+                                <Td pr={1} pl={0}>
+                                    {formatDate(date).substring(0, 5)}
+                                </Td>
+                                <Td pr={1}>
+                                    {amount} zł
+                                    <Badge ml={2} colorScheme={badges[category % badges.length]}>
                                         {categoryMapping[category]}
                                     </Badge>
                                 </Td>
                                 <Td whiteSpace="break-spaces">{comment}</Td>
-                                <Td>
-                                    <HStack>
+                                <Td p={1}>
+                                    <HStack p={0} m={0}>
                                         <DeleteExpense expense={expense} updateFunc={updateFunc} />
                                         <EditExpense
                                             expense={expense}

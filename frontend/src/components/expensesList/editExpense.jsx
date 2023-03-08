@@ -79,8 +79,8 @@ export const EditExpense = ({ expense, categories, updateFunc }) => {
 
     const open = () => {
         reset();
-        onOpen();
         setErrorText(undefined);
+        onOpen();
     };
 
     return (
