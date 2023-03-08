@@ -27,6 +27,9 @@ const Home = () => {
         return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
     });
 
+    // eslint-disable-next-line no-return-assign, no-param-reassign, no-sequences
+    const categoryMapping = categories.reduce((obj, item) => ((obj[item.id] = item.name), obj), {});
+
     const updateFunc = () => {
         setRefresher(refresher + 1);
     };
@@ -34,8 +37,8 @@ const Home = () => {
     return (
         <ComponentStateHandler state={state}>
             <AddExpense categories={categories} updateFunc={updateFunc} />
-            <ExpensesList expenses={expenses_with_date} categories={categories} updateFunc={updateFunc} />
-            <CategorySummary expenses={expenses_with_date} categories={categories} />
+            <ExpensesList expenses={expenses_with_date} categoryMapping={categoryMapping} updateFunc={updateFunc} />
+            <CategorySummary expenses={expenses_with_date} categoryMapping={categoryMapping} />
         </ComponentStateHandler>
     );
 };

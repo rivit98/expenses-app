@@ -1,14 +1,10 @@
-import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
 import { byNumber, reverse } from '../generic/sortUtil';
 
-export const CategorySummary = ({ expenses, categories }) => {
-    const categoryMapping = {};
-    categories.forEach((c) => {
-        categoryMapping[c.id] = c.name;
-    });
+export const CategorySummary = ({ expenses, categoryMapping }) => {
     const summary = {};
-    categories.forEach((c) => {
-        summary[c.id] = 0.0;
+    Object.keys(categoryMapping).forEach((k) => {
+        summary[k] = 0.0;
     });
 
     expenses.forEach((e) => {
@@ -36,6 +32,12 @@ export const CategorySummary = ({ expenses, categories }) => {
                             );
                         })}
                 </Tbody>
+                <Tfoot>
+                    <Tr>
+                        <Th>Total</Th>
+                        <Th>{Object.values(summary).reduce((acc, c) => acc + c, 0)} zł</Th>
+                    </Tr>
+                </Tfoot>
             </Table>
         </TableContainer>
     );

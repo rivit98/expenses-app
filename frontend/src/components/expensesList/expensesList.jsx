@@ -6,19 +6,14 @@ import { EditExpense } from './editExpense';
 
 const badges = ['blue', 'yellow', 'red', 'green', 'gray', 'purple'];
 
-export const ExpensesList = ({ expenses, categories, updateFunc }) => {
-    const categoryMapping = {};
-    categories.forEach((c) => {
-        categoryMapping[c.id] = c.name;
-    });
-
+export const ExpensesList = ({ expenses, categoryMapping, updateFunc }) => {
     const currentMonth = new Date().getMonth();
     const thisMonthExpenses = expenses
         .filter(({ date }) => date.getMonth() === currentMonth)
         .sort((t1, t2) => byDate(t1.date, t2.date) || reverse(byNumber(t1.id, t2.id)));
 
     return (
-        <TableContainer maxW="xl" w="full" mt={20}>
+        <TableContainer maxW="xl" w="full" mt={10}>
             <Table size="sm">
                 <Thead>
                     <Tr>
@@ -53,7 +48,7 @@ export const ExpensesList = ({ expenses, categories, updateFunc }) => {
                                         <EditExpense
                                             expense={expense}
                                             updateFunc={updateFunc}
-                                            categories={categories}
+                                            categoryMapping={categoryMapping}
                                         />
                                     </HStack>
                                 </Td>

@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form';
 import { expensesService } from '../../services/expenses';
 import { formTexts } from '../generic/formTexts';
 
-export const EditExpense = ({ expense, categories, updateFunc }) => {
+export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
     const { id: itemId, amount, date, comment, category } = expense;
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -90,7 +90,7 @@ export const EditExpense = ({ expense, categories, updateFunc }) => {
             <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Update map</ModalHeader>
+                    <ModalHeader>Update expense</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <form onSubmit={handleSubmit(onSubmit)} method="POST">
@@ -121,7 +121,7 @@ export const EditExpense = ({ expense, categories, updateFunc }) => {
                                             maxLength: 128,
                                         })}
                                     >
-                                        {categories.map(({ id, name }) => {
+                                        {Object.entries(categoryMapping).map(([id, name]) => {
                                             return (
                                                 <option key={id} value={id} color="#2D3748">
                                                     {name}
