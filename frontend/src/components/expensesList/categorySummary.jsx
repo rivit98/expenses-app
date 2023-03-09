@@ -12,7 +12,7 @@ export const CategorySummary = ({ expenses, categoryMapping }) => {
     });
 
     return (
-        <TableContainer maxW="sm" mt={10}>
+        <TableContainer maxW="sm">
             <Table size="sm">
                 <Thead>
                     <Tr>

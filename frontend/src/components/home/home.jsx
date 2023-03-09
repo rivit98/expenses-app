@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import { HStack } from '@chakra-ui/react';
 import { useAxiosEffect } from '../../hooks/useAxiosEffect';
 import { isLoggedIn } from '../../context/userReducer';
 import { expensesService } from '../../services/expenses';
@@ -8,6 +9,8 @@ import { ComponentStateHandler, getAggregatedState } from '../generic/componentS
 import { ExpensesList } from '../expensesList/expensesList';
 import { AddExpense } from '../expensesList/addExpense';
 import { CategorySummary } from '../expensesList/categorySummary';
+import { LinkPanel } from './linkPanel';
+import { byDate, byNumber, reverse } from '../generic/sortUtil';
 
 const Home = () => {
     const logged = useSelector(isLoggedIn) || false;
@@ -23,9 +26,13 @@ const Home = () => {
         return <Login />;
     }
 
-    const expenses_with_date = expenses.map((exp) => {
-        return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
-    });
+    const currentMonth = new Date().getMonth();
+    const expenses_with_date = expenses
+        .map((exp) => {
+            return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
+        })
+        .filter(({ date }) => date.getMonth() === currentMonth)
+        .sort((t1, t2) => byDate(t1.date, t2.date) || reverse(byNumber(t1.id, t2.id)));
 
     // eslint-disable-next-line no-return-assign, no-param-reassign, no-sequences
     const categoryMapping = categories.reduce((obj, item) => ((obj[item.id] = item.name), obj), {});
@@ -38,7 +45,10 @@ const Home = () => {
         <ComponentStateHandler state={state}>
             <AddExpense categories={categories} updateFunc={updateFunc} />
             <ExpensesList expenses={expenses_with_date} categoryMapping={categoryMapping} updateFunc={updateFunc} />
-            <CategorySummary expenses={expenses_with_date} categoryMapping={categoryMapping} />
+            <HStack mt={10} w="full" maxW="xl" flex justifyContent="space-between">
+                <CategorySummary expenses={expenses_with_date} categoryMapping={categoryMapping} />
+                <LinkPanel />
+            </HStack>
         </ComponentStateHandler>
     );
 };
