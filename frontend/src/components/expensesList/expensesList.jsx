@@ -1,4 +1,4 @@
-import { Badge, HStack, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Badge, HStack, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import formatDate from '../../utils/dateformatter';
 import { DeleteExpense } from './deleteExpense';
 import { EditExpense } from './editExpense';
@@ -30,10 +30,12 @@ export const ExpensesList = ({ expenses, categoryMapping, updateFunc }) => {
                                     {formatDate(date).substring(0, 10)}
                                 </Td>
                                 <Td pr={1}>
-                                    {amount} zł
-                                    <Badge ml={2} colorScheme={badges[category % badges.length]}>
-                                        {categoryMapping[category]}
-                                    </Badge>
+                                    <Stack justifyContent="center" textAlign="center">
+                                        <Text>{amount} zł</Text>
+                                        <Badge ml={2} colorScheme={badges[category % badges.length]}>
+                                            {categoryMapping[category]}
+                                        </Badge>
+                                    </Stack>
                                 </Td>
                                 <Td whiteSpace="break-spaces">{comment}</Td>
                                 <Td p={1}>
