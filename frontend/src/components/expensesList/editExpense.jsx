@@ -1,10 +1,11 @@
-import { EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
     Alert,
     AlertIcon,
     Button,
     FormControl,
     FormErrorMessage,
+    HStack,
     IconButton,
     Input,
     Modal,
@@ -24,7 +25,7 @@ import { formTexts } from '../generic/formTexts';
 
 export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
     const { id: itemId, amount, date, comment, category } = expense;
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose: onCloseInner } = useDisclosure();
 
     const {
         register,
@@ -37,15 +38,18 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
     const [loading, setLoading] = useState(false);
     const [errorText, setErrorText] = useState(undefined);
 
+    const onClose = () => {
+        setError(undefined);
+        setLoading(false);
+        onCloseInner();
+    };
+
     const resetCallback = () => {
         setLoading(false);
     };
 
-    const successCallback = (data) => {
-        updateFunc({
-            type: 'update',
-            payload: data,
-        });
+    const successCallback = () => {
+        updateFunc();
         onClose();
     };
 
@@ -54,7 +58,10 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
         const err = e.response?.data;
         try {
             Object.entries({
-                name: err?.name?.slice(0, 1)[0],
+                date: err?.date?.slice(0, 1)[0],
+                amount: err?.amount?.slice(0, 1)[0],
+                category: err?.category?.slice(0, 1)[0],
+                comment: err?.comment?.slice(0, 1)[0],
             })
                 .filter(([, value]) => value !== undefined)
                 .forEach(([key, value]) => {
@@ -68,13 +75,22 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
         }
     };
 
-    const onSubmit = (data) => {
+    const updateExpenseFunc = (data) => {
         if (loading) {
             return;
         }
-        setLoading(true);
         setErrorText(undefined);
+        setLoading(true);
         expensesService.updateExpense(itemId, data).then(successCallback).catch(errorCallback).finally(resetCallback);
+    };
+
+    const deleteExpenseFunc = () => {
+        if (loading) {
+            return;
+        }
+        setError(undefined);
+        setLoading(true);
+        expensesService.deleteExpense(itemId).then(successCallback).catch(errorCallback).finally(resetCallback);
     };
 
     const open = () => {
@@ -93,7 +109,7 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
                     <ModalHeader>Update expense</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <form onSubmit={handleSubmit(onSubmit)} method="POST">
+                        <form onSubmit={handleSubmit(updateExpenseFunc)} method="POST">
                             <Stack spacing={2}>
                                 <FormControl isInvalid={errors.date}>
                                     <Input
@@ -143,9 +159,12 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
                                     />
                                     <FormErrorMessage>{errors.comment && errors.comment.message}</FormErrorMessage>
                                 </FormControl>
-                                <Button w="full" colorScheme="teal" isLoading={loading} type="submit">
-                                    Update
-                                </Button>
+                                <HStack>
+                                    <Button w="full" colorScheme="teal" isLoading={loading} type="submit">
+                                        Update
+                                    </Button>
+                                    <IconButton colorScheme="red" onClick={deleteExpenseFunc} icon={<DeleteIcon />} />
+                                </HStack>
 
                                 {errorText !== undefined && (
                                     <Alert status="error" mb={2}>

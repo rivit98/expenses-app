@@ -1,16 +1,12 @@
-import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Heading } from '@chakra-ui/react';
 import { useAxiosEffect } from '../../hooks/useAxiosEffect';
-import { isLoggedIn } from '../../context/userReducer';
 import { expensesService } from '../../services/expenses';
-import Login from '../auth/login';
 import { ComponentStateHandler, getAggregatedState } from '../generic/componentStateHandler';
 import { byDate, byNumber, reverse } from '../generic/sortUtil';
 import { ExpensesList } from '../expensesList/expensesList';
 
 export const ExpensesAll = () => {
-    const logged = useSelector(isLoggedIn) || false;
     const expensesLoader = getAggregatedState(
         (options) => expensesService.getCategories(options),
         (options) => expensesService.getExpenses(options)
@@ -18,10 +14,6 @@ export const ExpensesAll = () => {
     const [refresher, setRefresher] = useState(0);
     const state = useAxiosEffect(expensesLoader, [refresher], [[], []]);
     const [categories, expenses] = state.data;
-
-    if (!logged) {
-        return <Login />;
-    }
 
     const expenses_with_date = expenses
         .map((exp) => {

@@ -1,6 +1,5 @@
 import { Badge, HStack, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import formatDate from '../../utils/dateformatter';
-import { DeleteExpense } from './deleteExpense';
 import { EditExpense } from './editExpense';
 
 const badges = ['blue', 'yellow', 'red', 'green', 'gray', 'purple'];
@@ -40,7 +39,6 @@ export const ExpensesList = ({ expenses, categoryMapping, updateFunc }) => {
                                 <Td whiteSpace="break-spaces">{comment}</Td>
                                 <Td p={1}>
                                     <HStack p={0} m={0}>
-                                        <DeleteExpense expense={expense} updateFunc={updateFunc} />
                                         <EditExpense
                                             expense={expense}
                                             updateFunc={updateFunc}

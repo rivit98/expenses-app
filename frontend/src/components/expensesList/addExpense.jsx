@@ -21,8 +21,8 @@ export const AddExpense = ({ categories, updateFunc }) => {
         setLoading(false);
     };
 
-    const successCallback = (data) => {
-        updateFunc({ type: 'add', payload: data });
+    const successCallback = () => {
+        updateFunc();
         toast({
             description: 'Expense added',
             status: 'success',
