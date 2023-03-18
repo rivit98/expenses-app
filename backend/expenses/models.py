@@ -24,7 +24,7 @@ class Expense(Model):
     id = BigAutoField(primary_key=True)
     user = ForeignKey(get_user_model(), on_delete=CASCADE, related_name="user_expenses")
     amount = DecimalField(max_digits=6, decimal_places=2, null=False)
-    comment = CharField(max_length=128, null=True)
+    comment = CharField(max_length=128, null=True, blank=True)
     category = ForeignKey(Category, on_delete=CASCADE, related_name="expense_category")
     date = DateField(blank=True, default=datetime.date.today)
 

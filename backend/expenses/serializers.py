@@ -5,7 +5,7 @@ from expenses.models import Category, Expense
 
 
 class ExpenseSerializer(ModelSerializer):
-    comment = serializers.CharField(required=False)
+    comment = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Expense
