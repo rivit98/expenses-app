@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { HStack } from '@chakra-ui/react';
 import { useAxiosEffect } from '../../hooks/useAxiosEffect';
 import { expensesService } from '../../services/expenses';
 import { ComponentStateHandler, getAggregatedState } from '../generic/componentStateHandler';
@@ -37,10 +36,8 @@ const Home = () => {
         <ComponentStateHandler state={state}>
             <AddExpense categories={categories} updateFunc={updateFunc} />
             <ExpensesList expenses={expenses_with_date} categoryMapping={categoryMapping} updateFunc={updateFunc} />
-            <HStack mt={10} w="full" maxW="xl" flex justifyContent="center" wrap="wrap">
-                <CategorySummary expenses={expenses_with_date} categoryMapping={categoryMapping} />
-                <LinkPanel />
-            </HStack>
+            <CategorySummary expenses={expenses_with_date} categoryMapping={categoryMapping} />
+            <LinkPanel />
         </ComponentStateHandler>
     );
 };

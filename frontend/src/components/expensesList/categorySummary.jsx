@@ -1,4 +1,5 @@
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { round2 } from '../../utils/rounding';
 import { byNumber, reverse } from '../generic/sortUtil';
 
 export const CategorySummary = ({ expenses, categoryMapping }) => {
@@ -11,8 +12,10 @@ export const CategorySummary = ({ expenses, categoryMapping }) => {
         summary[e.category] += e.amount;
     });
 
+    const totalSum = Object.values(summary).reduce((acc, c) => acc + c, 0);
+
     return (
-        <TableContainer maxW="sm" mr={2} mb={3}>
+        <TableContainer maxW="sm" mt={10}>
             <Table size="sm">
                 <Thead>
                     <Tr>
@@ -27,7 +30,7 @@ export const CategorySummary = ({ expenses, categoryMapping }) => {
                             return (
                                 <Tr key={k}>
                                     <Td>{categoryMapping[k]}</Td>
-                                    <Td>{amount} zł</Td>
+                                    <Td>{round2(amount)} zł</Td>
                                 </Tr>
                             );
                         })}
@@ -35,7 +38,7 @@ export const CategorySummary = ({ expenses, categoryMapping }) => {
                 <Tfoot>
                     <Tr>
                         <Th>Total</Th>
-                        <Th>{Object.values(summary).reduce((acc, c) => acc + c, 0)} zł</Th>
+                        <Th>{round2(totalSum)} zł</Th>
                     </Tr>
                 </Tfoot>
             </Table>

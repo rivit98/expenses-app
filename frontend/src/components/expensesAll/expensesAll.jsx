@@ -5,6 +5,7 @@ import { expensesService } from '../../services/expenses';
 import { ComponentStateHandler, getAggregatedState } from '../generic/componentStateHandler';
 import { byDate, byNumber, reverse } from '../generic/sortUtil';
 import { ExpensesList } from '../expensesList/expensesList';
+import { round2 } from '../../utils/rounding';
 
 export const ExpensesAll = () => {
     const expensesLoader = getAggregatedState(
@@ -32,7 +33,7 @@ export const ExpensesAll = () => {
 
     return (
         <ComponentStateHandler state={state}>
-            <Heading size="lg"> You spent {totalSum} zł in total</Heading>
+            <Heading size="lg"> You spent {round2(totalSum)} zł in total</Heading>
             <ExpensesList expenses={expenses_with_date} categoryMapping={categoryMapping} updateFunc={updateFunc} />
         </ComponentStateHandler>
     );
