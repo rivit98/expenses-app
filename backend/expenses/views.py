@@ -38,6 +38,8 @@ class ExpenseView(
 
     def put(self, request, *args, **kwargs):
         request.data.update({"user": self.request.user.id})
+        if len(request.data.get("comment", "")) == 0:
+            del request.data["comment"]
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
