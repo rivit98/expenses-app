@@ -3,8 +3,7 @@ import { Button, Flex, HStack } from '@chakra-ui/react';
 const PaginationButton = ({ children, fn, ...props }) => {
     return (
         <Button
-            size="xs"
-            w={8}
+            size="sm"
             m={0}
             colorScheme="teal"
             _focus={{ outline: 'none' }}
