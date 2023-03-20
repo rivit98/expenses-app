@@ -1,4 +1,4 @@
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
 import { round2 } from '../../utils/rounding';
 import { byNumber, reverse } from '../generic/sortUtil';
 
@@ -16,7 +16,7 @@ export const CategorySummary = ({ expenses, categoryMapping }) => {
 
     return (
         <TableContainer maxW="sm" mt={10}>
-            <Table size="sm">
+            <Table size="md" variant="striped" colorScheme="whiteAlpha">
                 <Thead>
                     <Tr>
                         <Th>Category</Th>
@@ -37,8 +37,12 @@ export const CategorySummary = ({ expenses, categoryMapping }) => {
                 </Tbody>
                 <Tfoot>
                     <Tr>
-                        <Th>Total</Th>
-                        <Th>{round2(totalSum)} zł</Th>
+                        <Th>
+                            <Text fontSize="md">Total</Text>
+                        </Th>
+                        <Th>
+                            <Text fontSize="md">{round2(totalSum)} zł</Text>
+                        </Th>
                     </Tr>
                 </Tfoot>
             </Table>
