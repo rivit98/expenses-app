@@ -24,7 +24,13 @@ export const ExpensesSummaryList = ({ summaryGroups, categoryMapping }) => {
                 <Tbody>
                     {Object.entries(summaryGroupsObj).map(([k, group]) => {
                         return (
-                            <Tr key={k}>
+                            <Tr
+                                key={k}
+                                _hover={{
+                                    background: 'whiteAlpha.300',
+                                    color: 'teal.300',
+                                }}
+                            >
                                 <Td>{k}</Td>
                                 {categoryIDs.map((catID) => {
                                     return <Td key={catID}>{round2(group[catID]) || 0} zł</Td>;

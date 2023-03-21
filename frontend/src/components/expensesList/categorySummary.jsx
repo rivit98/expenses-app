@@ -28,7 +28,13 @@ export const CategorySummary = ({ expenses, categoryMapping }) => {
                         .sort((c1, c2) => reverse(byNumber(c1[1], c2[1])))
                         .map(([k, amount]) => {
                             return (
-                                <Tr key={k}>
+                                <Tr
+                                    key={k}
+                                    _hover={{
+                                        background: 'whiteAlpha.300',
+                                        color: 'teal.300',
+                                    }}
+                                >
                                     <Td>{categoryMapping[k]}</Td>
                                     <Td>{round2(amount)} zł</Td>
                                 </Tr>

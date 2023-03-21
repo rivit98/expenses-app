@@ -24,7 +24,13 @@ export const ExpensesList = ({ expenses, categoryMapping, updateFunc }) => {
                     {expenses.map((expense) => {
                         const { id, amount, comment, date, category } = expense;
                         return (
-                            <Tr key={id}>
+                            <Tr
+                                key={id}
+                                _hover={{
+                                    background: 'whiteAlpha.300',
+                                    color: 'teal.300',
+                                }}
+                            >
                                 <Td px={2} py={0}>
                                     {formatDate(date).substring(0, 10)}
                                 </Td>
