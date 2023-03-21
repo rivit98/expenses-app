@@ -6,24 +6,20 @@ import { ExpensesList } from '../expensesList/expensesList';
 import { AddExpense } from '../expensesList/addExpense';
 import { CategorySummary } from '../expensesList/categorySummary';
 import { LinkPanel } from './linkPanel';
-import { byDate, byNumber, reverse } from '../generic/sortUtil';
 
 const Home = () => {
-    const expensesLoader = getAggregatedState(
-        (options) => expensesService.getCategories(options),
-        (options) => expensesService.getExpenses(options)
+    const today = new Date();
+
+    const expensesLoader = getAggregatedState(expensesService.getCategories, () =>
+        expensesService.getExpensesByDate(today.getFullYear(), today.getMonth() + 1)
     );
     const [refresher, setRefresher] = useState(0);
     const state = useAxiosEffect(expensesLoader, [refresher], [[], []]);
     const [categories, expenses] = state.data;
 
-    const currentMonth = new Date().getMonth();
-    const expenses_with_date = expenses
-        .map((exp) => {
-            return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
-        })
-        .filter(({ date }) => date.getMonth() === currentMonth)
-        .sort((t1, t2) => byDate(t1.date, t2.date) || reverse(byNumber(t1.id, t2.id)));
+    const expenses_with_date = expenses.map((exp) => {
+        return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
+    });
 
     // eslint-disable-next-line no-return-assign, no-param-reassign, no-sequences
     const categoryMapping = categories.reduce((obj, item) => ((obj[item.id] = item.name), obj), {});

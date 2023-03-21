@@ -7,8 +7,16 @@ const getCategories = async (options = undefined) => {
     return axios.get(`/${API_PREFIX}/${API_VERSION}/categories/`, options);
 };
 
-const getExpenses = async (data, options = undefined) => {
+const getExpenses = async (options = undefined) => {
     return axios.get(`/${API_PREFIX}/${API_VERSION}/expenses/`, options);
+};
+
+const getExpensesSummary = async (options = undefined) => {
+    return axios.get(`/${API_PREFIX}/${API_VERSION}/expenses/summary/`, options);
+};
+
+const getExpensesByDate = async (year, month, options = undefined) => {
+    return axios.get(`/${API_PREFIX}/${API_VERSION}/expenses/${year}/${month}/`, options);
 };
 
 const addExpense = async (data, options = undefined) => {
@@ -32,6 +40,8 @@ export const expensesService = {
     getExpenses,
     addExpense,
     getExpense,
+    getExpensesByDate,
+    getExpensesSummary,
     updateExpense,
     deleteExpense,
 };

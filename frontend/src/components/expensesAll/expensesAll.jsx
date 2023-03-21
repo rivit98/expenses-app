@@ -3,26 +3,20 @@ import { Heading } from '@chakra-ui/react';
 import { useAxiosEffect } from '../../hooks/useAxiosEffect';
 import { expensesService } from '../../services/expenses';
 import { ComponentStateHandler, getAggregatedState } from '../generic/componentStateHandler';
-import { byDate, byNumber, reverse } from '../generic/sortUtil';
 import { ExpensesList } from '../expensesList/expensesList';
 import { round2 } from '../../utils/rounding';
 import { Paginate } from '../generic/paginate';
 
 export const ExpensesAll = () => {
-    const expensesLoader = getAggregatedState(
-        (options) => expensesService.getCategories(options),
-        (options) => expensesService.getExpenses(options)
-    );
+    const expensesLoader = getAggregatedState(expensesService.getCategories, expensesService.getExpenses);
     const [refresher, setRefresher] = useState(0);
     const [page, setPage] = useState(1);
     const state = useAxiosEffect(expensesLoader, [refresher], [[], []]);
     const [categories, expenses] = state.data;
 
-    const expenses_with_date = expenses
-        .map((exp) => {
-            return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
-        })
-        .sort((t1, t2) => byDate(t1.date, t2.date) || reverse(byNumber(t1.id, t2.id)));
+    const expenses_with_date = expenses.map((exp) => {
+        return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
+    });
 
     // eslint-disable-next-line no-return-assign, no-param-reassign, no-sequences
     const categoryMapping = categories.reduce((obj, item) => ((obj[item.id] = item.name), obj), {});

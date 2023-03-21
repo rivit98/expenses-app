@@ -7,6 +7,7 @@ import { withStore } from './context/store';
 import { ExpensesAll } from './components/expensesAll/expensesAll';
 import { isLoggedIn } from './context/userReducer';
 import Login from './components/auth/login';
+import { ExpensesMonthlySummary } from './components/expensesAll/expensesSummary';
 
 const guard = (logged, elem) => {
     return logged === true ? elem : <Navigate to="/login" />;
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path="/" element={guard(logged, <Home />)} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/all" element={guard(logged, <ExpensesAll />)} />
+                <Route path="/summary" element={guard(logged, <ExpensesMonthlySummary />)} />
             </Routes>
         </Container>
     );
