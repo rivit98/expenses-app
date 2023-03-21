@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer
 
 from expenses.models import Category, Expense
 
@@ -16,3 +16,10 @@ class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
+
+
+class ExpenseSummarySerializer(Serializer):
+    total = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.0)
+    category = serializers.IntegerField()
+    year = serializers.IntegerField(source="date__year")
+    month = serializers.IntegerField(source="date__month")

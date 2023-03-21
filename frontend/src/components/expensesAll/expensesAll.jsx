@@ -40,12 +40,12 @@ export const ExpensesAll = () => {
     return (
         <ComponentStateHandler state={state}>
             <Heading size="lg"> You spent {round2(totalSum)} zł in total</Heading>
+            <Paginate totalPages={totalPages} currentPage={page} setCurrentPage={setPage} />
             <ExpensesList
                 expenses={expenses_with_date.slice(indexOfFirstItem, indexOfLastItem)}
                 categoryMapping={categoryMapping}
                 updateFunc={updateFunc}
             />
-            <Paginate totalPages={totalPages} currentPage={page} setCurrentPage={setPage} />
         </ComponentStateHandler>
     );
 };
