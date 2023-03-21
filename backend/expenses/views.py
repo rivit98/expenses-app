@@ -1,4 +1,5 @@
 from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 from rest_framework import filters, generics, mixins
 from rest_framework.permissions import IsAuthenticated
 
@@ -51,7 +52,7 @@ class ExpensesSummaryView(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = (IsAuthenticated,)
     serializer_class = ExpenseSummarySerializer
     filter_backends = (filters.OrderingFilter,)
-    ordering = ("-date__year", "-date__month", "category")
+    ordering = ("-date", "category")
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -59,8 +60,8 @@ class ExpensesSummaryView(generics.GenericAPIView, mixins.ListModelMixin):
     def get_queryset(self):
         return (
             Expense.objects.filter(user=self.request.user)
-            .values("date__year", "date__month", "category")
-            .annotate(total=Sum("amount"))
+            .values("category")
+            .annotate(date=TruncMonth("date"), total=Sum("amount"))
         )
 
 

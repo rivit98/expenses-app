@@ -20,6 +20,5 @@ class CategorySerializer(ModelSerializer):
 
 class ExpenseSummarySerializer(Serializer):
     total = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.0)
-    category = serializers.IntegerField()
-    year = serializers.IntegerField(source="date__year")
-    month = serializers.IntegerField(source="date__month")
+    category = serializers.IntegerField(required=True)
+    date = serializers.DateField(required=True, format="%m-%Y")
