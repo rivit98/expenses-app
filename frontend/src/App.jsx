@@ -8,6 +8,7 @@ import { ExpensesAll } from './components/expensesAll/expensesAll';
 import { isLoggedIn } from './context/userReducer';
 import Login from './components/auth/login';
 import { ExpensesMonthlySummary } from './components/expensesAll/expensesSummary';
+import { Chart } from './components/chart/chart';
 
 const guard = (logged, elem) => {
     return logged === true ? elem : <Navigate to="/login" />;
@@ -23,6 +24,7 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/all" element={guard(logged, <ExpensesAll />)} />
                 <Route path="/summary" element={guard(logged, <ExpensesMonthlySummary />)} />
+                <Route path="/chart" element={guard(logged, <Chart />)} />
             </Routes>
         </Container>
     );
