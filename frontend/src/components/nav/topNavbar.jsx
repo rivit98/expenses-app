@@ -35,7 +35,7 @@ export const TopNavbar = () => {
                 justifyContent="center"
             >
                 <Link as={ReactRouterLink} to="/" style={{ textDecoration: 'none' }}>
-                    Expenses App
+                    Expenses
                 </Link>
             </Text>
             <Box display="flex" flex={1} justifyContent="flex-end">

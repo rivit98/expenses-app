@@ -25,7 +25,7 @@ export const Chart = () => {
 
     return (
         <ComponentStateHandler state={state}>
-            <ChartRenderer summaryGroups={Object.entries(summaryGroups)} categoryMapping={categoryMapping} />
+            <ChartRenderer summaryGroups={summaryGroups} categoryMapping={categoryMapping} />
         </ComponentStateHandler>
     );
 };
