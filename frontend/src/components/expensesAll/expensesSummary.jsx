@@ -19,8 +19,6 @@ export const ExpensesMonthlySummary = () => {
         };
     });
 
-    console.log(expenses_summary);
-
     const categoryMapping = categories.reduce((obj, item) => ((obj[item.id] = item.name), obj), {});
     const summaryGroups = expenses_summary.reduce((obj, item) => ((obj[item.date] = {}), obj), {});
 
