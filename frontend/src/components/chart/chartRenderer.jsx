@@ -20,39 +20,37 @@ export const options = {
             position: 'bottom',
         },
     },
+    options: {
+        tooltip: {
+            mode: 'nearest',
+            intersect: false,
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: false,
+        },
+    },
 };
-
-const calcAvgs = (summaryGroups, summaryGroupsToTake, categoryMapping) => {
-    const categorySums = Object.keys(categoryMapping).reduce((obj, item) => ((obj[item] = 0), obj), {});
-
-    const filtered_categories = summaryGroupsToTake.map((date) => summaryGroups[date]);
-
-    filtered_categories.forEach((g) =>
-        Object.entries(g).forEach(([k, v]) => {
-            categorySums[k] += v;
-        })
-    );
-    const total = Object.values(categorySums).reduce((acc, x) => acc + x, 0);
-    const totalAvg = total / filtered_categories.length;
-
-    return { categorySums, totalAvg };
-};
+const MONTHS_TO_KEEP_ON_GRAPH = 12;
 
 export const ChartRenderer = ({ summaryGroups, categoryMapping }) => {
-    // const categoryIDs = Object.keys(categoryMapping);
-    const summaryGroupsToTake = Object.keys(summaryGroups).slice(0, 6).reverse();
-    const datasets = Object.values(categoryMapping)
-        .concat('Total')
-        .map((cat) => {
+    const summaryGroupsToTake = Object.fromEntries(
+        Object.entries(summaryGroups).slice(0, MONTHS_TO_KEEP_ON_GRAPH).reverse()
+    );
+
+    const datasets = Object.entries(categoryMapping)
+        .map(([catID, cat]) => {
             return {
                 label: cat,
-                data: [1, 2],
+                data: Object.values(summaryGroupsToTake).map((g) => g[catID] || 0),
             };
+        })
+        .concat({
+            label: 'Total',
+            data: Object.values(summaryGroupsToTake).map((g) => Object.values(g).reduce((acc, x) => acc + x, 0)),
         });
-    calcAvgs(summaryGroups, summaryGroupsToTake, categoryMapping);
-
     const data = {
-        labels: summaryGroupsToTake,
+        labels: Object.keys(summaryGroupsToTake),
         datasets,
     };
 
