@@ -19,14 +19,43 @@ export const options = {
         legend: {
             position: 'bottom',
         },
+        tooltip: {
+            callbacks: {
+                label(context) {
+                    let label = context.dataset.label || '';
+
+                    if (label) {
+                        label += ': ';
+                    }
+                    if (context.parsed.y !== null) {
+                        label += `${context.parsed.y.toFixed(2)} zł`;
+                    }
+                    return label;
+                },
+            },
+        },
     },
-    tooltip: {
-        mode: 'nearest',
+    interaction: {
+        mode: 'index',
         intersect: false,
     },
-    hover: {
-        mode: 'nearest',
-        intersect: false,
+    elements: {
+        point: {
+            radius: 4,
+            hoverRadius: 6,
+        },
+    },
+    scales: {
+        x: {
+            grid: {
+                color: '#2e3033',
+            },
+        },
+        y: {
+            grid: {
+                color: '#2e3033',
+            },
+        },
     },
 };
 const MONTHS_TO_KEEP_ON_GRAPH = 12;

@@ -31,9 +31,9 @@ const Home = () => {
     return (
         <ComponentStateHandler state={state}>
             <AddExpense categories={categories} updateFunc={updateFunc} />
+            <LinkPanel />
             <ExpensesList expenses={expenses_with_date} categoryMapping={categoryMapping} updateFunc={updateFunc} />
             <CategorySummary expenses={expenses_with_date} categoryMapping={categoryMapping} />
-            <LinkPanel />
         </ComponentStateHandler>
     );
 };
