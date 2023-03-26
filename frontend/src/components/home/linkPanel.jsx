@@ -8,11 +8,9 @@ const SingleLink = ({ url, children }) => {
                 my="auto"
                 mx="auto"
                 w="full"
-                p={5}
+                h="full"
+                p={3}
                 textAlign="center"
-                _hover={{
-                    background: 'teal',
-                }}
                 background="teal"
                 color="whiteAlpha.800"
                 rounded="md"
@@ -27,8 +25,8 @@ export const LinkPanel = () => {
     return (
         <SimpleGrid columns={3} spacing={2} mt={8}>
             <SingleLink url="all">All expenses</SingleLink>
-            <SingleLink url="chart">Chart</SingleLink>
             <SingleLink url="summary">Monthly summary</SingleLink>
+            <SingleLink url="chart">Chart</SingleLink>
         </SimpleGrid>
     );
 };
