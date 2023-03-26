@@ -56,7 +56,7 @@ export const ExpensesSummaryList = ({ summaryGroups, categoryMapping }) => {
                             >
                                 <Td>{k}</Td>
                                 {categoryIDs.map((catID) => {
-                                    return <Td key={catID}>{round2(group[catID]) || 0} zł</Td>;
+                                    return <Td key={catID}>{round2(group[catID] || 0)} zł</Td>;
                                 })}
                                 <Td>{round2(Object.values(group).reduce((acc, x) => acc + x, 0))} zł</Td>
                             </Tr>
