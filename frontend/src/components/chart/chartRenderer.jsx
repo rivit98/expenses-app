@@ -20,15 +20,13 @@ export const options = {
             position: 'bottom',
         },
     },
-    options: {
-        tooltip: {
-            mode: 'nearest',
-            intersect: false,
-        },
-        hover: {
-            mode: 'nearest',
-            intersect: false,
-        },
+    tooltip: {
+        mode: 'nearest',
+        intersect: false,
+    },
+    hover: {
+        mode: 'nearest',
+        intersect: false,
     },
 };
 const MONTHS_TO_KEEP_ON_GRAPH = 12;
