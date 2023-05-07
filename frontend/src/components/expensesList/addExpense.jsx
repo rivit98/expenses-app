@@ -1,5 +1,5 @@
 import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useToast } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { expensesService } from '../../services/expenses';
 import { formTexts } from '../generic/formTexts';
@@ -67,6 +67,14 @@ export const AddExpense = ({ categories, updateFunc }) => {
         expensesService.addExpense(data).then(successCallback).catch(errorCallback).finally(resetCallback);
     };
 
+    const dateFieldRef = useRef();
+    const handledateFieldClick = () => {
+        if (dateFieldRef && dateFieldRef.current) {
+            dateFieldRef.current.showPicker();
+        }
+    };
+    const { ref, ...rest } = register('firstName');
+
     return (
         <Box maxW="xl" w="full">
             <form onSubmit={handleSubmit(onSubmit)} method="POST">
@@ -75,7 +83,12 @@ export const AddExpense = ({ categories, updateFunc }) => {
                         <Input
                             type="date"
                             defaultValue={new Date().toISOString().split('T')[0]}
-                            {...register('date', {})}
+                            onClick={handledateFieldClick}
+                            {...rest}
+                            ref={(e) => {
+                                ref(e);
+                                dateFieldRef.current = e;
+                            }}
                         />
                         <FormErrorMessage>{errors.date && errors.date.message}</FormErrorMessage>
                     </FormControl>
