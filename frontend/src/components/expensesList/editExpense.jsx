@@ -20,8 +20,10 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { evaluate } from 'mathjs';
 import { expensesService } from '../../services/expenses';
 import { formTexts } from '../generic/formTexts';
+import { round2 } from '../../utils/rounding';
 
 export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
     const { id: itemId, amount, date, comment, category } = expense;
@@ -81,6 +83,7 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
         }
         setErrorText(undefined);
         setLoading(true);
+        data.amount = round2(evaluate(data.amount.replace(',', '.')));
         expensesService.updateExpense(itemId, data).then(successCallback).catch(errorCallback).finally(resetCallback);
     };
 
@@ -121,12 +124,22 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
                                 </FormControl>
                                 <FormControl isInvalid={errors.amount}>
                                     <Input
-                                        type="number"
-                                        step={0.01}
-                                        defaultValue={amount}
+                                        type="text"
                                         placeholder="Amount"
                                         _placeholder={{ color: 'whiteAlpha.500' }}
-                                        {...register('amount', {})}
+                                        defaultValue={amount}
+                                        {...register('amount', {
+                                            validate: {
+                                                mathjs: (value) => {
+                                                    try {
+                                                        evaluate(value.replace(',', '.'));
+                                                        return true;
+                                                    } catch {
+                                                        return 'Invalid expression';
+                                                    }
+                                                },
+                                            },
+                                        })}
                                     />
                                     <FormErrorMessage>{errors.amount && errors.amount.message}</FormErrorMessage>
                                 </FormControl>

@@ -27,6 +27,7 @@ export const LinkPanel = () => {
             <SingleLink url="all">All expenses</SingleLink>
             <SingleLink url="summary">Monthly summary</SingleLink>
             <SingleLink url="chart">Chart</SingleLink>
+            <SingleLink url="meters">Meters</SingleLink>
         </SimpleGrid>
     );
 };
