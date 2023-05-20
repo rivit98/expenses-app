@@ -15,6 +15,7 @@ from django.db.models import (
 class Category(Model):
     id = BigAutoField(primary_key=True)
     name = CharField(max_length=32, null=False)
+    unit = CharField(max_length=8, null=False)
 
     def __str__(self):
         return f"{self.name}"
@@ -29,6 +30,3 @@ class Meter(Model):
 
     def __str__(self):
         return f"{self.user.username} paid {self.read} for {self.category}"
-
-
-# TODO add unit to category
