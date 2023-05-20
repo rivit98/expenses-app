@@ -6,6 +6,7 @@ from progress_tracker.admin import configure_admin_site
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("expenses/", include("expenses.urls")),
+    path("meters/", include("meters.urls")),
     path("auth/", include("auth.urls")),
     path("user/", include("user.urls")),
 ]
