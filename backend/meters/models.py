@@ -30,4 +30,5 @@ class Meter(Model):
     def __str__(self):
         return f"{self.user.username} paid {self.read} for {self.category}"
 
+
 # TODO add unit to category

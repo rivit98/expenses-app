@@ -2,10 +2,7 @@ from rest_framework import filters, generics, mixins
 from rest_framework.permissions import IsAuthenticated
 
 from meters.models import Category, Meter
-from meters.serializers import (
-    CategorySerializer,
-    MeterSerializer,
-)
+from meters.serializers import CategorySerializer, MeterSerializer
 
 
 class ExpensesView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
