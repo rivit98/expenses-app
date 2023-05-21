@@ -1,8 +1,10 @@
 import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useToast } from '@chakra-ui/react';
 import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { evaluate } from 'mathjs';
 import { formTexts } from '../generic/formTexts';
 import { metersService } from '../../services/meters';
+import { round2 } from '../../utils/rounding';
 
 export const AddMeter = ({ categories, updateFunc }) => {
     const toast = useToast();
@@ -63,7 +65,7 @@ export const AddMeter = ({ categories, updateFunc }) => {
             return;
         }
         setLoading(true);
-        console.log(data);
+        data.read = round2(evaluate(data.read.replaceAll(',', '.')));
         metersService.addMeter(data).then(successCallback).catch(errorCallback).finally(resetCallback);
     };
 
@@ -97,7 +99,18 @@ export const AddMeter = ({ categories, updateFunc }) => {
                             type="text"
                             placeholder="Read"
                             _placeholder={{ color: 'whiteAlpha.500' }}
-                            {...register('read', {})}
+                            {...register('read', {
+                                validate: {
+                                    mathjs: (value) => {
+                                        try {
+                                            evaluate(value.replaceAll(',', '.'));
+                                            return true;
+                                        } catch {
+                                            return 'Invalid expression';
+                                        }
+                                    },
+                                },
+                            })}
                         />
                         <FormErrorMessage>{errors.read && errors.read.message}</FormErrorMessage>
                     </FormControl>

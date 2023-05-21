@@ -83,7 +83,7 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
         }
         setErrorText(undefined);
         setLoading(true);
-        data.amount = round2(evaluate(data.amount.replace(',', '.')));
+        data.amount = round2(evaluate(data.amount.replaceAll(',', '.')));
         expensesService.updateExpense(itemId, data).then(successCallback).catch(errorCallback).finally(resetCallback);
     };
 
@@ -132,7 +132,7 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }) => {
                                             validate: {
                                                 mathjs: (value) => {
                                                     try {
-                                                        evaluate(value.replace(',', '.'));
+                                                        evaluate(value.replaceAll(',', '.'));
                                                         return true;
                                                     } catch {
                                                         return 'Invalid expression';

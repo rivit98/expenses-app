@@ -20,8 +20,10 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { evaluate } from 'mathjs';
 import { formTexts } from '../generic/formTexts';
 import { metersService } from '../../services/meters';
+import { round2 } from '../../utils/rounding';
 
 export const EditMeter = ({ meter, categoryMapping, updateFunc }) => {
     const { id: itemId, read, date, category } = meter;
@@ -80,6 +82,7 @@ export const EditMeter = ({ meter, categoryMapping, updateFunc }) => {
         }
         setErrorText(undefined);
         setLoading(true);
+        data.read = round2(evaluate(data.read.replaceAll(',', '.')));
         metersService.updateMeter(itemId, data).then(successCallback).catch(errorCallback).finally(resetCallback);
     };
 
@@ -125,7 +128,18 @@ export const EditMeter = ({ meter, categoryMapping, updateFunc }) => {
                                         defaultValue={read}
                                         placeholder="Read"
                                         _placeholder={{ color: 'whiteAlpha.500' }}
-                                        {...register('read', {})}
+                                        {...register('read', {
+                                            validate: {
+                                                mathjs: (value) => {
+                                                    try {
+                                                        evaluate(value.replaceAll(',', '.'));
+                                                        return true;
+                                                    } catch {
+                                                        return 'Invalid expression';
+                                                    }
+                                                },
+                                            },
+                                        })}
                                     />
                                     <FormErrorMessage>{errors.read && errors.read.message}</FormErrorMessage>
                                 </FormControl>
