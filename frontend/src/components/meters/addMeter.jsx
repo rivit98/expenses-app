@@ -63,6 +63,7 @@ export const AddMeter = ({ categories, updateFunc }) => {
             return;
         }
         setLoading(true);
+        console.log(data);
         metersService.addMeter(data).then(successCallback).catch(errorCallback).finally(resetCallback);
     };
 
@@ -72,7 +73,7 @@ export const AddMeter = ({ categories, updateFunc }) => {
             dateFieldRef.current.showPicker();
         }
     };
-    const { ref, ...rest } = register('firstName');
+    const { ref, ...rest } = register('date');
 
     return (
         <Box maxW="xl" w="full">

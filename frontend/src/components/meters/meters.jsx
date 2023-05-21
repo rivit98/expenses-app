@@ -18,7 +18,10 @@ const Meters = () => {
     });
 
     // eslint-disable-next-line no-return-assign, no-param-reassign, no-sequences
-    const categoryMapping = categories.reduce((obj, item) => ((obj[item.id] = item.name), obj), {});
+    const categoryMapping = categories.reduce(
+        (obj, item) => ((obj[item.id] = { name: item.name, unit: item.unit }), obj),
+        {}
+    );
 
     const updateFunc = () => {
         setRefresher(refresher + 1);

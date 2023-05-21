@@ -76,7 +76,7 @@ export const AddExpense = ({ categories, updateFunc }) => {
             dateFieldRef.current.showPicker();
         }
     };
-    const { ref, ...rest } = register('firstName');
+    const { ref, ...rest } = register('date');
 
     return (
         <Box maxW="xl" w="full">

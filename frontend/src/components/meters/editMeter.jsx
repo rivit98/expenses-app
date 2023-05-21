@@ -136,7 +136,7 @@ export const EditMeter = ({ meter, categoryMapping, updateFunc }) => {
                                             maxLength: 128,
                                         })}
                                     >
-                                        {Object.entries(categoryMapping).map(([id, name]) => {
+                                        {Object.entries(categoryMapping).map(([id, { name }]) => {
                                             return (
                                                 <option key={id} value={id} color="#2D3748">
                                                     {name}

@@ -1,4 +1,4 @@
-import { Badge, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
+import { Badge, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import formatDate from '../../utils/dateformatter';
 import { EditMeter } from './editMeter';
 
@@ -14,6 +14,9 @@ export const MetersList = ({ meters, categoryMapping, updateFunc }) => {
                             Date
                         </Th>
                         <Th pr={1} w="1">
+                            Category
+                        </Th>
+                        <Th w="1" textAlign="center">
                             Read
                         </Th>
                         <Th w="1" />
@@ -33,13 +36,15 @@ export const MetersList = ({ meters, categoryMapping, updateFunc }) => {
                                 <Td px={2} py={0}>
                                     {formatDate(date).substring(0, 10)}
                                 </Td>
-                                <Td px={1} py={0}>
-                                    <Stack justifyContent="center" textAlign="center" spacing={0.5}>
-                                        <Text>{read}</Text>
-                                        <Badge ml={2} colorScheme={badges[category % badges.length]}>
-                                            {categoryMapping[category]}
-                                        </Badge>
-                                    </Stack>
+                                <Td px={2} py={0}>
+                                    <Badge ml={2} colorScheme={badges[category % badges.length]}>
+                                        {categoryMapping[category].name}
+                                    </Badge>
+                                </Td>
+                                <Td textAlign="center">
+                                    <Text>
+                                        {read} {categoryMapping[category].unit}
+                                    </Text>
                                 </Td>
                                 <Td px={1}>
                                     <EditMeter
