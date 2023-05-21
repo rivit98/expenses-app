@@ -29,4 +29,4 @@ class Meter(Model):
     date = DateField(blank=True, default=datetime.date.today)
 
     def __str__(self):
-        return f"{self.user.username} paid {self.read} for {self.category}"
+        return f"{self.user.username} | {self.read} {self.category.unit} for {self.category}"
