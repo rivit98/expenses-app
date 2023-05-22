@@ -10,6 +10,7 @@ export const setupAxios = () => {
 
     axios.interceptors.request.use((request) => {
         const token = authService.getAccessToken();
+
         if (token != null) {
             request.headers.Authorization = `Bearer ${token}`;
         }
@@ -17,5 +18,5 @@ export const setupAxios = () => {
         return request;
     });
 
-    createAuthRefreshInterceptor(axios, (failedRequest) => authService.refreshUserToken(failedRequest));
+    createAuthRefreshInterceptor(axios, authService.refreshUserToken);
 };

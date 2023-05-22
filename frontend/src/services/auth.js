@@ -30,9 +30,15 @@ const getRefreshToken = () => {
 };
 
 const getNewAccessToken = async (refreshToken) => {
-    return axios.post(`/auth/${API_VERSION}/refresh/`, {
-        refresh: refreshToken,
-    });
+    return axios.post(
+        `/auth/${API_VERSION}/refresh/`,
+        {
+            refresh: refreshToken,
+        },
+        {
+            skipAuthRefresh: true,
+        }
+    );
 };
 
 const refreshUserToken = async (failedRequest) => {
@@ -41,10 +47,14 @@ const refreshUserToken = async (failedRequest) => {
         return Promise.reject(new Error('Your session expired, please login again'));
     }
 
-    const token = await getNewAccessToken(refreshToken);
-    store.dispatch(updateUser(token));
-    failedRequest.response.config.headers.Authorization = `Bearer ${token.access}`; // eslint-disable-line no-param-reassign
-    return Promise.resolve();
+    try {
+        const token = await getNewAccessToken(refreshToken);
+        store.dispatch(updateUser(token));
+        failedRequest.response.config.headers.Authorization = `Bearer ${token.access}`; // eslint-disable-line no-param-reassign
+        return Promise.resolve();
+    } catch {
+        return Promise.reject(new Error('Your session expired, please login again'));
+    }
 };
 
 export const authService = {
