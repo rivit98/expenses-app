@@ -12,7 +12,9 @@ from expenses.serializers import (
 
 
 class ExpenseViewByYearAndMonth(
-    mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView
+    generics.ListCreateAPIView,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
 ):
     permission_classes = (IsAuthenticated,)
     serializer_class = ExpenseSerializer
@@ -31,14 +33,15 @@ class ExpenseViewByYearAndMonth(
         return queryset
 
 
-class ExpensesView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+class ExpensesView(
+    generics.ListCreateAPIView,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+):
     permission_classes = (IsAuthenticated,)
     serializer_class = ExpenseSerializer
     filter_backends = (filters.OrderingFilter,)
     ordering = ("-date", "-id")
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         request.data.update({"user": self.request.user.id})
@@ -48,14 +51,11 @@ class ExpensesView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.Gene
         return Expense.objects.filter(user=self.request.user)
 
 
-class ExpensesSummaryView(generics.GenericAPIView, mixins.ListModelMixin):
+class ExpensesSummaryView(generics.ListAPIView, mixins.ListModelMixin):
     permission_classes = (IsAuthenticated,)
     serializer_class = ExpenseSummarySerializer
     filter_backends = (filters.OrderingFilter,)
     ordering = ("-date", "category")
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
 
     def get_queryset(self):
         return (
@@ -66,7 +66,7 @@ class ExpensesSummaryView(generics.GenericAPIView, mixins.ListModelMixin):
 
 
 class ExpenseView(
-    generics.GenericAPIView,
+    generics.RetrieveUpdateDestroyAPIView,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
@@ -75,23 +75,17 @@ class ExpenseView(
     serializer_class = ExpenseSerializer
     lookup_field = "id"
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-
     def put(self, request, *args, **kwargs):
         request.data.update({"user": self.request.user.id})
         return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
 
     def get_queryset(self):
         return Expense.objects.filter(user=self.request.user)
 
 
-class CategoriesView(mixins.ListModelMixin, generics.GenericAPIView):
+class CategoriesView(
+    generics.ListAPIView,
+    mixins.ListModelMixin,
+):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
