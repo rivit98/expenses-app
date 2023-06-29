@@ -12,7 +12,6 @@ const Meters = () => {
     const state = useAxiosEffect(metersLoader, [refresher], [[], []]);
     const [categories, meters] = state.data;
 
-    console.log(meters);
     const meters_with_date = meters.map((m) => {
         return { ...m, date: new Date(m.date), read: parseFloat(m.read) };
     });
