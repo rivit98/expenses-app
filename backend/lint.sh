@@ -9,16 +9,14 @@ fi
 
 if [[ "$1" == "format" ]]; then
   echo "Formatting..."
-  isort .
   black .
-  flake8 .
+  ruff check --show-source --show-fixes --fix .
 fi
 
 if [[ "$1" == "lint" ]]; then
   echo "Linting..."
-  isort --check-only --diff .
   black --diff --check .
-  flake8 --show-source .
+  ruff check --show-source .
 fi
 
 

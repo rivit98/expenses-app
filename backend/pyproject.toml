@@ -1,16 +1,20 @@
 [tool.black]
-line-length = 100
+line-length = 120
 exclude = '''
 /(
   | migrations
 )/
 '''
 
-[tool.isort]
-profile = "black"
-force_single_line = false
-extend_skip_glob = ["**/migrations/*"]
 
-[tool.flake8]
-max-line-length=120
-exclude= ["**/migrations/*"]
+[tool.ruff]
+select = ["E", "F", "I"]
+extend-exclude = ["migrations"]
+force-exclude = true
+line-length = 120
+
+
+[tool.ruff.isort]
+force-single-line = false
+force-wrap-aliases = true
+combine-as-imports = true
