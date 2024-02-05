@@ -9,7 +9,6 @@ A simple react app made to track expenses.
 3. Run `npm start`
 4. Open [http://localhost:3000](http://localhost:3000) to app in the browser
 
-
 ## Production
 
 1. Clone project
@@ -18,7 +17,6 @@ A simple react app made to track expenses.
 4. Serve app using `serve` (check [Dockerfile](./prod.Dockerfile))
 
 
-
 ## Notes
 
-This app was created very fast, so expect low-quality code ;)
+This app was created very fast - expect low-quality code ;)

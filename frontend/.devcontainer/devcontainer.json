@@ -1,0 +1,23 @@
+{
+    "name": "Visual Studio Code - NodeJS dev env",
+
+    "image": "node:21",
+
+    "shutdownAction": "stopContainer",
+
+    "postCreateCommand": "npm install",
+
+    "forwardPorts": [3000],
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "christian-kohler.path-intellisense",
+                "oderwat.indent-rainbow",
+                "dsznajder.es7-react-js-snippets"
+            ]
+        }
+    },
+
+    "remoteUser": "node"
+}
