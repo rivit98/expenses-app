@@ -8,13 +8,15 @@ exclude = '''
 
 
 [tool.ruff]
-select = ["E", "F", "I"]
 extend-exclude = ["migrations"]
 force-exclude = true
 line-length = 120
 
+[tool.ruff.lint]
+select = ["E", "F", "I"]
 
-[tool.ruff.isort]
+
+[tool.ruff.lint.isort]
 force-single-line = false
 force-wrap-aliases = true
 combine-as-imports = true
