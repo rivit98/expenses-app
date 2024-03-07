@@ -30,7 +30,7 @@ jobs:
           npm run lint
           npm run prettier:check
 
-  deploy:
+  dokku:
     runs-on: ubuntu-latest
     needs: lint
     steps:
@@ -44,3 +44,31 @@ jobs:
           git_push_flags: "--force"
           git_remote_url: ${{ secrets.DOKKU_URL_FRONTEND }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: "recursive"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.rivit.dev
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/prod.Dockerfile
+          push: true
+          tags: registry.rivit.dev/ef:latest

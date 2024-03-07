@@ -3,14 +3,14 @@ FROM node:21 as builder
 
 WORKDIR /app
 
-COPY ./frontend/package.json ./frontend/package-lock.json ./
+COPY /package.json /package-lock.json ./
 RUN npm ci
 
-COPY ./frontend ./
+COPY . ./
 RUN npm run build
 
 FROM nginx:alpine
 ENV NODE_ENV production
 WORKDIR /usr/share/nginx/html
-RUN rm *
+RUN rm -- *
 COPY --from=builder /app/build/ .
