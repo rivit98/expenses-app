@@ -2,7 +2,7 @@ import { Badge, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } f
 import formatDate from '../../utils/dateformatter';
 import { EditExpense } from './editExpense';
 
-const badges = ['blue', 'yellow', 'red', 'green', 'gray', 'purple'];
+const badges = ['yellow', 'red', 'green', 'gray', 'purple', 'blue', 'pink'];
 
 export const ExpensesList = ({ expenses, categoryMapping, updateFunc }) => {
     return (
@@ -37,7 +37,7 @@ export const ExpensesList = ({ expenses, categoryMapping, updateFunc }) => {
                                 <Td px={1} py={0}>
                                     <Stack justifyContent="center" textAlign="center" spacing={0.5}>
                                         <Text>{amount} zł</Text>
-                                        <Badge ml={2} colorScheme={badges[category % badges.length]}>
+                                        <Badge ml={2} colorScheme={badges[(category - 1) % badges.length]}>
                                             {categoryMapping[category]}
                                         </Badge>
                                     </Stack>
