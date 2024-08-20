@@ -1,4 +1,4 @@
-FROM node:21 as builder
+FROM node:22 as builder
 # ENV NODE_ENV production
 
 WORKDIR /app

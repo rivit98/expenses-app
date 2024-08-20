@@ -1,7 +1,7 @@
 {
     "name": "Visual Studio Code - NodeJS dev env",
 
-    "image": "node:21",
+    "image": "node:22",
 
     "shutdownAction": "stopContainer",
 
