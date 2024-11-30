@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
+
 from expenses_tracker.admin import configure_admin_site
 
 urlpatterns = [
