@@ -1,5 +1,5 @@
 """
-WSGI config for progress_tracker project.
+WSGI config for expenses_tracker project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -9,11 +9,7 @@ https://docs.djangoproject.com/en/3.2/howto/deployment/wsgi/
 
 import os
 
-import dotenv
 from django.core.wsgi import get_wsgi_application
 
-dotenv.read_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "progress_tracker.settings")
-
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "expenses_tracker.settings")
 application = get_wsgi_application()

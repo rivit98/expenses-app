@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
-
-from progress_tracker.admin import configure_admin_site
+from expenses_tracker.admin import configure_admin_site
 
 urlpatterns = [
     path("admin/", admin.site.urls),
