@@ -7,14 +7,14 @@
 
     "postCreateCommand": "npm install",
 
-    "forwardPorts": [3000],
+    "forwardPorts": [5173],
 
     "customizations": {
         "vscode": {
             "extensions": [
                 "christian-kohler.path-intellisense",
                 "oderwat.indent-rainbow",
-                "dsznajder.es7-react-js-snippets"
+                "fill-labs.dependi"
             ]
         }
     },
