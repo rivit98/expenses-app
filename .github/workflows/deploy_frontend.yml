@@ -1,4 +1,4 @@
-name: "Deploy ef to dokku"
+name: "Deploy ef"
 
 on:
   push:
