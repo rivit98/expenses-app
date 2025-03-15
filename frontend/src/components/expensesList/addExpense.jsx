@@ -7,6 +7,9 @@ import { formTexts } from '../generic/formTexts';
 import { round2 } from '../../utils/rounding';
 
 export const AddExpense = ({ categories, updateFunc }) => {
+    // make Cravings first entry
+    [categories[0], categories[2]] = [categories[2], categories[0]];
+
     const toast = useToast();
 
     const {
