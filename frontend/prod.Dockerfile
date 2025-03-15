@@ -1,5 +1,5 @@
 FROM node:22 as builder
-ENV NODE_ENV production
+# ENV NODE_ENV production
 
 WORKDIR /app
 
