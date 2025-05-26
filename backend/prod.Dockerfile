@@ -1,8 +1,8 @@
 FROM python:3.13
 
 WORKDIR /app
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml pyproject.toml
+RUN pip install --no-cache-dir .
 
 COPY . ./
 

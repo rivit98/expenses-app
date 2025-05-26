@@ -1,3 +1,27 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+	"django-cors-headers==4.7.0",
+	"django==5.2.1",
+	"djangorestframework-simplejwt==5.5.0",
+	"djangorestframework==3.16.0",
+	"dj-database-url==2.3.0",
+	"gunicorn==23.0.0",
+	"psycopg2==2.9.10",
+	"requests==2.32.3",
+	"tzdata==2025.2",
+	"whitenoise==6.9.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff==0.11.11",
+]
+
 [tool.ruff]
 extend-exclude = ["migrations"]
 force-exclude = true
