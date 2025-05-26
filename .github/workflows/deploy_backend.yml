@@ -23,7 +23,9 @@ jobs:
           cache: "pip"
       - name: Install linters
         run: |
-          pip install .[dev]
+          python3 -m venv -- .venv
+          ./.venv/bin/pip install uv
+          ./.venv/bin/uv sync --group dev
       - name: Run linters
         run: |
           git diff-index --quiet HEAD -- .
