@@ -23,7 +23,7 @@ jobs:
           cache: "pip"
       - name: Install linters
         run: |
-          pip install .[dev]
+          pip install -r .[dev]
       - name: Run linters
         run: |
           git diff-index --quiet HEAD -- .
