@@ -30,7 +30,7 @@ jobs:
       - name: Run linters
         run: |
           git diff-index --quiet HEAD -- .
-          ./lint.sh lint
+          chmod +x ./lint.sh && ./lint.sh lint
 
   deploy:
     runs-on: ubuntu-latest
