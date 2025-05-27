@@ -9,10 +9,10 @@ fi
 
 if [[ "$1" == "format" ]]; then
   echo "Formatting..."
-  ruff check --output-format=full --show-fixes --fix .
+  python -m ruff check --output-format=full --show-fixes --fix .
 fi
 
 if [[ "$1" == "lint" ]]; then
   echo "Linting..."
-  ruff check --output-format=full .
+  python -m ruff check --output-format=full .
 fi
