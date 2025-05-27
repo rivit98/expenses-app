@@ -16,6 +16,9 @@ dependencies = [
 	"whitenoise==6.9.0"
 ]
 
+[tool.setuptools]
+py-modules = []
+
 [dependency-groups]
 dev = [
     "ruff==0.11.11",
