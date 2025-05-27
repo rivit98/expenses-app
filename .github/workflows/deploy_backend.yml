@@ -25,7 +25,7 @@ jobs:
       - name: Install linters
         run: |
           ls
-          pip install .[dev]
+          pip install --group dev .
 
       - name: Run linters
         run: |
