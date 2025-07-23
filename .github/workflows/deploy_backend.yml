@@ -59,3 +59,4 @@ jobs:
           file: ./backend/prod.Dockerfile
           push: true
           tags: registry.rivit.dev/eb:latest
+
