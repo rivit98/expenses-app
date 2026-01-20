@@ -18,8 +18,7 @@ export const CategorySummary = ({ meters, categoryMapping }) => {
     const groups = {};
     const summary = {};
 
-    // assume meters are sorted
-
+    // group meters by category
     Object.keys(categoryMapping).forEach((k) => {
         groups[k] = [];
     });
@@ -28,10 +27,12 @@ export const CategorySummary = ({ meters, categoryMapping }) => {
         groups[e.category].push(e);
     });
 
+    // sort each category group by date ascending and get oldest/newest readings
     Object.keys(categoryMapping).forEach((k) => {
+        const sortedGroup = groups[k].sort((a, b) => a.date - b.date);
         summary[k] = {
-            base: groups[k].at(0),
-            end: groups[k].at(-1),
+            base: sortedGroup.at(0),  // oldest reading (earliest date)
+            end: sortedGroup.at(-1),  // newest reading (latest date)
         };
     });
 
