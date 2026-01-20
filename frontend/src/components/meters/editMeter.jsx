@@ -123,7 +123,7 @@ export const EditMeter = ({ meter, categoryMapping, updateFunc }) => {
                                 </FormControl>
                                 <FormControl isInvalid={errors.read}>
                                     <Input
-                                        type="number"
+                                        type="text"
                                         step={0.01}
                                         defaultValue={read}
                                         placeholder="Read"
