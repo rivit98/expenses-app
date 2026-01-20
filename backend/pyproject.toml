@@ -5,14 +5,14 @@ description = "Add your description here"
 requires-python = ">=3.13"
 dependencies = [
 	"django-cors-headers==4.9.0",
-	"django==5.2.8",
+	"django==6.0.1",
 	"djangorestframework-simplejwt==5.5.1",
 	"djangorestframework==3.16.1",
-	"dj-database-url==3.0.1",
+	"dj-database-url==3.1.0",
 	"gunicorn==23.0.0",
-	"psycopg2==2.9.10",
-	"requests==2.32.3",
-	"tzdata==2025.2",
+	"psycopg2==2.9.11",
+	"requests==2.32.5",
+	"tzdata==2025.3",
 	"whitenoise==6.11.0"
 ]
 
@@ -21,7 +21,7 @@ py-modules = []
 
 [dependency-groups]
 dev = [
-    "ruff==0.14.5",
+    "ruff==0.14.13",
 ]
 
 [tool.ruff]
