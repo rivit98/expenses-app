@@ -31,8 +31,8 @@ export const CategorySummary = ({ meters, categoryMapping }) => {
     Object.keys(categoryMapping).forEach((k) => {
         const sortedGroup = groups[k].sort((a, b) => a.date - b.date);
         summary[k] = {
-            base: sortedGroup.at(0),  // oldest reading (earliest date)
-            end: sortedGroup.at(-1),  // newest reading (latest date)
+            base: sortedGroup.at(0), // oldest reading (earliest date)
+            end: sortedGroup.at(-1), // newest reading (latest date)
         };
     });
 
