@@ -8,7 +8,6 @@ import { ExpensesAll } from './components/expensesAll/expensesAll';
 import { isLoggedIn } from './context/userReducer';
 import Login from './components/auth/login';
 import { ExpensesMonthlySummary } from './components/expensesAll/expensesSummary';
-import { Chart } from './components/chart/chart';
 import Meters from './components/meters/meters';
 
 const guard = (logged, elem) => {
@@ -25,7 +24,6 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/all" element={guard(logged, <ExpensesAll />)} />
                 <Route path="/summary" element={guard(logged, <ExpensesMonthlySummary />)} />
-                <Route path="/chart" element={guard(logged, <Chart />)} />
                 <Route path="/meters" element={guard(logged, <Meters />)} />
             </Routes>
         </Container>
