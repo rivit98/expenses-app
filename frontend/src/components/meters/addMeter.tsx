@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useToast } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { evaluate } from 'mathjs';
+import { Parser } from 'expr-eval';
 import { formTexts } from '../generic/formTexts';
 import { round2 } from '../../utils/rounding';
 import { MeterCategory } from '../../types/api';
@@ -53,7 +53,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
         if (addMeterMutation.isPending) {
             return;
         }
-        data.read = round2(evaluate(data.read.replaceAll(',', '.')));
+        data.read = round2(Parser.evaluate(data.read.replaceAll(',', '.')));
         addMeterMutation.mutate(data, {
             onSuccess: () => {
                 toast({
@@ -104,7 +104,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
                                 validate: {
                                     mathjs: (value: string) => {
                                         try {
-                                            evaluate(value.replaceAll(',', '.'));
+                                            Parser.evaluate(value.replaceAll(',', '.'));
                                             return true;
                                         } catch {
                                             return 'Invalid expression';

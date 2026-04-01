@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { evaluate } from 'mathjs';
+import { Parser } from 'expr-eval';
 import { CategoryMapping, ParsedExpense } from '../../types/api';
 import { formTexts } from '../generic/formTexts';
 import { round2 } from '../../utils/rounding';
@@ -82,7 +82,7 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
             return;
         }
         setErrorText(undefined);
-        data.amount = round2(evaluate(data.amount.replaceAll(',', '.')));
+        data.amount = round2(Parser.evaluate(data.amount.replaceAll(',', '.')));
         updateExpenseMutation.mutate(
             { id: itemId, data },
             {
@@ -150,7 +150,7 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
                                             validate: {
                                                 mathjs: (value: string) => {
                                                     try {
-                                                        evaluate(value.replaceAll(',', '.'));
+                                                        Parser.evaluate(value.replaceAll(',', '.'));
                                                         return true;
                                                     } catch {
                                                         return 'Invalid expression';

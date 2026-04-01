@@ -1,10 +1,8 @@
-import { logger } from 'redux-logger/src';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers, Middleware } from 'redux';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { configureStore } from '@reduxjs/toolkit';
-import { DEV_ENV } from '../utils/env';
 import userReducer from './userReducer';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import { ReactNode } from 'react';
@@ -18,13 +16,14 @@ const appReducer = combineReducers({ userReducer });
 const persistedReducer = persistReducer(persistConfig, appReducer);
 
 const middlewares: Middleware[] = [];
-if (DEV_ENV) {
+if (import.meta.env.DEV) {
+    const { logger } = await import('redux-logger/src');
     middlewares.push(logger);
 }
 
 const store = configureStore({
     reducer: persistedReducer,
-    devTools: DEV_ENV,
+    devTools: import.meta.env.DEV,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {

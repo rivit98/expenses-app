@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { evaluate } from 'mathjs';
+import { Parser } from 'expr-eval';
 import { formTexts } from '../generic/formTexts';
 import { round2 } from '../../utils/rounding';
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
@@ -80,7 +80,7 @@ export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
             return;
         }
         setErrorText(undefined);
-        data.read = round2(evaluate(data.read.replaceAll(',', '.')));
+        data.read = round2(Parser.evaluate(data.read.replaceAll(',', '.')));
         updateMeterMutation.mutate(
             { id: itemId, data },
             {
@@ -148,7 +148,7 @@ export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
                                             validate: {
                                                 mathjs: (value: string) => {
                                                     try {
-                                                        evaluate(value.replaceAll(',', '.'));
+                                                        Parser.evaluate(value.replaceAll(',', '.'));
                                                         return true;
                                                     } catch {
                                                         return 'Invalid expression';

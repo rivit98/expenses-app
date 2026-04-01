@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useToast } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { evaluate } from 'mathjs';
+import { Parser } from 'expr-eval';
 import { Category } from '../../types/api';
 import { formTexts } from '../generic/formTexts';
 import { round2 } from '../../utils/rounding';
@@ -57,7 +57,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
         if (addExpenseMutation.isPending) {
             return;
         }
-        data.amount = round2(evaluate(data.amount.replaceAll(',', '.')));
+        data.amount = round2(Parser.evaluate(data.amount.replaceAll(',', '.')));
         addExpenseMutation.mutate(data, {
             onSuccess: () => {
                 toast({
@@ -108,7 +108,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
                                 validate: {
                                     mathjs: (value: string) => {
                                         try {
-                                            evaluate(value.replaceAll(',', '.'));
+                                            Parser.evaluate(value.replaceAll(',', '.'));
                                             return true;
                                         } catch {
                                             return 'Invalid expression';
