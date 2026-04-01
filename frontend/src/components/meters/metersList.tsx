@@ -8,10 +8,9 @@ const badges: string[] = ['blue', 'yellow', 'red', 'green', 'gray', 'purple'];
 interface MetersListProps {
     meters: ParsedMeter[];
     categoryMapping: MeterCategoryMapping;
-    updateFunc: () => void;
 }
 
-export const MetersList = ({ meters, categoryMapping, updateFunc }: MetersListProps) => {
+export const MetersList = ({ meters, categoryMapping }: MetersListProps) => {
     return (
         <TableContainer maxW="xl" w="full" mt={10}>
             <Table size="sm" variant="striped" colorScheme="whiteAlpha">
@@ -54,11 +53,7 @@ export const MetersList = ({ meters, categoryMapping, updateFunc }: MetersListPr
                                     </Text>
                                 </Td>
                                 <Td px={1}>
-                                    <EditMeter
-                                        meter={meter}
-                                        updateFunc={updateFunc}
-                                        categoryMapping={categoryMapping}
-                                    />
+                                    <EditMeter meter={meter} categoryMapping={categoryMapping} />
                                 </Td>
                             </Tr>
                         );

@@ -1,19 +1,16 @@
 import { useState } from 'react';
-import { useAxiosEffect } from '../../hooks/useAxiosEffect';
-import { expensesService } from '../../services/expenses';
-import { ComponentStateHandler, getAggregatedState } from '../generic/componentStateHandler';
+import { useExpenseCategories, useExpensesSummary } from '../../hooks/queries';
+import { ComponentStateHandler } from '../generic/componentStateHandler';
 import { Paginate } from '../generic/paginate';
 import { ExpensesSummaryList } from './expensesSummaryList';
-import { Category, CategoryMapping, ExpenseSummary, ParsedExpenseSummary, SummaryGroups } from '../../types/api';
+import { CategoryMapping, ParsedExpenseSummary, SummaryGroups } from '../../types/api';
 
 export const ExpensesMonthlySummary = () => {
-    const expensesLoader = getAggregatedState<[Category[], ExpenseSummary[]]>(
-        expensesService.getCategories,
-        expensesService.getExpensesSummary
-    );
+    const categoriesQuery = useExpenseCategories();
+    const summaryQuery = useExpensesSummary();
     const [page, setPage] = useState(1);
-    const state = useAxiosEffect<[Category[], ExpenseSummary[]]>(expensesLoader, [], [[], []]);
-    const [categories, expenses] = state.data;
+    const categories = categoriesQuery.data ?? [];
+    const expenses = summaryQuery.data ?? [];
 
     const expenses_summary: ParsedExpenseSummary[] = expenses.map((exp) => {
         return {
@@ -43,7 +40,7 @@ export const ExpensesMonthlySummary = () => {
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
 
     return (
-        <ComponentStateHandler state={state}>
+        <ComponentStateHandler queries={[categoriesQuery, summaryQuery]}>
             <Paginate totalPages={totalPages} currentPage={page} setCurrentPage={setPage} />
             <ExpensesSummaryList
                 summaryGroups={Object.entries(summaryGroups).slice(indexOfFirstItem, indexOfLastItem)}

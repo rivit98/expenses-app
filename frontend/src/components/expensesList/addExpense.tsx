@@ -1,22 +1,22 @@
 import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useToast } from '@chakra-ui/react';
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { evaluate } from 'mathjs';
 import { Category } from '../../types/api';
-import { expensesService } from '../../services/expenses';
 import { formTexts } from '../generic/formTexts';
 import { round2 } from '../../utils/rounding';
+import { useAddExpense } from '../../hooks/mutations';
 
 interface AddExpenseProps {
     categories: Category[];
-    updateFunc: () => void;
 }
 
-export const AddExpense = ({ categories, updateFunc }: AddExpenseProps) => {
+export const AddExpense = ({ categories }: AddExpenseProps) => {
     // make Cravings first entry
     [categories[0], categories[2]] = [categories[2], categories[0]];
 
     const toast = useToast();
+    const addExpenseMutation = useAddExpense();
 
     const {
         register,
@@ -25,23 +25,6 @@ export const AddExpense = ({ categories, updateFunc }: AddExpenseProps) => {
         reset,
         formState: { errors },
     } = useForm({ mode: 'onSubmit' });
-
-    const [loading, setLoading] = useState<boolean>(false);
-
-    const resetCallback = () => {
-        setLoading(false);
-    };
-
-    const successCallback = () => {
-        updateFunc();
-        toast({
-            description: 'Expense added',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-        });
-        reset();
-    };
 
     const errorCallback = (e: { response?: { data?: Record<string, string[]> } }) => {
         console.error(e);
@@ -71,12 +54,24 @@ export const AddExpense = ({ categories, updateFunc }: AddExpenseProps) => {
     };
 
     const onSubmit = (data: FieldValues) => {
-        if (loading) {
+        if (addExpenseMutation.isPending) {
             return;
         }
         data.amount = round2(evaluate(data.amount.replaceAll(',', '.')));
-        setLoading(true);
-        expensesService.addExpense(data).then(successCallback).catch(errorCallback).finally(resetCallback);
+        addExpenseMutation.mutate(data, {
+            onSuccess: () => {
+                toast({
+                    description: 'Expense added',
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                });
+                reset();
+            },
+            onError: (e) => {
+                errorCallback(e as { response?: { data?: Record<string, string[]> } });
+            },
+        });
     };
 
     const dateFieldRef = useRef<HTMLInputElement>(null);
@@ -151,7 +146,7 @@ export const AddExpense = ({ categories, updateFunc }: AddExpenseProps) => {
                         />
                         <FormErrorMessage>{errors.comment && (errors.comment.message as string)}</FormErrorMessage>
                     </FormControl>
-                    <Button w="full" colorScheme="teal" isLoading={loading} type="submit">
+                    <Button w="full" colorScheme="teal" isLoading={addExpenseMutation.isPending} type="submit">
                         Add expense
                     </Button>
                 </Stack>

@@ -1,12 +1,14 @@
 import { Box, Button, Flex, Link, Text, Tooltip, useToast } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as ReactRouterLink } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { removeUser, currentUserData, isLoggedIn } from '../../context/userReducer';
 
 export const TopNavbar = () => {
     const dispatch = useDispatch();
     const { username } = useSelector(currentUserData);
     const logged: boolean = useSelector(isLoggedIn) || false;
+    const queryClient = useQueryClient();
     const toast = useToast();
 
     const logOut = (): void => {
@@ -18,6 +20,7 @@ export const TopNavbar = () => {
             isClosable: true,
         });
         dispatch(removeUser());
+        queryClient.clear();
     };
 
     return (

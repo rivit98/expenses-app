@@ -1,6 +1,8 @@
 import { ChakraProvider, Container } from '@chakra-ui/react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './queryClient';
 import { Navigation } from './components/nav/navigation';
 import Home from './components/home/home';
 import { withStore } from './context/store';
@@ -9,7 +11,7 @@ import { isLoggedIn } from './context/userReducer';
 import Login from './components/auth/login';
 import { ExpensesMonthlySummary } from './components/expensesAll/expensesSummary';
 import Meters from './components/meters/meters';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 const guard = (logged: boolean, elem: ReactElement): ReactElement => {
     return logged === true ? elem : <Navigate to="/login" />;
@@ -44,8 +46,20 @@ const withComponent = (Wrapper: React.ComponentType<any>, Wrapped: React.Compone
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+const withQueryClient = (Wrapped: React.ComponentType<any>) => {
+    const QueryWrapper = (props: { children?: ReactNode }) => {
+        return (
+            <QueryClientProvider client={queryClient}>
+                <Wrapped {...props} />
+            </QueryClientProvider>
+        );
+    };
+    return QueryWrapper;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const WrappedApp = ([BrowserRouter, ChakraProvider, Navigation] as React.ComponentType<any>[])
     .reverse()
     .reduce((acc, cur) => withComponent(cur, acc), App as React.ComponentType<any>);
 
-export default withStore(WrappedApp);
+export default withStore(withQueryClient(WrappedApp));

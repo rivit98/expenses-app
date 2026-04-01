@@ -1,20 +1,16 @@
-import { useState } from 'react';
-import { useAxiosEffect } from '../../hooks/useAxiosEffect';
-import { ComponentStateHandler, getAggregatedState } from '../generic/componentStateHandler';
-import { metersService } from '../../services/meters';
+import { useMeterCategories, useMeters } from '../../hooks/queries';
+import { ComponentStateHandler } from '../generic/componentStateHandler';
 import { AddMeter } from './addMeter';
 import { MetersList } from './metersList';
 import { CategorySummary } from './categorySummary';
-import { Meter, MeterCategory, MeterCategoryMapping, ParsedMeter } from '../../types/api';
+import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 
 const Meters = () => {
-    const metersLoader = getAggregatedState<[MeterCategory[], Meter[]]>(
-        metersService.getCategories,
-        metersService.getMeters
-    );
-    const [refresher, setRefresher] = useState(0);
-    const state = useAxiosEffect<[MeterCategory[], Meter[]]>(metersLoader, [refresher], [[], []]);
-    const [categories, meters] = state.data;
+    const categoriesQuery = useMeterCategories();
+    const metersQuery = useMeters();
+
+    const categories = categoriesQuery.data ?? [];
+    const meters = metersQuery.data ?? [];
 
     const meters_with_date: ParsedMeter[] = meters.map((m) => {
         return { ...m, date: new Date(m.date), read: parseFloat(m.read) };
@@ -26,14 +22,10 @@ const Meters = () => {
         {}
     );
 
-    const updateFunc = () => {
-        setRefresher(refresher + 1);
-    };
-
     return (
-        <ComponentStateHandler state={state}>
-            <AddMeter categories={categories} updateFunc={updateFunc} />
-            <MetersList meters={meters_with_date} categoryMapping={categoryMapping} updateFunc={updateFunc} />
+        <ComponentStateHandler queries={[categoriesQuery, metersQuery]}>
+            <AddMeter categories={categories} />
+            <MetersList meters={meters_with_date} categoryMapping={categoryMapping} />
             <CategorySummary meters={meters_with_date} categoryMapping={categoryMapping} />
         </ComponentStateHandler>
     );

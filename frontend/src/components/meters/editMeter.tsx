@@ -22,19 +22,21 @@ import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { evaluate } from 'mathjs';
 import { formTexts } from '../generic/formTexts';
-import { metersService } from '../../services/meters';
 import { round2 } from '../../utils/rounding';
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
+import { useUpdateMeter, useDeleteMeter } from '../../hooks/mutations';
 
 interface EditMeterProps {
     meter: ParsedMeter;
     categoryMapping: MeterCategoryMapping;
-    updateFunc: () => void;
 }
 
-export const EditMeter = ({ meter, categoryMapping, updateFunc }: EditMeterProps) => {
+export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
     const { id: itemId, read, date, category } = meter;
     const { isOpen, onOpen, onClose: onCloseInner } = useDisclosure();
+
+    const updateMeterMutation = useUpdateMeter();
+    const deleteMeterMutation = useDeleteMeter();
 
     const {
         register,
@@ -44,22 +46,12 @@ export const EditMeter = ({ meter, categoryMapping, updateFunc }: EditMeterProps
         formState: { errors },
     } = useForm({ mode: 'all' });
 
-    const [loading, setLoading] = useState(false);
     const [errorText, setErrorText] = useState<string | undefined>(undefined);
+    const isPending = updateMeterMutation.isPending || deleteMeterMutation.isPending;
 
     const onClose = () => {
         reset();
-        setLoading(false);
         onCloseInner();
-    };
-
-    const resetCallback = () => {
-        setLoading(false);
-    };
-
-    const successCallback = () => {
-        updateFunc();
-        onClose();
     };
 
     const errorCallback = (e: { response?: { data?: Record<string, string[]> } }) => {
@@ -84,22 +76,37 @@ export const EditMeter = ({ meter, categoryMapping, updateFunc }: EditMeterProps
     };
 
     const updateMeterFunc = (data: FieldValues) => {
-        if (loading) {
+        if (isPending) {
             return;
         }
         setErrorText(undefined);
-        setLoading(true);
         data.read = round2(evaluate(data.read.replaceAll(',', '.')));
-        metersService.updateMeter(itemId, data).then(successCallback).catch(errorCallback).finally(resetCallback);
+        updateMeterMutation.mutate(
+            { id: itemId, data },
+            {
+                onSuccess: () => {
+                    onClose();
+                },
+                onError: (e) => {
+                    errorCallback(e as { response?: { data?: Record<string, string[]> } });
+                },
+            }
+        );
     };
 
     const deleteMeterFunc = () => {
-        if (loading) {
+        if (isPending) {
             return;
         }
         reset();
-        setLoading(true);
-        metersService.deleteMeter(itemId).then(successCallback).catch(errorCallback).finally(resetCallback);
+        deleteMeterMutation.mutate(itemId, {
+            onSuccess: () => {
+                onClose();
+            },
+            onError: (e) => {
+                errorCallback(e as { response?: { data?: Record<string, string[]> } });
+            },
+        });
     };
 
     const open = () => {
@@ -174,7 +181,7 @@ export const EditMeter = ({ meter, categoryMapping, updateFunc }: EditMeterProps
                                     </FormErrorMessage>
                                 </FormControl>
                                 <HStack>
-                                    <Button w="full" colorScheme="teal" isLoading={loading} type="submit">
+                                    <Button w="full" colorScheme="teal" isLoading={isPending} type="submit">
                                         Update
                                     </Button>
                                     <IconButton

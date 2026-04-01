@@ -22,19 +22,21 @@ import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { evaluate } from 'mathjs';
 import { CategoryMapping, ParsedExpense } from '../../types/api';
-import { expensesService } from '../../services/expenses';
 import { formTexts } from '../generic/formTexts';
 import { round2 } from '../../utils/rounding';
+import { useUpdateExpense, useDeleteExpense } from '../../hooks/mutations';
 
 interface EditExpenseProps {
     expense: ParsedExpense;
     categoryMapping: CategoryMapping;
-    updateFunc: () => void;
 }
 
-export const EditExpense = ({ expense, categoryMapping, updateFunc }: EditExpenseProps) => {
+export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
     const { id: itemId, amount, date, comment, category } = expense;
     const { isOpen, onOpen, onClose: onCloseInner } = useDisclosure();
+
+    const updateExpenseMutation = useUpdateExpense();
+    const deleteExpenseMutation = useDeleteExpense();
 
     const {
         register,
@@ -44,23 +46,13 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }: EditExpens
         formState: { errors },
     } = useForm({ mode: 'all' });
 
-    const [loading, setLoading] = useState<boolean>(false);
     const [errorText, setErrorText] = useState<string | undefined>(undefined);
+    const isPending = updateExpenseMutation.isPending || deleteExpenseMutation.isPending;
 
     const onClose = () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (setError as any)(undefined);
-        setLoading(false);
         onCloseInner();
-    };
-
-    const resetCallback = () => {
-        setLoading(false);
-    };
-
-    const successCallback = () => {
-        updateFunc();
-        onClose();
     };
 
     const errorCallback = (e: { response?: { data?: Record<string, string[]> } }) => {
@@ -86,23 +78,38 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }: EditExpens
     };
 
     const updateExpenseFunc = (data: FieldValues) => {
-        if (loading) {
+        if (isPending) {
             return;
         }
         setErrorText(undefined);
-        setLoading(true);
         data.amount = round2(evaluate(data.amount.replaceAll(',', '.')));
-        expensesService.updateExpense(itemId, data).then(successCallback).catch(errorCallback).finally(resetCallback);
+        updateExpenseMutation.mutate(
+            { id: itemId, data },
+            {
+                onSuccess: () => {
+                    onClose();
+                },
+                onError: (e) => {
+                    errorCallback(e as { response?: { data?: Record<string, string[]> } });
+                },
+            }
+        );
     };
 
     const deleteExpenseFunc = () => {
-        if (loading) {
+        if (isPending) {
             return;
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (setError as any)(undefined);
-        setLoading(true);
-        expensesService.deleteExpense(itemId).then(successCallback).catch(errorCallback).finally(resetCallback);
+        deleteExpenseMutation.mutate(itemId, {
+            onSuccess: () => {
+                onClose();
+            },
+            onError: (e) => {
+                errorCallback(e as { response?: { data?: Record<string, string[]> } });
+            },
+        });
     };
 
     const open = () => {
@@ -190,7 +197,7 @@ export const EditExpense = ({ expense, categoryMapping, updateFunc }: EditExpens
                                     </FormErrorMessage>
                                 </FormControl>
                                 <HStack>
-                                    <Button w="full" colorScheme="teal" isLoading={loading} type="submit">
+                                    <Button w="full" colorScheme="teal" isLoading={isPending} type="submit">
                                         Update
                                     </Button>
                                     <IconButton

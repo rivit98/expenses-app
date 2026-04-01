@@ -8,10 +8,9 @@ const badges: string[] = ['yellow', 'red', 'green', 'gray', 'purple', 'blue', 'p
 interface ExpensesListProps {
     expenses: ParsedExpense[];
     categoryMapping: CategoryMapping;
-    updateFunc: () => void;
 }
 
-export const ExpensesList = ({ expenses, categoryMapping, updateFunc }: ExpensesListProps) => {
+export const ExpensesList = ({ expenses, categoryMapping }: ExpensesListProps) => {
     return (
         <TableContainer maxW="xl" w="full" mt={10}>
             <Table size="sm" variant="striped" colorScheme="whiteAlpha">
@@ -53,11 +52,7 @@ export const ExpensesList = ({ expenses, categoryMapping, updateFunc }: Expenses
                                     {comment}
                                 </Td>
                                 <Td px={1}>
-                                    <EditExpense
-                                        expense={expense}
-                                        updateFunc={updateFunc}
-                                        categoryMapping={categoryMapping}
-                                    />
+                                    <EditExpense expense={expense} categoryMapping={categoryMapping} />
                                 </Td>
                             </Tr>
                         );

@@ -1,12 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { Box, Button, Center, FormControl, FormErrorMessage, Heading, Input, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { authService } from '../../services/auth';
 import { formTexts } from '../generic/formTexts';
 import { removeUser, updateUser } from '../../context/userReducer';
 import { LoginData, UserData } from '../../types/api';
+import { useLogin } from '../../hooks/mutations';
 
 const Login = () => {
     const {
@@ -16,35 +15,28 @@ const Login = () => {
         formState: { errors },
     } = useForm<LoginData>({ mode: 'all' });
 
-    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-    const loggedCallback = (user: UserData): void => {
-        dispatch(updateUser(user));
-        navigate('/');
-    };
-
-    const errorCallback = (err: unknown): void => {
-        console.error(err);
-        dispatch(removeUser());
-
-        setError('password', {
-            type: 'manual',
-            message: formTexts.invalidCredentials,
-        });
-    };
+    const loginMutation = useLogin();
 
     const onSubmit = (data: LoginData): void => {
-        if (loading) {
+        if (loginMutation.isPending) {
             return;
         }
-        setLoading(true);
-        authService
-            .login(data)
-            .then(loggedCallback)
-            .catch(errorCallback)
-            .finally(() => setLoading(false));
+        loginMutation.mutate(data, {
+            onSuccess: (user: UserData) => {
+                dispatch(updateUser(user));
+                navigate('/');
+            },
+            onError: (err: unknown) => {
+                console.error(err);
+                dispatch(removeUser());
+                setError('password', {
+                    type: 'manual',
+                    message: formTexts.invalidCredentials,
+                });
+            },
+        });
     };
 
     return (
@@ -77,7 +69,7 @@ const Login = () => {
                     </FormControl>
                 </Stack>
 
-                <Button mt={4} w="full" colorScheme="teal" isLoading={loading} type="submit">
+                <Button mt={4} w="full" colorScheme="teal" isLoading={loginMutation.isPending} type="submit">
                     Submit
                 </Button>
             </form>

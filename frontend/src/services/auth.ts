@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { AxiosAuthRefreshRequestConfig } from 'axios-auth-refresh';
 import { store } from '../context/store';
-import { updateUser } from '../context/userReducer';
+import { removeUser, updateUser } from '../context/userReducer';
+import { queryClient } from '../queryClient';
 import { LoginData, TokenPair, UserData } from '../types/api';
 
 const API_VERSION = 'v1';
@@ -46,6 +47,8 @@ const getNewAccessToken = async (refreshToken: string): Promise<TokenPair> => {
 const refreshUserToken = async (failedRequest: { response: { config: { headers: Record<string, string> } } }) => {
     const refreshToken = getRefreshToken();
     if (refreshToken == null) {
+        store.dispatch(removeUser());
+        queryClient.clear();
         return Promise.reject(new Error('Your session expired, please login again'));
     }
 
@@ -55,6 +58,8 @@ const refreshUserToken = async (failedRequest: { response: { config: { headers: 
         failedRequest.response.config.headers.Authorization = `Bearer ${token.access}`; // eslint-disable-line no-param-reassign
         return Promise.resolve();
     } catch {
+        store.dispatch(removeUser());
+        queryClient.clear();
         return Promise.reject(new Error('Your session expired, please login again'));
     }
 };
