@@ -36,7 +36,7 @@ export const TopNavbar = () => {
                 flex={3}
                 justifyContent="center"
             >
-                <Link as={ReactRouterLink} to="/" style={{ textDecoration: 'none' }}>
+                <Link as={ReactRouterLink} to="/" _hover={{ textDecoration: 'none' }}>
                     Expenses
                 </Link>
             </Text>

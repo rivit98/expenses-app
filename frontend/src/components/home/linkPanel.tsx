@@ -9,7 +9,7 @@ interface SingleLinkProps {
 
 const SingleLink = ({ url, children }: SingleLinkProps) => {
     return (
-        <ChakraLink as={ReactRouterLink} to={url} color="teal.500">
+        <ChakraLink as={ReactRouterLink} to={url} color="teal.500" _hover={{ textDecoration: 'none' }}>
             <Flex
                 h="full"
                 py={3}
@@ -19,6 +19,7 @@ const SingleLink = ({ url, children }: SingleLinkProps) => {
                 rounded="md"
                 alignItems="center"
                 justifyContent="center"
+                _hover={{ background: 'teal.600' }}
             >
                 {children}
             </Flex>

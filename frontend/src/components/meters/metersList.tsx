@@ -1,9 +1,8 @@
 import { Badge, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import formatDate from '../../utils/dateformatter';
+import { getBadgeColor } from '../../utils/badgeColor';
 import { EditMeter } from './editMeter';
-
-const badges: string[] = ['blue', 'yellow', 'red', 'green', 'gray', 'purple'];
 
 interface MetersListProps {
     meters: ParsedMeter[];
@@ -43,7 +42,7 @@ export const MetersList = ({ meters, categoryMapping }: MetersListProps) => {
                                     {formatDate(date).substring(0, 10)}
                                 </Td>
                                 <Td px={2} py={0}>
-                                    <Badge ml={2} colorScheme={badges[category % badges.length]}>
+                                    <Badge ml={2} {...getBadgeColor(categoryMapping[category].name)}>
                                         {categoryMapping[category].name}
                                     </Badge>
                                 </Td>

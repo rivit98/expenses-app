@@ -1,9 +1,8 @@
 import { Badge, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { CategoryMapping, ParsedExpense } from '../../types/api';
 import formatDate from '../../utils/dateformatter';
+import { getBadgeColor } from '../../utils/badgeColor';
 import { EditExpense } from './editExpense';
-
-const badges: string[] = ['yellow', 'red', 'green', 'gray', 'purple', 'blue', 'pink'];
 
 interface ExpensesListProps {
     expenses: ParsedExpense[];
@@ -43,7 +42,7 @@ export const ExpensesList = ({ expenses, categoryMapping }: ExpensesListProps) =
                                 <Td px={1} py={0}>
                                     <Stack justifyContent="center" textAlign="center" spacing={0.5}>
                                         <Text>{amount} zł</Text>
-                                        <Badge ml={2} colorScheme={badges[(category - 1) % badges.length]}>
+                                        <Badge ml={2} {...getBadgeColor(categoryMapping[category])}>
                                             {categoryMapping[category]}
                                         </Badge>
                                     </Stack>
