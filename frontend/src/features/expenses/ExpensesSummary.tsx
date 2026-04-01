@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useExpenseCategories, useExpensesSummary } from '../../hooks/queries';
-import { ComponentStateHandler } from '../generic/componentStateHandler';
-import { Paginate } from '../generic/paginate';
-import { ExpensesSummaryList } from './expensesSummaryList';
+import { ComponentStateHandler } from '../../components/ComponentStateHandler';
+import { Paginate } from '../../components/Paginate';
+import { ExpensesSummaryList } from './ExpensesSummaryList';
 import { CategoryMapping, ParsedExpenseSummary, SummaryGroups } from '../../types/api';
 
 export const ExpensesMonthlySummary = () => {

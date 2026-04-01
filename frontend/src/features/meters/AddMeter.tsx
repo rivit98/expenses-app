@@ -2,7 +2,7 @@ import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useTo
 import { useRef } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
-import { formTexts } from '../generic/formTexts';
+import { formTexts } from '../../constants/formTexts';
 import { round2 } from '../../utils/rounding';
 import { MeterCategory } from '../../types/api';
 import { useAddMeter } from '../../hooks/mutations';

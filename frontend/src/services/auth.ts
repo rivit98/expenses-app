@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { AxiosAuthRefreshRequestConfig } from 'axios-auth-refresh';
-import { store } from '../context/store';
-import { removeUser, updateUser } from '../context/userReducer';
-import { queryClient } from '../queryClient';
+import { store } from '../store/store';
+import { removeUser, updateUser } from '../store/userReducer';
+import { queryClient } from '../app/queryClient';
 import { LoginData, TokenPair, UserData } from '../types/api';
 
 const API_VERSION = 'v1';

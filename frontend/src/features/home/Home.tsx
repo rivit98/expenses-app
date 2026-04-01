@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { useExpenseCategories, useExpensesByDate } from '../../hooks/queries';
-import { ComponentStateHandler } from '../generic/componentStateHandler';
-import { ExpensesList } from '../expensesList/expensesList';
-import { AddExpense } from '../expensesList/addExpense';
-import { CategorySummary } from '../expensesList/categorySummary';
-import { LinkPanel } from './linkPanel';
+import { ComponentStateHandler } from '../../components/ComponentStateHandler';
+import { ExpensesList } from '../expenses/ExpensesList';
+import { AddExpense } from '../expenses/AddExpense';
+import { CategorySummary } from '../expenses/CategorySummary';
+import { LinkPanel } from '../../components/LinkPanel';
 import { CategoryMapping, ParsedExpense } from '../../types/api';
 
 const Home = () => {

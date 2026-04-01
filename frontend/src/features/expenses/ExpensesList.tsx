@@ -2,7 +2,7 @@ import { Badge, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } f
 import { CategoryMapping, ParsedExpense } from '../../types/api';
 import formatDate from '../../utils/dateformatter';
 import { getBadgeColor } from '../../utils/badgeColor';
-import { EditExpense } from './editExpense';
+import { EditExpense } from './EditExpense';
 
 interface ExpensesListProps {
     expenses: ParsedExpense[];

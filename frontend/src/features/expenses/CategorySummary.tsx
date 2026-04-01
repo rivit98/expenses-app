@@ -1,7 +1,7 @@
 import { Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
 import { CategoryMapping, ParsedExpense } from '../../types/api';
 import { round2 } from '../../utils/rounding';
-import { byNumber, reverse } from '../generic/sortUtil';
+import { byNumber, reverse } from '../../utils/sortUtil';
 
 interface CategorySummaryProps {
     expenses: ParsedExpense[];

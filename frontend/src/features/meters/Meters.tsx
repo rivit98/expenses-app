@@ -1,8 +1,8 @@
 import { useMeterCategories, useMeters } from '../../hooks/queries';
-import { ComponentStateHandler } from '../generic/componentStateHandler';
-import { AddMeter } from './addMeter';
-import { MetersList } from './metersList';
-import { CategorySummary } from './categorySummary';
+import { ComponentStateHandler } from '../../components/ComponentStateHandler';
+import { AddMeter } from './AddMeter';
+import { MetersList } from './MetersList';
+import { CategorySummary } from './CategorySummary';
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 
 const Meters = () => {

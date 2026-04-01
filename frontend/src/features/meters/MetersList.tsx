@@ -2,7 +2,7 @@ import { Badge, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@c
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import formatDate from '../../utils/dateformatter';
 import { getBadgeColor } from '../../utils/badgeColor';
-import { EditMeter } from './editMeter';
+import { EditMeter } from './EditMeter';
 
 interface MetersListProps {
     meters: ParsedMeter[];

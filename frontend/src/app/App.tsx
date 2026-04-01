@@ -4,14 +4,14 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './queryClient';
-import { Navigation } from './components/nav/navigation';
-import Home from './components/home/home';
-import { withStore } from './context/store';
-import { ExpensesAll } from './components/expensesAll/expensesAll';
-import { isLoggedIn } from './context/userReducer';
-import Login from './components/auth/login';
-import { ExpensesMonthlySummary } from './components/expensesAll/expensesSummary';
-import Meters from './components/meters/meters';
+import { Navigation } from '../features/nav/Navigation';
+import Home from '../features/home/Home';
+import { withStore } from '../store/store';
+import { ExpensesAll } from '../features/expenses/ExpensesAll';
+import { isLoggedIn } from '../store/userReducer';
+import Login from '../features/auth/Login';
+import { ExpensesMonthlySummary } from '../features/expenses/ExpensesSummary';
+import Meters from '../features/meters/Meters';
 
 type WrapperComponent = React.ComponentType<{ children?: ReactNode }>;
 

@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
 import { Category } from '../../types/api';
-import { formTexts } from '../generic/formTexts';
+import { formTexts } from '../../constants/formTexts';
 import { round2 } from '../../utils/rounding';
 import { useAddExpense } from '../../hooks/mutations';
 

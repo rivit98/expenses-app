@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useExpenseCategories, useAllExpenses } from '../../hooks/queries';
-import { ComponentStateHandler } from '../generic/componentStateHandler';
-import { ExpensesList } from '../expensesList/expensesList';
-import { Paginate } from '../generic/paginate';
+import { ComponentStateHandler } from '../../components/ComponentStateHandler';
+import { ExpensesList } from './ExpensesList';
+import { Paginate } from '../../components/Paginate';
 import { CategoryMapping } from '../../types/api';
 
 export const ExpensesAll = () => {

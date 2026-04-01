@@ -21,7 +21,7 @@ import {
 import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
-import { formTexts } from '../generic/formTexts';
+import { formTexts } from '../../constants/formTexts';
 import { round2 } from '../../utils/rounding';
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import { useUpdateMeter, useDeleteMeter } from '../../hooks/mutations';

@@ -22,7 +22,7 @@ import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
 import { CategoryMapping, ParsedExpense } from '../../types/api';
-import { formTexts } from '../generic/formTexts';
+import { formTexts } from '../../constants/formTexts';
 import { round2 } from '../../utils/rounding';
 import { useUpdateExpense, useDeleteExpense } from '../../hooks/mutations';
 

@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import { Box, Button, Center, FormControl, FormErrorMessage, Heading, Input, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { formTexts } from '../generic/formTexts';
-import { removeUser, updateUser } from '../../context/userReducer';
+import { formTexts } from '../../constants/formTexts';
+import { removeUser, updateUser } from '../../store/userReducer';
 import { LoginData, UserData } from '../../types/api';
 import { useLogin } from '../../hooks/mutations';
 
