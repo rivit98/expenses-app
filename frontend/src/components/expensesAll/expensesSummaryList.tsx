@@ -15,9 +15,8 @@ const calcAvgs = (
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const year = today.getFullYear();
     const today_str = `${month}-${year}`;
-    const categorySums: Record<string, number> = Object.keys(categoryMapping).reduce(
-        (obj: Record<string, number>, item) => ((obj[item] = 0), obj),
-        {}
+    const categorySums: Record<string, number> = Object.fromEntries(
+        Object.keys(categoryMapping).map((item) => [item, 0])
     );
 
     const filtered_categories = Object.keys(summaryGroups)

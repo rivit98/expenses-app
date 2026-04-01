@@ -55,7 +55,8 @@ const refreshUserToken = async (failedRequest: { response: { config: { headers: 
     try {
         const token = await getNewAccessToken(refreshToken);
         store.dispatch(updateUser(token));
-        failedRequest.response.config.headers.Authorization = `Bearer ${token.access}`; // eslint-disable-line no-param-reassign
+        const { headers } = failedRequest.response.config;
+        headers.Authorization = `Bearer ${token.access}`;
         return Promise.resolve();
     } catch {
         store.dispatch(removeUser());

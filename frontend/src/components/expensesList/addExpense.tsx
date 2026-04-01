@@ -13,7 +13,8 @@ interface AddExpenseProps {
 
 export const AddExpense = ({ categories }: AddExpenseProps) => {
     // make Cravings first entry
-    [categories[0], categories[2]] = [categories[2], categories[0]];
+    const sortedCategories = [...categories];
+    [sortedCategories[0], sortedCategories[2]] = [sortedCategories[2], sortedCategories[0]];
 
     const toast = useToast();
     const addExpenseMutation = useAddExpense();
@@ -57,8 +58,8 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
         if (addExpenseMutation.isPending) {
             return;
         }
-        data.amount = round2(Parser.evaluate(data.amount.replaceAll(',', '.')));
-        addExpenseMutation.mutate(data, {
+        const submitData = { ...data, amount: round2(Parser.evaluate(data.amount.replaceAll(',', '.'))) };
+        addExpenseMutation.mutate(submitData, {
             onSuccess: () => {
                 toast({
                     description: 'Expense added',
@@ -125,7 +126,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
                                 maxLength: 128,
                             })}
                         >
-                            {categories.map(({ id, name }) => {
+                            {sortedCategories.map(({ id, name }) => {
                                 return (
                                     <option key={id} value={id} color="#2D3748">
                                         {name}

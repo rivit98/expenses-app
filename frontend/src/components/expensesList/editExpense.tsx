@@ -42,6 +42,7 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
         register,
         handleSubmit,
         setError,
+        clearErrors,
         reset,
         formState: { errors },
     } = useForm({ mode: 'all' });
@@ -50,8 +51,7 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
     const isPending = updateExpenseMutation.isPending || deleteExpenseMutation.isPending;
 
     const onClose = () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (setError as any)(undefined);
+        clearErrors();
         onCloseInner();
     };
 
@@ -82,9 +82,9 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
             return;
         }
         setErrorText(undefined);
-        data.amount = round2(Parser.evaluate(data.amount.replaceAll(',', '.')));
+        const submitData = { ...data, amount: round2(Parser.evaluate(data.amount.replaceAll(',', '.'))) };
         updateExpenseMutation.mutate(
-            { id: itemId, data },
+            { id: itemId, data: submitData },
             {
                 onSuccess: () => {
                     onClose();
@@ -100,8 +100,7 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
         if (isPending) {
             return;
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (setError as any)(undefined);
+        clearErrors();
         deleteExpenseMutation.mutate(itemId, {
             onSuccess: () => {
                 onClose();

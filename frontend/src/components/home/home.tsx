@@ -20,11 +20,7 @@ const Home = () => {
         return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
     });
 
-    // eslint-disable-next-line no-return-assign, no-param-reassign, no-sequences
-    const categoryMapping: CategoryMapping = categories.reduce(
-        (obj: CategoryMapping, item) => ((obj[item.id] = item.name), obj),
-        {}
-    );
+    const categoryMapping: CategoryMapping = Object.fromEntries(categories.map((item) => [item.id, item.name]));
 
     return (
         <ComponentStateHandler queries={[categoriesQuery, expensesQuery]}>

@@ -80,9 +80,9 @@ export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
             return;
         }
         setErrorText(undefined);
-        data.read = round2(Parser.evaluate(data.read.replaceAll(',', '.')));
+        const submitData = { ...data, read: round2(Parser.evaluate(data.read.replaceAll(',', '.'))) };
         updateMeterMutation.mutate(
-            { id: itemId, data },
+            { id: itemId, data: submitData },
             {
                 onSuccess: () => {
                     onClose();

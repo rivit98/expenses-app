@@ -1,3 +1,4 @@
+import { ReactElement, ReactNode } from 'react';
 import { ChakraProvider, Container } from '@chakra-ui/react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -11,7 +12,8 @@ import { isLoggedIn } from './context/userReducer';
 import Login from './components/auth/login';
 import { ExpensesMonthlySummary } from './components/expensesAll/expensesSummary';
 import Meters from './components/meters/meters';
-import { ReactElement, ReactNode } from 'react';
+
+type WrapperComponent = React.ComponentType<{ children?: ReactNode }>;
 
 const guard = (logged: boolean, elem: ReactElement): ReactElement => {
     return logged === true ? elem : <Navigate to="/login" />;
@@ -33,9 +35,8 @@ const App = () => {
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const withComponent = (Wrapper: React.ComponentType<any>, Wrapped: React.ComponentType<any>) => {
-    const Combined = (props: Record<string, never>) => {
+const withComponent = (Wrapper: WrapperComponent, Wrapped: WrapperComponent): WrapperComponent => {
+    const Combined = (props: { children?: ReactNode }) => {
         return (
             <Wrapper>
                 <Wrapped {...props} />
@@ -45,8 +46,7 @@ const withComponent = (Wrapper: React.ComponentType<any>, Wrapped: React.Compone
     return Combined;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const withQueryClient = (Wrapped: React.ComponentType<any>) => {
+const withQueryClient = (Wrapped: WrapperComponent) => {
     const QueryWrapper = (props: { children?: ReactNode }) => {
         return (
             <QueryClientProvider client={queryClient}>
@@ -57,9 +57,8 @@ const withQueryClient = (Wrapped: React.ComponentType<any>) => {
     return QueryWrapper;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const WrappedApp = ([BrowserRouter, ChakraProvider, Navigation] as React.ComponentType<any>[])
+const WrappedApp = ([BrowserRouter, ChakraProvider, Navigation] as WrapperComponent[])
     .reverse()
-    .reduce((acc, cur) => withComponent(cur, acc), App as React.ComponentType<any>);
+    .reduce((acc, cur) => withComponent(cur, acc), App as WrapperComponent);
 
 export default withStore(withQueryClient(WrappedApp));

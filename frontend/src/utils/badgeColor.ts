@@ -6,8 +6,8 @@
 
 const hashString = (str: string): number => {
     let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    for (let i = 0; i < str.length; i += 1) {
+        hash = str.charCodeAt(i) + hash * 31;
     }
     return Math.abs(hash);
 };
@@ -17,9 +17,9 @@ const hslToRgb = (h: number, s: number, l: number): [number, number, number] => 
     const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
     const m = l - c / 2;
 
-    let r = 0,
-        g = 0,
-        b = 0;
+    let r = 0;
+    let g = 0;
+    let b = 0;
     if (h < 60) [r, g, b] = [c, x, 0];
     else if (h < 120) [r, g, b] = [x, c, 0];
     else if (h < 180) [r, g, b] = [0, c, x];
@@ -32,7 +32,7 @@ const hslToRgb = (h: number, s: number, l: number): [number, number, number] => 
 
 const relativeLuminance = (r: number, g: number, b: number): number => {
     const [rs, gs, bs] = [r / 255, g / 255, b / 255].map((c) =>
-        c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+        c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
     );
     return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
 };

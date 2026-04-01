@@ -53,8 +53,8 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
         if (addMeterMutation.isPending) {
             return;
         }
-        data.read = round2(Parser.evaluate(data.read.replaceAll(',', '.')));
-        addMeterMutation.mutate(data, {
+        const submitData = { ...data, read: round2(Parser.evaluate(data.read.replaceAll(',', '.'))) };
+        addMeterMutation.mutate(submitData, {
             onSuccess: () => {
                 toast({
                     description: 'Meter added',

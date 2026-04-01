@@ -82,30 +82,28 @@ export const Paginate = ({ totalPages, currentPage, setCurrentPage }: PaginatePr
         endPages.length > 0 ? endPages[0] - 2 : totalPages - 1
     );
 
+    const startEllipsis = (): (number | string)[] => {
+        if (siblingsStart > boundaryCount + 2) return ['start-ellipsis'];
+        if (boundaryCount + 1 < totalPages - boundaryCount) return [boundaryCount + 1];
+        return [];
+    };
+
+    const endEllipsis = (): (number | string)[] => {
+        if (siblingsEnd < totalPages - boundaryCount - 1) return ['end-ellipsis'];
+        if (totalPages - boundaryCount > boundaryCount) return [totalPages - boundaryCount];
+        return [];
+    };
+
     // Basic list of items to render
     // e.g. itemList = ['first', 1, 'ellipsis', 4, 5, 6, 'ellipsis', 10, 'last']
     const itemList: (number | string)[] = [
         ...startPages,
-
-        // Start ellipsis
-        // eslint-disable-next-line no-nested-ternary
-        ...(siblingsStart > boundaryCount + 2
-            ? ['start-ellipsis']
-            : boundaryCount + 1 < totalPages - boundaryCount
-              ? [boundaryCount + 1]
-              : []),
+        ...startEllipsis(),
 
         // Sibling pages
         ...range(siblingsStart, siblingsEnd),
 
-        // End ellipsis
-        // eslint-disable-next-line no-nested-ternary
-        ...(siblingsEnd < totalPages - boundaryCount - 1
-            ? ['end-ellipsis']
-            : totalPages - boundaryCount > boundaryCount
-              ? [totalPages - boundaryCount]
-              : []),
-
+        ...endEllipsis(),
         ...endPages,
     ];
 

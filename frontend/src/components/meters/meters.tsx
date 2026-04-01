@@ -16,10 +16,8 @@ const Meters = () => {
         return { ...m, date: new Date(m.date), read: parseFloat(m.read) };
     });
 
-    // eslint-disable-next-line no-return-assign, no-param-reassign, no-sequences
-    const categoryMapping: MeterCategoryMapping = categories.reduce(
-        (obj: MeterCategoryMapping, item) => ((obj[item.id] = { name: item.name, unit: item.unit }), obj),
-        {}
+    const categoryMapping: MeterCategoryMapping = Object.fromEntries(
+        categories.map((item) => [item.id, { name: item.name, unit: item.unit }])
     );
 
     return (

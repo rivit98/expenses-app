@@ -20,15 +20,8 @@ export const ExpensesMonthlySummary = () => {
         };
     });
 
-    // eslint-disable-next-line no-return-assign, no-param-reassign, no-sequences
-    const categoryMapping: CategoryMapping = categories.reduce(
-        (obj: CategoryMapping, item) => ((obj[item.id] = item.name), obj),
-        {}
-    );
-    const summaryGroups: SummaryGroups = expenses_summary.reduce(
-        (obj: SummaryGroups, item) => ((obj[item.date] = {}), obj),
-        {}
-    );
+    const categoryMapping: CategoryMapping = Object.fromEntries(categories.map((item) => [item.id, item.name]));
+    const summaryGroups: SummaryGroups = Object.fromEntries(expenses_summary.map((item) => [item.date, {}]));
 
     expenses_summary.forEach((item) => {
         summaryGroups[item.date][item.category] = item.total;

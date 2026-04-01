@@ -1,11 +1,10 @@
+import { ReactNode } from 'react';
 import storage from 'redux-persist/lib/storage';
-import { combineReducers, Middleware } from 'redux';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './userReducer';
+import { combineReducers, configureStore, Middleware } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import { ReactNode } from 'react';
+import userReducer from './userReducer';
 
 const persistConfig = {
     key: 'root',
