@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { Heading } from '@chakra-ui/react';
 import { useExpenseCategories, useAllExpenses } from '../../hooks/queries';
 import { ComponentStateHandler } from '../generic/componentStateHandler';
 import { ExpensesList } from '../expensesList/expensesList';
-import { round2 } from '../../utils/rounding';
 import { Paginate } from '../generic/paginate';
 import { CategoryMapping } from '../../types/api';
 
@@ -26,14 +24,12 @@ export const ExpensesAll = () => {
     );
 
     const ITEMS_PER_PAGE = 40;
-    const totalSum = expenses_with_date.reduce((acc, curr) => acc + curr.amount, 0);
     const totalPages = Math.ceil(expenses_with_date.length / ITEMS_PER_PAGE);
     const indexOfLastItem = page * ITEMS_PER_PAGE;
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
 
     return (
         <ComponentStateHandler queries={[categoriesQuery, expensesQuery]}>
-            <Heading size="lg"> You spent {round2(totalSum)} zł in total</Heading>
             <Paginate totalPages={totalPages} currentPage={page} setCurrentPage={setPage} />
             <ExpensesList
                 expenses={expenses_with_date.slice(indexOfFirstItem, indexOfLastItem)}
