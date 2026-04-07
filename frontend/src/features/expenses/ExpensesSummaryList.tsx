@@ -1,5 +1,6 @@
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
-import { round2 } from '../../utils/rounding';
+import { formatCurrency } from '../../utils/rounding';
+import { texts } from '../../constants/texts';
 import { CategoryMapping, SummaryGroup, SummaryGroups } from '../../types/api';
 
 interface ExpensesSummaryListProps {
@@ -43,7 +44,7 @@ const calcAvgs = (
 export const ExpensesSummaryList = ({ summaryGroups, categoryMapping }: ExpensesSummaryListProps) => {
     const summaryGroupsObj: SummaryGroups = Object.fromEntries(summaryGroups);
     const categoryIDs = Object.keys(categoryMapping);
-    const tableHeaders = ['Month'].concat(Object.values(categoryMapping)).concat('Total');
+    const tableHeaders = [texts.expenses.month].concat(Object.values(categoryMapping)).concat(texts.common.total);
     const { categoryAvgs, totalAvg } = calcAvgs(summaryGroupsObj, categoryMapping);
 
     return (
@@ -68,20 +69,22 @@ export const ExpensesSummaryList = ({ summaryGroups, categoryMapping }: Expenses
                             >
                                 <Td>{k}</Td>
                                 {categoryIDs.map((catID) => {
-                                    return <Td key={catID}>{round2(group[catID as unknown as number] || 0)} zł</Td>;
+                                    return (
+                                        <Td key={catID}>{formatCurrency(group[catID as unknown as number] || 0)}</Td>
+                                    );
                                 })}
-                                <Td>{round2(Object.values(group).reduce((acc, x) => acc + x, 0))} zł</Td>
+                                <Td>{formatCurrency(Object.values(group).reduce((acc, x) => acc + x, 0))}</Td>
                             </Tr>
                         );
                     })}
                 </Tbody>
                 <Tfoot>
                     <Tr>
-                        <Th>Avg</Th>
+                        <Th>{texts.common.avg}</Th>
                         {categoryIDs.map((catID) => {
-                            return <Th key={catID}>{round2(categoryAvgs[catID])} zł</Th>;
+                            return <Th key={catID}>{formatCurrency(categoryAvgs[catID])}</Th>;
                         })}
-                        <Th>{round2(totalAvg)} zł</Th>
+                        <Th>{formatCurrency(totalAvg)}</Th>
                     </Tr>
                 </Tfoot>
             </Table>

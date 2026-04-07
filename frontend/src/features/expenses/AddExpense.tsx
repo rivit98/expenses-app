@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
 import { Category } from '../../types/api';
-import { formTexts } from '../../constants/formTexts';
+import { texts } from '../../constants/texts';
 import { round2 } from '../../utils/rounding';
 import { useAddExpense } from '../../hooks/mutations';
 
@@ -42,7 +42,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
                 });
         } catch {
             toast({
-                description: formTexts.genericError,
+                description: texts.common.genericError,
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
@@ -58,7 +58,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
         addExpenseMutation.mutate(submitData, {
             onSuccess: () => {
                 toast({
-                    description: 'Expense added',
+                    description: texts.expenses.expenseAdded,
                     status: 'success',
                     duration: 3000,
                     isClosable: true,
@@ -99,7 +99,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
                     <FormControl isInvalid={!!errors.amount}>
                         <Input
                             type="text"
-                            placeholder="Amount"
+                            placeholder={texts.common.amount}
                             _placeholder={{ color: 'whiteAlpha.500' }}
                             {...register('amount', {
                                 validate: {
@@ -108,7 +108,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
                                             Parser.evaluate(value.replaceAll(',', '.'));
                                             return true;
                                         } catch {
-                                            return 'Invalid expression';
+                                            return texts.common.invalidExpression;
                                         }
                                     },
                                 },
@@ -135,7 +135,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
                     <FormControl isInvalid={!!errors.comment}>
                         <Input
                             type="text"
-                            placeholder="Comment"
+                            placeholder={texts.common.comment}
                             _placeholder={{ color: 'whiteAlpha.500' }}
                             {...register('comment', {
                                 maxLength: 128,
@@ -144,7 +144,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
                         <FormErrorMessage>{errors.comment && (errors.comment.message as string)}</FormErrorMessage>
                     </FormControl>
                     <Button w="full" colorScheme="teal" isLoading={addExpenseMutation.isPending} type="submit">
-                        Add expense
+                        {texts.expenses.addExpense}
                     </Button>
                 </Stack>
             </form>

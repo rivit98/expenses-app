@@ -1,6 +1,7 @@
 import { Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
 import { CategoryMapping, ParsedExpense } from '../../types/api';
-import { round2 } from '../../utils/rounding';
+import { formatCurrency } from '../../utils/rounding';
+import { texts } from '../../constants/texts';
 import { byNumber, reverse } from '../../utils/sortUtil';
 
 interface CategorySummaryProps {
@@ -25,8 +26,8 @@ export const CategorySummary = ({ expenses, categoryMapping }: CategorySummaryPr
             <Table size="md" variant="striped" colorScheme="whiteAlpha">
                 <Thead>
                     <Tr>
-                        <Th>Category</Th>
-                        <Th>Amount</Th>
+                        <Th>{texts.common.category}</Th>
+                        <Th>{texts.common.amount}</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -42,7 +43,7 @@ export const CategorySummary = ({ expenses, categoryMapping }: CategorySummaryPr
                                     }}
                                 >
                                     <Td>{categoryMapping[k as unknown as number]}</Td>
-                                    <Td>{round2(amount)} zł</Td>
+                                    <Td>{formatCurrency(amount)}</Td>
                                 </Tr>
                             );
                         })}
@@ -50,10 +51,10 @@ export const CategorySummary = ({ expenses, categoryMapping }: CategorySummaryPr
                 <Tfoot>
                     <Tr>
                         <Th>
-                            <Text fontSize="md">Total</Text>
+                            <Text fontSize="md">{texts.common.total}</Text>
                         </Th>
                         <Th>
-                            <Text fontSize="md">{round2(totalSum)} zł</Text>
+                            <Text fontSize="md">{formatCurrency(totalSum)}</Text>
                         </Th>
                     </Tr>
                 </Tfoot>

@@ -4,6 +4,7 @@ import { store } from '../store/store';
 import { removeUser, updateUser } from '../store/userReducer';
 import { queryClient } from '../app/queryClient';
 import { LoginData, TokenPair, UserData } from '../types/api';
+import { texts } from '../constants/texts';
 
 const API_VERSION = 'v1';
 
@@ -49,7 +50,7 @@ const refreshUserToken = async (failedRequest: { response: { config: { headers: 
     if (refreshToken == null) {
         store.dispatch(removeUser());
         queryClient.clear();
-        return Promise.reject(new Error('Your session expired, please login again'));
+        return Promise.reject(new Error(texts.auth.sessionExpired));
     }
 
     try {
@@ -61,7 +62,7 @@ const refreshUserToken = async (failedRequest: { response: { config: { headers: 
     } catch {
         store.dispatch(removeUser());
         queryClient.clear();
-        return Promise.reject(new Error('Your session expired, please login again'));
+        return Promise.reject(new Error(texts.auth.sessionExpired));
     }
 };
 

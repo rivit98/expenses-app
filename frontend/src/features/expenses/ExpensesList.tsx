@@ -2,6 +2,8 @@ import { Badge, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } f
 import { CategoryMapping, ParsedExpense } from '../../types/api';
 import formatDate from '../../utils/dateFormatter';
 import { getBadgeColor } from '../../utils/badgeColor';
+import { formatCurrency } from '../../utils/rounding';
+import { texts } from '../../constants/texts';
 import { EditExpense } from './EditExpense';
 
 interface ExpensesListProps {
@@ -20,12 +22,12 @@ export const ExpensesList = ({ expenses, categoryMapping }: ExpensesListProps) =
                 <Thead>
                     <Tr>
                         <Th pr={1} pl={0} w="1">
-                            Date
+                            {texts.common.date}
                         </Th>
                         <Th pr={1} w="1">
-                            Amount
+                            {texts.common.amount}
                         </Th>
-                        <Th>Comment</Th>
+                        <Th>{texts.common.comment}</Th>
                         <Th w="1" />
                     </Tr>
                 </Thead>
@@ -45,7 +47,7 @@ export const ExpensesList = ({ expenses, categoryMapping }: ExpensesListProps) =
                                 </Td>
                                 <Td px={1} py={0}>
                                     <Stack justifyContent="center" textAlign="center" spacing={0.5}>
-                                        <Text>{amount} zł</Text>
+                                        <Text>{formatCurrency(amount)}</Text>
                                         <Badge ml={2} {...getBadgeColor(categoryMapping[category])}>
                                             {categoryMapping[category]}
                                         </Badge>

@@ -2,7 +2,7 @@ import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useTo
 import { useRef } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
-import { formTexts } from '../../constants/formTexts';
+import { texts } from '../../constants/texts';
 import { round2 } from '../../utils/rounding';
 import { MeterCategory } from '../../types/api';
 import { useAddMeter } from '../../hooks/mutations';
@@ -41,7 +41,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
                 });
         } catch {
             toast({
-                description: formTexts.genericError,
+                description: texts.common.genericError,
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
@@ -57,7 +57,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
         addMeterMutation.mutate(submitData, {
             onSuccess: () => {
                 toast({
-                    description: 'Meter added',
+                    description: texts.meters.meterAdded,
                     status: 'success',
                     duration: 3000,
                     isClosable: true,
@@ -98,7 +98,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
                     <FormControl isInvalid={!!errors.read}>
                         <Input
                             type="text"
-                            placeholder="Read"
+                            placeholder={texts.meters.read}
                             _placeholder={{ color: 'whiteAlpha.500' }}
                             {...register('read', {
                                 validate: {
@@ -107,7 +107,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
                                             Parser.evaluate(value.replaceAll(',', '.'));
                                             return true;
                                         } catch {
-                                            return 'Invalid expression';
+                                            return texts.common.invalidExpression;
                                         }
                                     },
                                 },
@@ -132,7 +132,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
                         <FormErrorMessage>{errors.category && (errors.category.message as string)}</FormErrorMessage>
                     </FormControl>
                     <Button w="full" colorScheme="teal" isLoading={addMeterMutation.isPending} type="submit">
-                        Add meter
+                        {texts.meters.addMeter}
                     </Button>
                 </Stack>
             </form>

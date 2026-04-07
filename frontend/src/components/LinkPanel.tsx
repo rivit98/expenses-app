@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Flex, Link as ChakraLink, SimpleGrid } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
+import { texts } from '../constants/texts';
 
 interface SingleLinkProps {
     url: string;
@@ -30,9 +31,9 @@ const SingleLink = ({ url, children }: SingleLinkProps) => {
 export const LinkPanel = () => {
     return (
         <SimpleGrid columns={{ base: 1, sm: 3 }} spacing={2} mt={8} maxW="xl" w="full">
-            <SingleLink url="all">All expenses</SingleLink>
-            <SingleLink url="summary">Monthly summary</SingleLink>
-            <SingleLink url="meters">Meters</SingleLink>
+            <SingleLink url="all">{texts.nav.allExpenses}</SingleLink>
+            <SingleLink url="summary">{texts.nav.monthlySummary}</SingleLink>
+            <SingleLink url="meters">{texts.nav.meters}</SingleLink>
         </SimpleGrid>
     );
 };

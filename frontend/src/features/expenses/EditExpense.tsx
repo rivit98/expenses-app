@@ -22,7 +22,7 @@ import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
 import { CategoryMapping, ParsedExpense } from '../../types/api';
-import { formTexts } from '../../constants/formTexts';
+import { texts } from '../../constants/texts';
 import { round2 } from '../../utils/rounding';
 import { useUpdateExpense, useDeleteExpense } from '../../hooks/mutations';
 
@@ -73,7 +73,7 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
                     });
                 });
         } catch {
-            setErrorText(formTexts.genericError);
+            setErrorText(texts.common.genericError);
         }
     };
 
@@ -119,12 +119,18 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
 
     return (
         <>
-            <IconButton colorScheme="teal" size="sm" onClick={open} icon={<EditIcon />} aria-label="Edit expense" />
+            <IconButton
+                colorScheme="teal"
+                size="sm"
+                onClick={open}
+                icon={<EditIcon />}
+                aria-label={texts.expenses.editExpense}
+            />
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Update expense</ModalHeader>
+                    <ModalHeader>{texts.expenses.updateExpense}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <form onSubmit={handleSubmit(updateExpenseFunc)} method="POST">
@@ -142,7 +148,7 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
                                 <FormControl isInvalid={!!errors.amount}>
                                     <Input
                                         type="text"
-                                        placeholder="Amount"
+                                        placeholder={texts.common.amount}
                                         _placeholder={{ color: 'whiteAlpha.500' }}
                                         defaultValue={amount}
                                         {...register('amount', {
@@ -152,7 +158,7 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
                                                         Parser.evaluate(value.replaceAll(',', '.'));
                                                         return true;
                                                     } catch {
-                                                        return 'Invalid expression';
+                                                        return texts.common.invalidExpression;
                                                     }
                                                 },
                                             },
@@ -185,7 +191,7 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
                                     <Input
                                         type="text"
                                         defaultValue={comment}
-                                        placeholder="Comment"
+                                        placeholder={texts.common.comment}
                                         _placeholder={{ color: 'whiteAlpha.500' }}
                                         {...register('comment', {
                                             maxLength: 128,
@@ -197,13 +203,13 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
                                 </FormControl>
                                 <HStack>
                                     <Button w="full" colorScheme="teal" isLoading={isPending} type="submit">
-                                        Update
+                                        {texts.common.update}
                                     </Button>
                                     <IconButton
                                         colorScheme="red"
                                         onClick={deleteExpenseFunc}
                                         icon={<DeleteIcon />}
-                                        aria-label="Delete expense"
+                                        aria-label={texts.expenses.deleteExpense}
                                     />
                                 </HStack>
 

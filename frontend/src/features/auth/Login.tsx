@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { Box, Button, Center, FormControl, FormErrorMessage, Heading, Input, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { formTexts } from '../../constants/formTexts';
+import { texts } from '../../constants/texts';
 import { removeUser, updateUser } from '../../store/userReducer';
 import { LoginData, UserData } from '../../types/api';
 import { useLogin } from '../../hooks/mutations';
@@ -33,7 +33,7 @@ const Login = () => {
                 dispatch(removeUser());
                 setError('password', {
                     type: 'manual',
-                    message: formTexts.invalidCredentials,
+                    message: texts.auth.invalidCredentials,
                 });
             },
         });
@@ -43,15 +43,15 @@ const Login = () => {
         <Box maxW="md" w="full" justifyContent="center">
             <form onSubmit={handleSubmit(onSubmit)} method="POST">
                 <Center mb={4}>
-                    <Heading>Login</Heading>
+                    <Heading>{texts.auth.loginHeading}</Heading>
                 </Center>
                 <Stack spacing={2} color="black">
                     <FormControl isInvalid={!!errors.username}>
                         <Input
                             bg="white"
-                            placeholder="Nick"
+                            placeholder={texts.auth.usernamePlaceholder}
                             {...register('username', {
-                                required: formTexts.requiredField,
+                                required: texts.auth.requiredField,
                             })}
                         />
                         <FormErrorMessage>{errors.username && errors.username.message}</FormErrorMessage>
@@ -60,9 +60,9 @@ const Login = () => {
                         <Input
                             bg="white"
                             type="password"
-                            placeholder="Password"
+                            placeholder={texts.auth.passwordPlaceholder}
                             {...register('password', {
-                                required: formTexts.requiredField,
+                                required: texts.auth.requiredField,
                             })}
                         />
                         <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
@@ -70,7 +70,7 @@ const Login = () => {
                 </Stack>
 
                 <Button mt={4} w="full" colorScheme="teal" isLoading={loginMutation.isPending} type="submit">
-                    Submit
+                    {texts.common.submit}
                 </Button>
             </form>
         </Box>

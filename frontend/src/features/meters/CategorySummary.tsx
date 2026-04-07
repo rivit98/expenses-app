@@ -1,6 +1,7 @@
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import { round2 } from '../../utils/rounding';
+import { texts } from '../../constants/texts';
 
 const MS_IN_DAY = 1000 * 60 * 60 * 24;
 const calcPerDay = (base: { date: Date; read: number }, end: { date: Date; read: number }): number => {
@@ -47,9 +48,9 @@ export const CategorySummary = ({ meters, categoryMapping }: CategorySummaryProp
             <Table size="md" variant="striped" colorScheme="whiteAlpha">
                 <Thead>
                     <Tr>
-                        <Th>Category</Th>
-                        <Th>Avg per day</Th>
-                        <Th>Avg per month</Th>
+                        <Th>{texts.common.category}</Th>
+                        <Th>{texts.meters.avgPerDay}</Th>
+                        <Th>{texts.meters.avgPerMonth}</Th>
                     </Tr>
                 </Thead>
                 <Tbody>

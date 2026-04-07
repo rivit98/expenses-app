@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { removeUser, currentUserData, isLoggedIn } from '../../store/userReducer';
+import { texts } from '../../constants/texts';
 
 export const TopNavbar = () => {
     const dispatch = useDispatch();
@@ -14,7 +15,7 @@ export const TopNavbar = () => {
     const logOut = (): void => {
         toast({
             title: '',
-            description: 'Signed out',
+            description: texts.auth.signedOut,
             status: 'success',
             duration: 3000,
             isClosable: true,
@@ -37,14 +38,14 @@ export const TopNavbar = () => {
                 justifyContent="center"
             >
                 <Link as={ReactRouterLink} to="/" _hover={{ textDecoration: 'none' }}>
-                    Expenses
+                    {texts.nav.appTitle}
                 </Link>
             </Text>
             <Box display="flex" flex={1} justifyContent="flex-end">
                 {logged && (
-                    <Tooltip label={`Logged as: ${username}`}>
+                    <Tooltip label={texts.auth.loggedAs(username ?? '')}>
                         <Button onClick={logOut} colorScheme="teal" size="sm" mx={2}>
-                            Log out
+                            {texts.auth.logOut}
                         </Button>
                     </Tooltip>
                 )}

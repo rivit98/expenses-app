@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Alert, AlertIcon, Spinner } from '@chakra-ui/react';
 import { UseQueryResult } from '@tanstack/react-query';
+import { texts } from '../constants/texts';
 
 interface ComponentStateHandlerProps {
     children: ReactNode;
@@ -20,7 +21,7 @@ export const ComponentStateHandler = ({ children, queries }: ComponentStateHandl
         return (
             <Alert status="error" color="gray.700">
                 <AlertIcon />
-                {error instanceof Error ? error.message : 'An error occurred'}
+                {error instanceof Error ? error.message : texts.common.unknownError}
             </Alert>
         );
     }

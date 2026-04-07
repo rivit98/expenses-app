@@ -2,6 +2,7 @@ import { Badge, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@c
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import formatDate from '../../utils/dateFormatter';
 import { getBadgeColor } from '../../utils/badgeColor';
+import { texts } from '../../constants/texts';
 import { EditMeter } from './EditMeter';
 
 interface MetersListProps {
@@ -20,13 +21,13 @@ export const MetersList = ({ meters, categoryMapping }: MetersListProps) => {
                 <Thead>
                     <Tr>
                         <Th pr={1} pl={0} w="1">
-                            Date
+                            {texts.common.date}
                         </Th>
                         <Th pr={1} w="1">
-                            Category
+                            {texts.common.category}
                         </Th>
                         <Th w="1" textAlign="center">
-                            Read
+                            {texts.meters.read}
                         </Th>
                         <Th w="1" />
                     </Tr>

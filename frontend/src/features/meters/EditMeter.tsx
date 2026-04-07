@@ -21,7 +21,7 @@ import {
 import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
-import { formTexts } from '../../constants/formTexts';
+import { texts } from '../../constants/texts';
 import { round2 } from '../../utils/rounding';
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import { useUpdateMeter, useDeleteMeter } from '../../hooks/mutations';
@@ -71,7 +71,7 @@ export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
                     });
                 });
         } catch {
-            setErrorText(formTexts.genericError);
+            setErrorText(texts.common.genericError);
         }
     };
 
@@ -117,12 +117,18 @@ export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
 
     return (
         <>
-            <IconButton colorScheme="teal" size="sm" onClick={open} icon={<EditIcon />} aria-label="Edit meter" />
+            <IconButton
+                colorScheme="teal"
+                size="sm"
+                onClick={open}
+                icon={<EditIcon />}
+                aria-label={texts.meters.editMeter}
+            />
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Update meter</ModalHeader>
+                    <ModalHeader>{texts.meters.updateMeter}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <form onSubmit={handleSubmit(updateMeterFunc)} method="POST">
@@ -142,7 +148,7 @@ export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
                                         type="text"
                                         step={0.01}
                                         defaultValue={read}
-                                        placeholder="Read"
+                                        placeholder={texts.meters.read}
                                         _placeholder={{ color: 'whiteAlpha.500' }}
                                         {...register('read', {
                                             validate: {
@@ -151,7 +157,7 @@ export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
                                                         Parser.evaluate(value.replaceAll(',', '.'));
                                                         return true;
                                                     } catch {
-                                                        return 'Invalid expression';
+                                                        return texts.common.invalidExpression;
                                                     }
                                                 },
                                             },
@@ -182,13 +188,13 @@ export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
                                 </FormControl>
                                 <HStack>
                                     <Button w="full" colorScheme="teal" isLoading={isPending} type="submit">
-                                        Update
+                                        {texts.common.update}
                                     </Button>
                                     <IconButton
                                         colorScheme="red"
                                         onClick={deleteMeterFunc}
                                         icon={<DeleteIcon />}
-                                        aria-label="Delete meter"
+                                        aria-label={texts.meters.deleteMeter}
                                     />
                                 </HStack>
 
