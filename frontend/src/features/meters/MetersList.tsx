@@ -1,6 +1,6 @@
 import { Badge, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
-import formatDate from '../../utils/dateformatter';
+import formatDate from '../../utils/dateFormatter';
 import { getBadgeColor } from '../../utils/badgeColor';
 import { EditMeter } from './EditMeter';
 
@@ -10,6 +10,10 @@ interface MetersListProps {
 }
 
 export const MetersList = ({ meters, categoryMapping }: MetersListProps) => {
+    if (meters.length === 0) {
+        return null;
+    }
+
     return (
         <TableContainer maxW="xl" w="full" mt={10}>
             <Table size="sm" variant="striped" colorScheme="whiteAlpha">

@@ -16,10 +16,6 @@ const addMeter = async (data: Partial<Meter>, options?: AxiosRequestConfig): Pro
     return axios.post(`/${API_PREFIX}/${API_VERSION}/meters/`, data, options);
 };
 
-const getMeter = async (id: number, options?: AxiosRequestConfig): Promise<Meter> => {
-    return axios.get(`/${API_PREFIX}/${API_VERSION}/meters/${id}/`, options);
-};
-
 const updateMeter = async (id: number, data: Partial<Meter>, options?: AxiosRequestConfig): Promise<Meter> => {
     return axios.put(`/${API_PREFIX}/${API_VERSION}/meters/${id}/`, data, options);
 };
@@ -32,7 +28,6 @@ export const metersService = {
     getCategories,
     getMeters,
     addMeter,
-    getMeter,
     updateMeter,
     deleteMeter,
 };

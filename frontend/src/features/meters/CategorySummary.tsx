@@ -4,15 +4,15 @@ import { round2 } from '../../utils/rounding';
 
 const MS_IN_DAY = 1000 * 60 * 60 * 24;
 const calcPerDay = (base: { date: Date; read: number }, end: { date: Date; read: number }): number => {
-    const { date: base_date, read: base_read } = base;
-    const { date: end_date, read: end_read } = end;
+    const { date: baseDate, read: baseRead } = base;
+    const { date: endDate, read: endRead } = end;
 
-    const dayDiff = (end_date.getTime() - base_date.getTime()) / MS_IN_DAY;
+    const dayDiff = (endDate.getTime() - baseDate.getTime()) / MS_IN_DAY;
     if (dayDiff === 0) {
         return 0;
     }
 
-    return (end_read - base_read) / dayDiff;
+    return (endRead - baseRead) / dayDiff;
 };
 
 interface CategorySummaryProps {
@@ -42,8 +42,6 @@ export const CategorySummary = ({ meters, categoryMapping }: CategorySummaryProp
         };
     });
 
-    console.log(summary);
-
     return (
         <TableContainer maxW="xl" w="full" mt={10}>
             <Table size="md" variant="striped" colorScheme="whiteAlpha">
@@ -56,7 +54,10 @@ export const CategorySummary = ({ meters, categoryMapping }: CategorySummaryProp
                 </Thead>
                 <Tbody>
                     {Object.entries(summary)
-                        .filter(([, { base, end }]) => base && end)
+                        .filter(
+                            (entry): entry is [string, { base: ParsedMeter; end: ParsedMeter }] =>
+                                entry[1].base !== undefined && entry[1].end !== undefined
+                        )
                         .map(([k, { base, end }]) => {
                             return (
                                 <Tr
@@ -68,10 +69,10 @@ export const CategorySummary = ({ meters, categoryMapping }: CategorySummaryProp
                                 >
                                     <Td>{categoryMapping[Number(k)].name}</Td>
                                     <Td>
-                                        {round2(calcPerDay(base!, end!))} {categoryMapping[Number(k)].unit}
+                                        {round2(calcPerDay(base, end))} {categoryMapping[Number(k)].unit}
                                     </Td>
                                     <Td>
-                                        {round2(calcPerDay(base!, end!) * 30)} {categoryMapping[Number(k)].unit}
+                                        {round2(calcPerDay(base, end) * 30)} {categoryMapping[Number(k)].unit}
                                     </Td>
                                 </Tr>
                             );

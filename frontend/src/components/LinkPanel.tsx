@@ -29,7 +29,7 @@ const SingleLink = ({ url, children }: SingleLinkProps) => {
 
 export const LinkPanel = () => {
     return (
-        <SimpleGrid columns={3} spacing={2} mt={8} maxW="xl" w="full">
+        <SimpleGrid columns={{ base: 1, sm: 3 }} spacing={2} mt={8} maxW="xl" w="full">
             <SingleLink url="all">All expenses</SingleLink>
             <SingleLink url="summary">Monthly summary</SingleLink>
             <SingleLink url="meters">Meters</SingleLink>

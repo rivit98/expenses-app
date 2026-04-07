@@ -14,26 +14,27 @@ const calcAvgs = (
     const today = new Date();
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const year = today.getFullYear();
-    const today_str = `${month}-${year}`;
+    const todayStr = `${month}-${year}`;
     const categorySums: Record<string, number> = Object.fromEntries(
         Object.keys(categoryMapping).map((item) => [item, 0])
     );
 
-    const filtered_categories = Object.keys(summaryGroups)
-        .filter((date) => date !== today_str)
+    const filteredGroups = Object.keys(summaryGroups)
+        .filter((date) => date !== todayStr)
         .map((date) => summaryGroups[date]);
 
-    filtered_categories.forEach((g) =>
+    filteredGroups.forEach((g) =>
         Object.entries(g).forEach(([k, v]) => {
             categorySums[k] += v;
         })
     );
     const total = Object.values(categorySums).reduce((acc, x) => acc + x, 0);
-    const totalAvg = total / filtered_categories.length;
+    const count = filteredGroups.length;
+    const totalAvg = count > 0 ? total / count : 0;
 
     const categoryAvgs: Record<string, number> = {};
     Object.entries(categorySums).forEach(([k, v]) => {
-        categoryAvgs[k] = v / filtered_categories.length;
+        categoryAvgs[k] = count > 0 ? v / count : 0;
     });
 
     return { categoryAvgs, totalAvg };

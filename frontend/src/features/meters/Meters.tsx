@@ -12,7 +12,7 @@ const Meters = () => {
     const categories = categoriesQuery.data ?? [];
     const meters = metersQuery.data ?? [];
 
-    const meters_with_date: ParsedMeter[] = meters.map((m) => {
+    const parsedMeters: ParsedMeter[] = meters.map((m) => {
         return { ...m, date: new Date(m.date), read: parseFloat(m.read) };
     });
 
@@ -23,8 +23,8 @@ const Meters = () => {
     return (
         <ComponentStateHandler queries={[categoriesQuery, metersQuery]}>
             <AddMeter categories={categories} />
-            <MetersList meters={meters_with_date} categoryMapping={categoryMapping} />
-            <CategorySummary meters={meters_with_date} categoryMapping={categoryMapping} />
+            <MetersList meters={parsedMeters} categoryMapping={categoryMapping} />
+            <CategorySummary meters={parsedMeters} categoryMapping={categoryMapping} />
         </ComponentStateHandler>
     );
 };

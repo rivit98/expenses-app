@@ -24,10 +24,6 @@ const addExpense = async (data: Partial<Expense>, options?: AxiosRequestConfig):
     return axios.post(`/${API_PREFIX}/${API_VERSION}/expenses/`, data, options);
 };
 
-const getExpense = async (id: number, options?: AxiosRequestConfig): Promise<Expense> => {
-    return axios.get(`/${API_PREFIX}/${API_VERSION}/expenses/${id}/`, options);
-};
-
 const updateExpense = async (id: number, data: Partial<Expense>, options?: AxiosRequestConfig): Promise<Expense> => {
     return axios.put(`/${API_PREFIX}/${API_VERSION}/expenses/${id}/`, data, options);
 };
@@ -40,7 +36,6 @@ export const expensesService = {
     getCategories,
     getExpenses,
     addExpense,
-    getExpense,
     getExpensesByDate,
     getExpensesSummary,
     updateExpense,

@@ -71,7 +71,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
     };
 
     const dateFieldRef = useRef<HTMLInputElement>(null);
-    const handledateFieldClick = () => {
+    const handleDateFieldClick = () => {
         if (dateFieldRef && dateFieldRef.current) {
             dateFieldRef.current.showPicker();
         }
@@ -86,7 +86,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
                         <Input
                             type="date"
                             defaultValue={new Date().toISOString().split('T')[0]}
-                            onClick={handledateFieldClick}
+                            onClick={handleDateFieldClick}
                             {...rest}
                             ref={(e: HTMLInputElement | null) => {
                                 ref(e);

@@ -13,14 +13,14 @@ export const ExpensesAll = () => {
     const categories = categoriesQuery.data ?? [];
     const expenses = expensesQuery.data ?? [];
 
-    const expenses_with_date = expenses.map((exp) => {
+    const parsedExpenses = expenses.map((exp) => {
         return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
     });
 
     const categoryMapping: CategoryMapping = Object.fromEntries(categories.map((item) => [item.id, item.name]));
 
     const ITEMS_PER_PAGE = 40;
-    const totalPages = Math.ceil(expenses_with_date.length / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(parsedExpenses.length / ITEMS_PER_PAGE);
     const indexOfLastItem = page * ITEMS_PER_PAGE;
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
 
@@ -28,7 +28,7 @@ export const ExpensesAll = () => {
         <ComponentStateHandler queries={[categoriesQuery, expensesQuery]}>
             <Paginate totalPages={totalPages} currentPage={page} setCurrentPage={setPage} />
             <ExpensesList
-                expenses={expenses_with_date.slice(indexOfFirstItem, indexOfLastItem)}
+                expenses={parsedExpenses.slice(indexOfFirstItem, indexOfLastItem)}
                 categoryMapping={categoryMapping}
             />
         </ComponentStateHandler>

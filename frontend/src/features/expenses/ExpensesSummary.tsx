@@ -12,7 +12,7 @@ export const ExpensesMonthlySummary = () => {
     const categories = categoriesQuery.data ?? [];
     const expenses = summaryQuery.data ?? [];
 
-    const expenses_summary: ParsedExpenseSummary[] = expenses.map((exp) => {
+    const parsedSummary: ParsedExpenseSummary[] = expenses.map((exp) => {
         return {
             ...exp,
             category: exp.category,
@@ -21,9 +21,9 @@ export const ExpensesMonthlySummary = () => {
     });
 
     const categoryMapping: CategoryMapping = Object.fromEntries(categories.map((item) => [item.id, item.name]));
-    const summaryGroups: SummaryGroups = Object.fromEntries(expenses_summary.map((item) => [item.date, {}]));
+    const summaryGroups: SummaryGroups = Object.fromEntries(parsedSummary.map((item) => [item.date, {}]));
 
-    expenses_summary.forEach((item) => {
+    parsedSummary.forEach((item) => {
         summaryGroups[item.date][item.category] = item.total;
     });
 

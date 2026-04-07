@@ -16,7 +16,7 @@ const Home = () => {
     const categories = categoriesQuery.data ?? [];
     const expenses = expensesQuery.data ?? [];
 
-    const expenses_with_date: ParsedExpense[] = expenses.map((exp) => {
+    const parsedExpenses: ParsedExpense[] = expenses.map((exp) => {
         return { ...exp, date: new Date(exp.date), comment: exp.comment || '', amount: parseFloat(exp.amount) };
     });
 
@@ -26,8 +26,8 @@ const Home = () => {
         <ComponentStateHandler queries={[categoriesQuery, expensesQuery]}>
             <AddExpense categories={categories} />
             <LinkPanel />
-            <ExpensesList expenses={expenses_with_date} categoryMapping={categoryMapping} />
-            <CategorySummary expenses={expenses_with_date} categoryMapping={categoryMapping} />
+            <ExpensesList expenses={parsedExpenses} categoryMapping={categoryMapping} />
+            <CategorySummary expenses={parsedExpenses} categoryMapping={categoryMapping} />
         </ComponentStateHandler>
     );
 };

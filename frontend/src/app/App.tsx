@@ -30,6 +30,7 @@ const App = () => {
                 <Route path="/all" element={guard(logged, <ExpensesAll />)} />
                 <Route path="/summary" element={guard(logged, <ExpensesMonthlySummary />)} />
                 <Route path="/meters" element={guard(logged, <Meters />)} />
+                <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Container>
     );

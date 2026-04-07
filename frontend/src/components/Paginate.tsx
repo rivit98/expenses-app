@@ -8,7 +8,7 @@ interface PaginationButtonProps extends ButtonProps {
 
 const PaginationButton = ({ children, fn, ...props }: PaginationButtonProps) => {
     return (
-        <Button size="sm" m={0} colorScheme="teal" _focus={{ outline: 'none' }} onClick={fn} {...props}>
+        <Button size="sm" m={0} colorScheme="teal" _focusVisible={{ outline: 'none' }} onClick={fn} {...props}>
             {children}
         </Button>
     );

@@ -12,10 +12,6 @@ interface AddExpenseProps {
 }
 
 export const AddExpense = ({ categories }: AddExpenseProps) => {
-    // make Cravings first entry
-    const sortedCategories = [...categories];
-    [sortedCategories[0], sortedCategories[2]] = [sortedCategories[2], sortedCategories[0]];
-
     const toast = useToast();
     const addExpenseMutation = useAddExpense();
 
@@ -76,7 +72,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
     };
 
     const dateFieldRef = useRef<HTMLInputElement>(null);
-    const handledateFieldClick = () => {
+    const handleDateFieldClick = () => {
         if (dateFieldRef && dateFieldRef.current) {
             dateFieldRef.current.showPicker();
         }
@@ -91,7 +87,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
                         <Input
                             type="date"
                             defaultValue={new Date().toISOString().split('T')[0]}
-                            onClick={handledateFieldClick}
+                            onClick={handleDateFieldClick}
                             {...rest}
                             ref={(e: HTMLInputElement | null) => {
                                 ref(e);
@@ -126,7 +122,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
                                 maxLength: 128,
                             })}
                         >
-                            {sortedCategories.map(({ id, name }) => {
+                            {categories.map(({ id, name }) => {
                                 return (
                                     <option key={id} value={id} color="#2D3748">
                                         {name}
