@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 import { ChakraProvider, Container } from '@chakra-ui/react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './queryClient';
@@ -15,8 +15,9 @@ import Meters from '../features/meters/Meters';
 
 type WrapperComponent = React.ComponentType<{ children?: ReactNode }>;
 
-const guard = (logged: boolean, elem: ReactElement): ReactElement => {
-    return logged === true ? elem : <Navigate to="/login" />;
+const Guard = ({ logged, children }: { logged: boolean; children: ReactElement }) => {
+    const location = useLocation();
+    return logged ? children : <Navigate to="/login" state={{ from: location.pathname }} replace />;
 };
 
 const App = () => {
@@ -25,11 +26,39 @@ const App = () => {
     return (
         <Container mt={6} p={0} maxW="container.xl" centerContent>
             <Routes>
-                <Route path="/" element={guard(logged, <Home />)} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/all" element={guard(logged, <ExpensesAll />)} />
-                <Route path="/summary" element={guard(logged, <ExpensesMonthlySummary />)} />
-                <Route path="/meters" element={guard(logged, <Meters />)} />
+                <Route
+                    path="/"
+                    element={
+                        <Guard logged={logged}>
+                            <Home />
+                        </Guard>
+                    }
+                />
+                <Route path="/login" element={logged ? <Navigate to="/" replace /> : <Login />} />
+                <Route
+                    path="/all"
+                    element={
+                        <Guard logged={logged}>
+                            <ExpensesAll />
+                        </Guard>
+                    }
+                />
+                <Route
+                    path="/summary"
+                    element={
+                        <Guard logged={logged}>
+                            <ExpensesMonthlySummary />
+                        </Guard>
+                    }
+                />
+                <Route
+                    path="/meters"
+                    element={
+                        <Guard logged={logged}>
+                            <Meters />
+                        </Guard>
+                    }
+                />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Container>

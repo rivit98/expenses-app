@@ -23,7 +23,8 @@ export const userSlice = createSlice({
 
 export const { updateUser, removeUser } = userSlice.actions;
 
-export const isLoggedIn = (state: { userReducer: UserState }): boolean => state.userReducer.id !== undefined;
+export const isLoggedIn = (state: { userReducer: UserState }): boolean =>
+    state.userReducer.id !== undefined && state.userReducer.access !== undefined;
 export const currentUserData = (state: { userReducer: UserState }): UserState => state.userReducer;
 
 export default userSlice.reducer;

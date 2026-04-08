@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { Box, Button, Center, FormControl, FormErrorMessage, Heading, Input, Stack } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import { texts } from '../../constants/texts';
 import { removeUser, updateUser } from '../../store/userReducer';
 import { LoginData, UserData } from '../../types/api';
@@ -16,8 +17,11 @@ const Login = () => {
     } = useForm<LoginData>({ mode: 'all' });
 
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
     const loginMutation = useLogin();
+
+    const redirectTo = (location.state as { from?: string })?.from ?? '/';
 
     const onSubmit = (data: LoginData): void => {
         if (loginMutation.isPending) {
@@ -26,14 +30,16 @@ const Login = () => {
         loginMutation.mutate(data, {
             onSuccess: (user: UserData) => {
                 dispatch(updateUser(user));
-                navigate('/');
+                navigate(redirectTo, { replace: true });
             },
             onError: (err: unknown) => {
                 console.error(err);
                 dispatch(removeUser());
+                const isAuthError =
+                    axios.isAxiosError(err) && (err.response?.status === 400 || err.response?.status === 401);
                 setError('password', {
                     type: 'manual',
-                    message: texts.auth.invalidCredentials,
+                    message: isAuthError ? texts.auth.invalidCredentials : texts.common.genericError,
                 });
             },
         });

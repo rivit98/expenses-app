@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { AxiosAuthRefreshRequestConfig } from 'axios-auth-refresh';
+import { createStandaloneToast } from '@chakra-ui/react';
 import { store } from '../store/store';
 import { removeUser, updateUser } from '../store/userReducer';
 import { queryClient } from '../app/queryClient';
 import { LoginData, TokenPair, UserData } from '../types/api';
 import { texts } from '../constants/texts';
+
+const { toast } = createStandaloneToast();
 
 const API_VERSION = 'v1';
 
@@ -45,12 +48,22 @@ const getNewAccessToken = async (refreshToken: string): Promise<TokenPair> => {
     );
 };
 
+const handleSessionExpired = () => {
+    store.dispatch(removeUser());
+    queryClient.clear();
+    toast({
+        description: texts.auth.sessionExpired,
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+    });
+    return Promise.reject(new Error(texts.auth.sessionExpired));
+};
+
 const refreshUserToken = async (failedRequest: { response: { config: { headers: Record<string, string> } } }) => {
     const refreshToken = getRefreshToken();
     if (refreshToken == null) {
-        store.dispatch(removeUser());
-        queryClient.clear();
-        return Promise.reject(new Error(texts.auth.sessionExpired));
+        return handleSessionExpired();
     }
 
     try {
@@ -60,9 +73,7 @@ const refreshUserToken = async (failedRequest: { response: { config: { headers: 
         headers.Authorization = `Bearer ${token.access}`;
         return Promise.resolve();
     } catch {
-        store.dispatch(removeUser());
-        queryClient.clear();
-        return Promise.reject(new Error(texts.auth.sessionExpired));
+        return handleSessionExpired();
     }
 };
 
