@@ -21,9 +21,6 @@ class ExpenseViewByYearAndMonth(
     filter_backends = (filters.OrderingFilter,)
     ordering = ("-date", "-id")
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
     def get_queryset(self):
         year = self.kwargs.get("year")
         month = self.kwargs.get("month")
@@ -31,6 +28,9 @@ class ExpenseViewByYearAndMonth(
         queryset = queryset.filter(date__year=year)
         queryset = queryset.filter(date__month=month)
         return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ExpensesView(
@@ -43,12 +43,11 @@ class ExpensesView(
     filter_backends = (filters.OrderingFilter,)
     ordering = ("-date", "-id")
 
-    def post(self, request, *args, **kwargs):
-        request.data.update({"user": self.request.user.id})
-        return self.create(request, *args, **kwargs)
-
     def get_queryset(self):
         return Expense.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ExpensesSummaryView(generics.ListAPIView, mixins.ListModelMixin):
@@ -75,17 +74,17 @@ class ExpenseView(
     serializer_class = ExpenseSerializer
     lookup_field = "id"
 
-    def put(self, request, *args, **kwargs):
-        request.data.update({"user": self.request.user.id})
-        return self.update(request, *args, **kwargs)
-
     def get_queryset(self):
         return Expense.objects.filter(user=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class CategoriesView(
     generics.ListAPIView,
     mixins.ListModelMixin,
 ):
+    permission_classes = (IsAuthenticated,)
     serializer_class = CategorySerializer
     queryset = Category.objects.all()

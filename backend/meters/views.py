@@ -11,12 +11,11 @@ class MetersView(generics.ListCreateAPIView, mixins.ListModelMixin, mixins.Creat
     filter_backends = (filters.OrderingFilter,)
     ordering = ("-date", "-id")
 
-    def post(self, request, *args, **kwargs):
-        request.data.update({"user": self.request.user.id})
-        return self.create(request, *args, **kwargs)
-
     def get_queryset(self):
         return Meter.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class MeterView(
@@ -29,14 +28,14 @@ class MeterView(
     serializer_class = MeterSerializer
     lookup_field = "id"
 
-    def put(self, request, *args, **kwargs):
-        request.data.update({"user": self.request.user.id})
-        return self.update(request, *args, **kwargs)
-
     def get_queryset(self):
         return Meter.objects.filter(user=self.request.user)
 
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class CategoriesView(generics.ListAPIView, mixins.ListModelMixin):
+    permission_classes = (IsAuthenticated,)
     serializer_class = CategorySerializer
     queryset = Category.objects.all()

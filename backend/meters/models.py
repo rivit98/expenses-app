@@ -26,7 +26,7 @@ class Meter(Model):
     user = ForeignKey(get_user_model(), on_delete=CASCADE, related_name="user_meters")
     read = DecimalField(max_digits=6, decimal_places=2, null=False)
     category = ForeignKey(Category, on_delete=CASCADE, related_name="meter_category")
-    date = DateField(blank=True, default=datetime.date.today)
+    date = DateField(blank=True, default=datetime.date.today, db_index=True)
 
     def __str__(self):
         return f"{self.user.username} | {self.read} {self.category.unit} for {self.category}"
