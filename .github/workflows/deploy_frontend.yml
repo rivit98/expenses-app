@@ -14,6 +14,7 @@ defaults:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node
@@ -24,7 +25,7 @@ jobs:
           cache-dependency-path: ./frontend/package-lock.json
       - name: Install dev deps
         run: |
-          npm install -D
+          npm ci
       - name: Run linters
         run: |
           npm run lint
@@ -32,12 +33,12 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs: lint
     steps:
       - name: Cloning repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           submodules: "recursive"
 
       - name: Set up Docker Buildx
@@ -51,9 +52,11 @@ jobs:
           password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./frontend
           file: ./frontend/prod.Dockerfile
           push: true
           tags: registry.rivit.dev/ef:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
