@@ -5,7 +5,7 @@ from meters.models import Category, Meter
 from meters.serializers import CategorySerializer, MeterSerializer
 
 
-class ExpensesView(generics.ListCreateAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
+class MetersView(generics.ListCreateAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
     permission_classes = (IsAuthenticated,)
     serializer_class = MeterSerializer
     filter_backends = (filters.OrderingFilter,)
@@ -19,7 +19,7 @@ class ExpensesView(generics.ListCreateAPIView, mixins.ListModelMixin, mixins.Cre
         return Meter.objects.filter(user=self.request.user)
 
 
-class ExpenseView(
+class MeterView(
     generics.RetrieveUpdateDestroyAPIView,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,

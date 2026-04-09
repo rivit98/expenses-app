@@ -3,7 +3,7 @@ from django.contrib import admin
 from meters.models import Category, Meter
 
 
-class ExpenseAdmin(admin.ModelAdmin):
+class MeterAdmin(admin.ModelAdmin):
     def history_date(self, obj: Meter):
         return obj.date.strftime("%Y/%m/%d %H:%M:%S")
 
@@ -11,4 +11,4 @@ class ExpenseAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Category)
-admin.site.register(Meter, ExpenseAdmin)
+admin.site.register(Meter, MeterAdmin)
