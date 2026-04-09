@@ -55,6 +55,7 @@ jobs:
           file: ./backend/prod.Dockerfile
           push: true
           tags: registry.rivit.dev/eb:latest
+          build-args: GIT_SHA=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
