@@ -1,6 +1,6 @@
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
-from rest_framework import filters, generics, mixins
+from rest_framework import filters, generics
 from rest_framework.permissions import IsAuthenticated
 
 from expenses.models import Category, Expense
@@ -11,11 +11,7 @@ from expenses.serializers import (
 )
 
 
-class ExpenseViewByYearAndMonth(
-    generics.ListCreateAPIView,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-):
+class ExpenseViewByYearAndMonth(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ExpenseSerializer
     filter_backends = (filters.OrderingFilter,)
@@ -33,11 +29,7 @@ class ExpenseViewByYearAndMonth(
         serializer.save(user=self.request.user)
 
 
-class ExpensesView(
-    generics.ListCreateAPIView,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-):
+class ExpensesView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ExpenseSerializer
     filter_backends = (filters.OrderingFilter,)
@@ -50,7 +42,7 @@ class ExpensesView(
         serializer.save(user=self.request.user)
 
 
-class ExpensesSummaryView(generics.ListAPIView, mixins.ListModelMixin):
+class ExpensesSummaryView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ExpenseSummarySerializer
     filter_backends = (filters.OrderingFilter,)
@@ -64,12 +56,7 @@ class ExpensesSummaryView(generics.ListAPIView, mixins.ListModelMixin):
         )
 
 
-class ExpenseView(
-    generics.RetrieveUpdateDestroyAPIView,
-    mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-):
+class ExpenseView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ExpenseSerializer
     lookup_field = "id"
@@ -81,10 +68,7 @@ class ExpenseView(
         serializer.save(user=self.request.user)
 
 
-class CategoriesView(
-    generics.ListAPIView,
-    mixins.ListModelMixin,
-):
+class CategoriesView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
