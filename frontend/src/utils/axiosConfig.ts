@@ -2,12 +2,16 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import { authService } from '../services/auth';
 
+// Dedicated instance so response/request interceptors below only affect our own
+// API calls, not the global axios default (and its declared types stay honest).
+export const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || 'https://eb.rivit.dev/',
+});
+
 export const setupAxios = (): void => {
-    axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'https://eb.rivit.dev/';
+    api.interceptors.response.use((response) => response.data);
 
-    axios.interceptors.response.use((response) => response.data);
-
-    axios.interceptors.request.use((request: InternalAxiosRequestConfig) => {
+    api.interceptors.request.use((request: InternalAxiosRequestConfig) => {
         const token = authService.getAccessToken();
 
         if (token != null) {
@@ -17,5 +21,5 @@ export const setupAxios = (): void => {
         return request;
     });
 
-    createAuthRefreshInterceptor(axios, authService.refreshUserToken);
+    createAuthRefreshInterceptor(api, authService.refreshUserToken);
 };

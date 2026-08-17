@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { AxiosAuthRefreshRequestConfig } from 'axios-auth-refresh';
 import { createStandaloneToast } from '@chakra-ui/react';
+import { api } from '../utils/axiosConfig';
 import { store } from '../store/store';
 import { removeUser, updateUser } from '../store/userReducer';
 import { queryClient } from '../app/queryClient';
@@ -12,11 +12,11 @@ const { toast } = createStandaloneToast();
 const API_VERSION = 'v1';
 
 const getToken = async (loginData: LoginData): Promise<TokenPair> => {
-    return axios.post(`/auth/${API_VERSION}/login/`, loginData);
+    return api.post(`/auth/${API_VERSION}/login/`, loginData);
 };
 
 const me = async (token: string): Promise<Pick<UserData, 'id' | 'username'>> => {
-    return axios.get(`/user/${API_VERSION}/me/`, {
+    return api.get(`/user/${API_VERSION}/me/`, {
         headers: { Authorization: `Bearer ${token}` },
     });
 };
@@ -37,7 +37,7 @@ const getRefreshToken = (): string | undefined => {
 };
 
 const getNewAccessToken = async (refreshToken: string): Promise<TokenPair> => {
-    return axios.post(
+    return api.post(
         `/auth/${API_VERSION}/refresh/`,
         {
             refresh: refreshToken,
