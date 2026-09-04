@@ -1,4 +1,4 @@
-import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import { texts } from '../../constants/texts';
 import type { CategoryMapping, SummaryGroup, SummaryGroups } from '../../types/api';
 import { formatCurrency } from '../../utils/rounding';
@@ -48,46 +48,54 @@ export const ExpensesSummaryList = ({ summaryGroups, categoryMapping }: Expenses
     const { categoryAvgs, totalAvg } = calcAvgs(summaryGroupsObj, categoryMapping);
 
     return (
-        <TableContainer mt={5}>
-            <Table size="md" variant="striped" colorScheme="whiteAlpha">
-                <Thead>
-                    <Tr>
+        <Table.ScrollArea mt={5}>
+            <Table.Root size="md" striped colorPalette="whiteAlpha">
+                <Table.Header>
+                    <Table.Row>
                         {tableHeaders.map((cat) => {
-                            return <Th key={cat}>{cat}</Th>;
+                            return <Table.ColumnHeader key={cat}>{cat}</Table.ColumnHeader>;
                         })}
-                    </Tr>
-                </Thead>
-                <Tbody>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {Object.entries(summaryGroupsObj).map(([k, group]) => {
                         return (
-                            <Tr
+                            <Table.Row
                                 key={k}
                                 _hover={{
                                     background: 'whiteAlpha.300',
                                     color: 'teal.300',
                                 }}
                             >
-                                <Td>{k}</Td>
+                                <Table.Cell>{k}</Table.Cell>
                                 {categoryIDs.map((catID) => {
                                     return (
-                                        <Td key={catID}>{formatCurrency(group[catID as unknown as number] || 0)}</Td>
+                                        <Table.Cell key={catID}>
+                                            {formatCurrency(group[catID as unknown as number] || 0)}
+                                        </Table.Cell>
                                     );
                                 })}
-                                <Td>{formatCurrency(Object.values(group).reduce((acc, x) => acc + x, 0))}</Td>
-                            </Tr>
+                                <Table.Cell>
+                                    {formatCurrency(Object.values(group).reduce((acc, x) => acc + x, 0))}
+                                </Table.Cell>
+                            </Table.Row>
                         );
                     })}
-                </Tbody>
-                <Tfoot>
-                    <Tr>
-                        <Th>{texts.common.avg}</Th>
+                </Table.Body>
+                <Table.Footer>
+                    <Table.Row>
+                        <Table.ColumnHeader>{texts.common.avg}</Table.ColumnHeader>
                         {categoryIDs.map((catID) => {
-                            return <Th key={catID}>{formatCurrency(categoryAvgs[catID])}</Th>;
+                            return (
+                                <Table.ColumnHeader key={catID}>
+                                    {formatCurrency(categoryAvgs[catID])}
+                                </Table.ColumnHeader>
+                            );
                         })}
-                        <Th>{formatCurrency(totalAvg)}</Th>
-                    </Tr>
-                </Tfoot>
-            </Table>
-        </TableContainer>
+                        <Table.ColumnHeader>{formatCurrency(totalAvg)}</Table.ColumnHeader>
+                    </Table.Row>
+                </Table.Footer>
+            </Table.Root>
+        </Table.ScrollArea>
     );
 };

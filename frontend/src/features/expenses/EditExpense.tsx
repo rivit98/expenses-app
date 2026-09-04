@@ -1,24 +1,19 @@
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
     Alert,
-    AlertIcon,
     Button,
-    FormControl,
-    FormErrorMessage,
+    CloseButton,
+    Dialog,
+    Field,
     HStack,
     IconButton,
     Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalHeader,
-    ModalOverlay,
-    Select,
+    NativeSelect,
+    Portal,
     Stack,
     useDisclosure,
 } from '@chakra-ui/react';
 import { Parser } from 'expr-eval';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { type FieldValues, useForm } from 'react-hook-form';
 import { texts } from '../../constants/texts';
@@ -33,7 +28,7 @@ interface EditExpenseProps {
 
 export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
     const { id: itemId, amount, date, comment, category } = expense;
-    const { isOpen, onOpen, onClose: onCloseInner } = useDisclosure();
+    const { open: isOpen, onOpen, onClose: onCloseInner } = useDisclosure();
 
     const updateExpenseMutation = useUpdateExpense();
     const deleteExpenseMutation = useDeleteExpense();
@@ -119,111 +114,128 @@ export const EditExpense = ({ expense, categoryMapping }: EditExpenseProps) => {
 
     return (
         <>
-            <IconButton
-                colorScheme="teal"
-                size="sm"
-                onClick={open}
-                icon={<EditIcon />}
-                aria-label={texts.expenses.editExpense}
-            />
+            <IconButton colorPalette="teal" size="sm" onClick={open} aria-label={texts.expenses.editExpense}>
+                <Pencil />
+            </IconButton>
 
-            <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>{texts.expenses.updateExpense}</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <form onSubmit={handleSubmit(updateExpenseFunc)} method="POST">
-                            <Stack spacing={2}>
-                                <FormControl isInvalid={!!errors.date}>
-                                    <Input
-                                        type="date"
-                                        defaultValue={date.toISOString().split('T')[0]}
-                                        {...register('date', {})}
-                                    />
-                                    <FormErrorMessage>
-                                        {errors.date && (errors.date.message as string)}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.amount}>
-                                    <Input
-                                        type="text"
-                                        placeholder={texts.common.amount}
-                                        _placeholder={{ color: 'whiteAlpha.500' }}
-                                        defaultValue={amount}
-                                        {...register('amount', {
-                                            validate: {
-                                                mathjs: (value: string) => {
-                                                    try {
-                                                        Parser.evaluate(value.replaceAll(',', '.'));
-                                                        return true;
-                                                    } catch {
-                                                        return texts.common.invalidExpression;
-                                                    }
-                                                },
-                                            },
-                                        })}
-                                    />
-                                    <FormErrorMessage>
-                                        {errors.amount && (errors.amount.message as string)}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.category}>
-                                    <Select
-                                        defaultValue={category}
-                                        {...register('category', {
-                                            maxLength: 128,
-                                        })}
-                                    >
-                                        {Object.entries(categoryMapping).map(([id, name]) => {
-                                            return (
-                                                <option key={id} value={id} color="#2D3748">
-                                                    {name}
-                                                </option>
-                                            );
-                                        })}
-                                    </Select>
-                                    <FormErrorMessage>
-                                        {errors.category && (errors.category.message as string)}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.comment}>
-                                    <Input
-                                        type="text"
-                                        defaultValue={comment}
-                                        placeholder={texts.common.comment}
-                                        _placeholder={{ color: 'whiteAlpha.500' }}
-                                        {...register('comment', {
-                                            maxLength: 128,
-                                        })}
-                                    />
-                                    <FormErrorMessage>
-                                        {errors.comment && (errors.comment.message as string)}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <HStack>
-                                    <Button w="full" colorScheme="teal" isLoading={isPending} type="submit">
-                                        {texts.common.update}
-                                    </Button>
-                                    <IconButton
-                                        colorScheme="red"
-                                        onClick={deleteExpenseFunc}
-                                        icon={<DeleteIcon />}
-                                        aria-label={texts.expenses.deleteExpense}
-                                    />
-                                </HStack>
+            <Dialog.Root
+                open={isOpen}
+                onOpenChange={(details) => {
+                    if (!details.open) {
+                        onClose();
+                    }
+                }}
+                placement="center"
+                size="lg"
+            >
+                <Portal>
+                    <Dialog.Backdrop />
+                    <Dialog.Positioner>
+                        <Dialog.Content>
+                            <Dialog.Header>
+                                <Dialog.Title>{texts.expenses.updateExpense}</Dialog.Title>
+                            </Dialog.Header>
+                            <Dialog.CloseTrigger asChild>
+                                <CloseButton size="sm" />
+                            </Dialog.CloseTrigger>
+                            <Dialog.Body>
+                                <form onSubmit={handleSubmit(updateExpenseFunc)} method="POST">
+                                    <Stack gap={2}>
+                                        <Field.Root invalid={!!errors.date}>
+                                            <Input
+                                                type="date"
+                                                defaultValue={date.toISOString().split('T')[0]}
+                                                {...register('date', {})}
+                                            />
+                                            <Field.ErrorText>
+                                                {errors.date && (errors.date.message as string)}
+                                            </Field.ErrorText>
+                                        </Field.Root>
+                                        <Field.Root invalid={!!errors.amount}>
+                                            <Input
+                                                type="text"
+                                                placeholder={texts.common.amount}
+                                                _placeholder={{ color: 'whiteAlpha.500' }}
+                                                defaultValue={amount}
+                                                {...register('amount', {
+                                                    validate: {
+                                                        mathjs: (value: string) => {
+                                                            try {
+                                                                Parser.evaluate(value.replaceAll(',', '.'));
+                                                                return true;
+                                                            } catch {
+                                                                return texts.common.invalidExpression;
+                                                            }
+                                                        },
+                                                    },
+                                                })}
+                                            />
+                                            <Field.ErrorText>
+                                                {errors.amount && (errors.amount.message as string)}
+                                            </Field.ErrorText>
+                                        </Field.Root>
+                                        <Field.Root invalid={!!errors.category}>
+                                            <NativeSelect.Root>
+                                                <NativeSelect.Field
+                                                    defaultValue={category}
+                                                    {...register('category', {
+                                                        maxLength: 128,
+                                                    })}
+                                                >
+                                                    {Object.entries(categoryMapping).map(([id, name]) => {
+                                                        return (
+                                                            <option key={id} value={id} color="#2D3748">
+                                                                {name}
+                                                            </option>
+                                                        );
+                                                    })}
+                                                </NativeSelect.Field>
+                                                <NativeSelect.Indicator />
+                                            </NativeSelect.Root>
+                                            <Field.ErrorText>
+                                                {errors.category && (errors.category.message as string)}
+                                            </Field.ErrorText>
+                                        </Field.Root>
+                                        <Field.Root invalid={!!errors.comment}>
+                                            <Input
+                                                type="text"
+                                                defaultValue={comment}
+                                                placeholder={texts.common.comment}
+                                                _placeholder={{ color: 'whiteAlpha.500' }}
+                                                {...register('comment', {
+                                                    maxLength: 128,
+                                                })}
+                                            />
+                                            <Field.ErrorText>
+                                                {errors.comment && (errors.comment.message as string)}
+                                            </Field.ErrorText>
+                                        </Field.Root>
+                                        <HStack>
+                                            <Button w="full" colorPalette="teal" loading={isPending} type="submit">
+                                                {texts.common.update}
+                                            </Button>
+                                            <IconButton
+                                                colorPalette="red"
+                                                onClick={deleteExpenseFunc}
+                                                aria-label={texts.expenses.deleteExpense}
+                                            >
+                                                <Trash2 />
+                                            </IconButton>
+                                        </HStack>
 
-                                {errorText !== undefined && (
-                                    <Alert status="error" mb={2}>
-                                        <AlertIcon />
-                                        {errorText}
-                                    </Alert>
-                                )}
-                            </Stack>
-                        </form>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+                                        {errorText !== undefined && (
+                                            <Alert.Root status="error" mb={2}>
+                                                <Alert.Indicator />
+                                                <Alert.Content>{errorText}</Alert.Content>
+                                            </Alert.Root>
+                                        )}
+                                    </Stack>
+                                </form>
+                            </Dialog.Body>
+                        </Dialog.Content>
+                    </Dialog.Positioner>
+                </Portal>
+            </Dialog.Root>
         </>
     );
 };

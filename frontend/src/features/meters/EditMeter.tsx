@@ -1,24 +1,19 @@
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
     Alert,
-    AlertIcon,
     Button,
-    FormControl,
-    FormErrorMessage,
+    CloseButton,
+    Dialog,
+    Field,
     HStack,
     IconButton,
     Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalHeader,
-    ModalOverlay,
-    Select,
+    NativeSelect,
+    Portal,
     Stack,
     useDisclosure,
 } from '@chakra-ui/react';
 import { Parser } from 'expr-eval';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { type FieldValues, useForm } from 'react-hook-form';
 import { texts } from '../../constants/texts';
@@ -33,7 +28,7 @@ interface EditMeterProps {
 
 export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
     const { id: itemId, read, date, category } = meter;
-    const { isOpen, onOpen, onClose: onCloseInner } = useDisclosure();
+    const { open: isOpen, onOpen, onClose: onCloseInner } = useDisclosure();
 
     const updateMeterMutation = useUpdateMeter();
     const deleteMeterMutation = useDeleteMeter();
@@ -117,98 +112,115 @@ export const EditMeter = ({ meter, categoryMapping }: EditMeterProps) => {
 
     return (
         <>
-            <IconButton
-                colorScheme="teal"
-                size="sm"
-                onClick={open}
-                icon={<EditIcon />}
-                aria-label={texts.meters.editMeter}
-            />
+            <IconButton colorPalette="teal" size="sm" onClick={open} aria-label={texts.meters.editMeter}>
+                <Pencil />
+            </IconButton>
 
-            <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>{texts.meters.updateMeter}</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <form onSubmit={handleSubmit(updateMeterFunc)} method="POST">
-                            <Stack spacing={2}>
-                                <FormControl isInvalid={!!errors.date}>
-                                    <Input
-                                        type="date"
-                                        defaultValue={date.toISOString().split('T')[0]}
-                                        {...register('date', {})}
-                                    />
-                                    <FormErrorMessage>
-                                        {errors.date && (errors.date.message as string)}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.read}>
-                                    <Input
-                                        type="text"
-                                        step={0.01}
-                                        defaultValue={read}
-                                        placeholder={texts.meters.read}
-                                        _placeholder={{ color: 'whiteAlpha.500' }}
-                                        {...register('read', {
-                                            validate: {
-                                                mathjs: (value: string) => {
-                                                    try {
-                                                        Parser.evaluate(value.replaceAll(',', '.'));
-                                                        return true;
-                                                    } catch {
-                                                        return texts.common.invalidExpression;
-                                                    }
-                                                },
-                                            },
-                                        })}
-                                    />
-                                    <FormErrorMessage>
-                                        {errors.read && (errors.read.message as string)}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.category}>
-                                    <Select
-                                        defaultValue={category}
-                                        {...register('category', {
-                                            maxLength: 128,
-                                        })}
-                                    >
-                                        {Object.entries(categoryMapping).map(([id, { name }]) => {
-                                            return (
-                                                <option key={id} value={id} color="#2D3748">
-                                                    {name}
-                                                </option>
-                                            );
-                                        })}
-                                    </Select>
-                                    <FormErrorMessage>
-                                        {errors.category && (errors.category.message as string)}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <HStack>
-                                    <Button w="full" colorScheme="teal" isLoading={isPending} type="submit">
-                                        {texts.common.update}
-                                    </Button>
-                                    <IconButton
-                                        colorScheme="red"
-                                        onClick={deleteMeterFunc}
-                                        icon={<DeleteIcon />}
-                                        aria-label={texts.meters.deleteMeter}
-                                    />
-                                </HStack>
+            <Dialog.Root
+                open={isOpen}
+                onOpenChange={(details) => {
+                    if (!details.open) {
+                        onClose();
+                    }
+                }}
+                placement="center"
+                size="lg"
+            >
+                <Portal>
+                    <Dialog.Backdrop />
+                    <Dialog.Positioner>
+                        <Dialog.Content>
+                            <Dialog.Header>
+                                <Dialog.Title>{texts.meters.updateMeter}</Dialog.Title>
+                            </Dialog.Header>
+                            <Dialog.CloseTrigger asChild>
+                                <CloseButton size="sm" />
+                            </Dialog.CloseTrigger>
+                            <Dialog.Body>
+                                <form onSubmit={handleSubmit(updateMeterFunc)} method="POST">
+                                    <Stack gap={2}>
+                                        <Field.Root invalid={!!errors.date}>
+                                            <Input
+                                                type="date"
+                                                defaultValue={date.toISOString().split('T')[0]}
+                                                {...register('date', {})}
+                                            />
+                                            <Field.ErrorText>
+                                                {errors.date && (errors.date.message as string)}
+                                            </Field.ErrorText>
+                                        </Field.Root>
+                                        <Field.Root invalid={!!errors.read}>
+                                            <Input
+                                                type="text"
+                                                step={0.01}
+                                                defaultValue={read}
+                                                placeholder={texts.meters.read}
+                                                _placeholder={{ color: 'whiteAlpha.500' }}
+                                                {...register('read', {
+                                                    validate: {
+                                                        mathjs: (value: string) => {
+                                                            try {
+                                                                Parser.evaluate(value.replaceAll(',', '.'));
+                                                                return true;
+                                                            } catch {
+                                                                return texts.common.invalidExpression;
+                                                            }
+                                                        },
+                                                    },
+                                                })}
+                                            />
+                                            <Field.ErrorText>
+                                                {errors.read && (errors.read.message as string)}
+                                            </Field.ErrorText>
+                                        </Field.Root>
+                                        <Field.Root invalid={!!errors.category}>
+                                            <NativeSelect.Root>
+                                                <NativeSelect.Field
+                                                    defaultValue={category}
+                                                    {...register('category', {
+                                                        maxLength: 128,
+                                                    })}
+                                                >
+                                                    {Object.entries(categoryMapping).map(([id, { name }]) => {
+                                                        return (
+                                                            <option key={id} value={id} color="#2D3748">
+                                                                {name}
+                                                            </option>
+                                                        );
+                                                    })}
+                                                </NativeSelect.Field>
+                                                <NativeSelect.Indicator />
+                                            </NativeSelect.Root>
+                                            <Field.ErrorText>
+                                                {errors.category && (errors.category.message as string)}
+                                            </Field.ErrorText>
+                                        </Field.Root>
+                                        <HStack>
+                                            <Button w="full" colorPalette="teal" loading={isPending} type="submit">
+                                                {texts.common.update}
+                                            </Button>
+                                            <IconButton
+                                                colorPalette="red"
+                                                onClick={deleteMeterFunc}
+                                                aria-label={texts.meters.deleteMeter}
+                                            >
+                                                <Trash2 />
+                                            </IconButton>
+                                        </HStack>
 
-                                {errorText !== undefined && (
-                                    <Alert status="error" mb={2}>
-                                        <AlertIcon />
-                                        {errorText}
-                                    </Alert>
-                                )}
-                            </Stack>
-                        </form>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+                                        {errorText !== undefined && (
+                                            <Alert.Root status="error" mb={2}>
+                                                <Alert.Indicator />
+                                                <Alert.Content>{errorText}</Alert.Content>
+                                            </Alert.Root>
+                                        )}
+                                    </Stack>
+                                </form>
+                            </Dialog.Body>
+                        </Dialog.Content>
+                    </Dialog.Positioner>
+                </Portal>
+            </Dialog.Root>
         </>
     );
 };

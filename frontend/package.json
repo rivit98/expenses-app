@@ -1,55 +1,57 @@
 {
-  "name": "expenses-tracker",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "@chakra-ui/icons": "2.2.6",
-    "@chakra-ui/react": "^2.10.10",
-    "@emotion/react": "11.14.0",
-    "@emotion/styled": "11.14.1",
-    "@reduxjs/toolkit": "2.12.0",
-    "@tanstack/react-query": "^5.102.8",
-    "axios": "1.20.0",
-    "axios-auth-refresh": "^3.3.6",
-    "expr-eval": "^2.0.2",
-    "framer-motion": "12.43.0",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "react-hook-form": "7.87.0",
-    "react-redux": "9.3.0",
-    "react-router-dom": "7.18.3",
-    "redux-logger": "4.0.0",
-    "redux-persist": "^6.0.0"
-  },
-  "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "biome check src",
-    "check:fix": "biome check --write src",
-    "lint": "biome lint src",
-    "format": "biome format --write src"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.5.12",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
-    "@vitejs/plugin-react-swc": "3.11.0",
-    "typescript": "^6.0.3",
-    "vite": "6.4.3"
-  },
-  "packageManager": "npm@11.12.1+sha256.e679850e663b16f5f146ee425d0eb0e3442c1d2bda3d513bbfd7c81f5ee5db38"
+    "name": "expenses-tracker",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "dependencies": {
+        "@chakra-ui/react": "3.37.0",
+        "@emotion/react": "11.14.0",
+        "@reduxjs/toolkit": "2.12.0",
+        "@tanstack/react-query": "^5.102.8",
+        "axios": "1.20.0",
+        "axios-auth-refresh": "5.0.2",
+        "expr-eval": "^2.0.2",
+        "lucide-react": "1.41.0",
+        "react": "19.2.8",
+        "react-dom": "19.2.8",
+        "react-hook-form": "7.87.0",
+        "react-redux": "9.3.0",
+        "react-router-dom": "7.18.3",
+        "redux-logger": "4.0.0",
+        "redux-persist": "^6.0.0"
+    },
+    "scripts": {
+        "start": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "typecheck": "tsc --noEmit",
+        "check": "biome check",
+        "check:fix": "biome check --write",
+        "lint": "biome lint",
+        "format": "biome format --write"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@biomejs/biome": "2.5.12",
+        "@types/react": "^19.2.18",
+        "@types/react-dom": "^19.2.7",
+        "@vitejs/plugin-react-swc": "4.3.3",
+        "typescript": "^7.0.2",
+        "vite": "8.2.2"
+    },
+    "packageManager": "npm@11.17.0",
+    "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+    }
 }

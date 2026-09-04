@@ -1,7 +1,8 @@
-import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useToast } from '@chakra-ui/react';
+import { Box, Button, Field, Input, NativeSelect, Stack } from '@chakra-ui/react';
 import { Parser } from 'expr-eval';
 import { useRef } from 'react';
 import { type FieldValues, useForm } from 'react-hook-form';
+import { toaster } from '../../components/Toaster';
 import { texts } from '../../constants/texts';
 import { useAddMeter } from '../../hooks/mutations';
 import type { MeterCategory } from '../../types/api';
@@ -12,7 +13,6 @@ interface AddMeterProps {
 }
 
 export const AddMeter = ({ categories }: AddMeterProps) => {
-    const toast = useToast();
     const addMeterMutation = useAddMeter();
 
     const {
@@ -40,11 +40,11 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
                     });
                 });
         } catch {
-            toast({
+            toaster.create({
                 description: texts.common.genericError,
-                status: 'error',
+                type: 'error',
                 duration: 3000,
-                isClosable: true,
+                closable: true,
             });
         }
     };
@@ -56,11 +56,11 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
         const submitData = { ...data, read: round2(Parser.evaluate(data.read.replaceAll(',', '.'))) };
         addMeterMutation.mutate(submitData, {
             onSuccess: () => {
-                toast({
+                toaster.create({
                     description: texts.meters.meterAdded,
-                    status: 'success',
+                    type: 'success',
                     duration: 3000,
-                    isClosable: true,
+                    closable: true,
                 });
                 reset();
             },
@@ -81,8 +81,8 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
     return (
         <Box maxW="xl" w="full">
             <form onSubmit={handleSubmit(onSubmit)} method="POST">
-                <Stack spacing={2}>
-                    <FormControl isInvalid={!!errors.date}>
+                <Stack gap={2}>
+                    <Field.Root invalid={!!errors.date}>
                         <Input
                             type="date"
                             defaultValue={new Date().toISOString().split('T')[0]}
@@ -93,9 +93,9 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
                                 dateFieldRef.current = e;
                             }}
                         />
-                        <FormErrorMessage>{errors.date && (errors.date.message as string)}</FormErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={!!errors.read}>
+                        <Field.ErrorText>{errors.date && (errors.date.message as string)}</Field.ErrorText>
+                    </Field.Root>
+                    <Field.Root invalid={!!errors.read}>
                         <Input
                             type="text"
                             placeholder={texts.meters.read}
@@ -113,25 +113,28 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
                                 },
                             })}
                         />
-                        <FormErrorMessage>{errors.read && (errors.read.message as string)}</FormErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={!!errors.category}>
-                        <Select
-                            {...register('category', {
-                                maxLength: 128,
-                            })}
-                        >
-                            {categories.map(({ id, name }) => {
-                                return (
-                                    <option key={id} value={id} color="#2D3748">
-                                        {name}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                        <FormErrorMessage>{errors.category && (errors.category.message as string)}</FormErrorMessage>
-                    </FormControl>
-                    <Button w="full" colorScheme="teal" isLoading={addMeterMutation.isPending} type="submit">
+                        <Field.ErrorText>{errors.read && (errors.read.message as string)}</Field.ErrorText>
+                    </Field.Root>
+                    <Field.Root invalid={!!errors.category}>
+                        <NativeSelect.Root>
+                            <NativeSelect.Field
+                                {...register('category', {
+                                    maxLength: 128,
+                                })}
+                            >
+                                {categories.map(({ id, name }) => {
+                                    return (
+                                        <option key={id} value={id} color="#2D3748">
+                                            {name}
+                                        </option>
+                                    );
+                                })}
+                            </NativeSelect.Field>
+                            <NativeSelect.Indicator />
+                        </NativeSelect.Root>
+                        <Field.ErrorText>{errors.category && (errors.category.message as string)}</Field.ErrorText>
+                    </Field.Root>
+                    <Button w="full" colorPalette="teal" loading={addMeterMutation.isPending} type="submit">
                         {texts.meters.addMeter}
                     </Button>
                 </Stack>

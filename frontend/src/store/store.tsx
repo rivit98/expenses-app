@@ -2,9 +2,15 @@ import { combineReducers, configureStore, type Middleware } from '@reduxjs/toolk
 import type { ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { FLUSH, PAUSE, PERSIST, PURGE, persistReducer, persistStore, REGISTER, REHYDRATE } from 'redux-persist';
+import type { WebStorage } from 'redux-persist/es/types';
 import { PersistGate } from 'redux-persist/integration/react';
-import storage from 'redux-persist/lib/storage';
+import storageImport from 'redux-persist/lib/storage';
 import userReducer from './userReducer';
+
+// redux-persist ships CommonJS with no ESM build. Rollup unwrapped its `default`
+// export for us; Rolldown (Vite 8) hands back the `{ __esModule, default }`
+// namespace instead, so accept either rather than trusting bundler interop.
+const storage: WebStorage = (storageImport as WebStorage & { default?: WebStorage }).default ?? storageImport;
 
 const persistConfig = {
     key: 'root',

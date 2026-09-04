@@ -1,8 +1,9 @@
-import { ChakraProvider, Container } from '@chakra-ui/react';
+import { ChakraProvider, Container, defaultSystem } from '@chakra-ui/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import type { ReactElement, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Toaster } from '../components/Toaster';
 import Login from '../features/auth/Login';
 import { ExpensesAll } from '../features/expenses/ExpensesAll';
 import { ExpensesMonthlySummary } from '../features/expenses/ExpensesSummary';
@@ -20,11 +21,20 @@ const Guard = ({ logged, children }: { logged: boolean; children: ReactElement }
     return logged ? children : <Navigate to="/login" state={{ from: location.pathname }} replace />;
 };
 
+const ChakraWrapper = ({ children }: { children?: ReactNode }) => {
+    return (
+        <ChakraProvider value={defaultSystem}>
+            {children}
+            <Toaster />
+        </ChakraProvider>
+    );
+};
+
 const App = () => {
     const logged = useSelector(isLoggedIn) || false;
 
     return (
-        <Container mt={6} p={0} maxW="container.xl" centerContent>
+        <Container mt={6} p={0} maxW="7xl" centerContent>
             <Routes>
                 <Route
                     path="/"
@@ -87,7 +97,7 @@ const withQueryClient = (Wrapped: WrapperComponent) => {
     return QueryWrapper;
 };
 
-const WrappedApp = ([BrowserRouter, ChakraProvider, Navigation] as WrapperComponent[])
+const WrappedApp = ([BrowserRouter, ChakraWrapper, Navigation] as WrapperComponent[])
     .reverse()
     .reduce((acc, cur) => withComponent(cur, acc), App as WrapperComponent);
 

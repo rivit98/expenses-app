@@ -1,5 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios';
-import createAuthRefreshInterceptor from 'axios-auth-refresh';
+import { createAuthRefresh } from 'axios-auth-refresh';
 import { authService } from '../services/auth';
 
 // Dedicated instance so response/request interceptors below only affect our own
@@ -21,5 +21,5 @@ export const setupAxios = (): void => {
         return request;
     });
 
-    createAuthRefreshInterceptor(api, authService.refreshUserToken);
+    createAuthRefresh(api, authService.refreshUserToken);
 };

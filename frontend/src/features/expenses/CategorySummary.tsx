@@ -1,4 +1,4 @@
-import { Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table, Text } from '@chakra-ui/react';
 import { texts } from '../../constants/texts';
 import type { CategoryMapping, ParsedExpense } from '../../types/api';
 import { formatCurrency } from '../../utils/rounding';
@@ -22,43 +22,43 @@ export const CategorySummary = ({ expenses, categoryMapping }: CategorySummaryPr
     const totalSum = Object.values(summary).reduce((acc: number, c: number) => acc + c, 0);
 
     return (
-        <TableContainer maxW="sm" mt={10}>
-            <Table size="md" variant="striped" colorScheme="whiteAlpha">
-                <Thead>
-                    <Tr>
-                        <Th>{texts.common.category}</Th>
-                        <Th>{texts.common.amount}</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
+        <Table.ScrollArea maxW="sm" mt={10}>
+            <Table.Root size="md" striped colorPalette="whiteAlpha">
+                <Table.Header>
+                    <Table.Row>
+                        <Table.ColumnHeader>{texts.common.category}</Table.ColumnHeader>
+                        <Table.ColumnHeader>{texts.common.amount}</Table.ColumnHeader>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {Object.entries(summary)
                         .sort((c1, c2) => reverse(byNumber(c1[1], c2[1])))
                         .map(([k, amount]) => {
                             return (
-                                <Tr
+                                <Table.Row
                                     key={k}
                                     _hover={{
                                         background: 'whiteAlpha.300',
                                         color: 'teal.300',
                                     }}
                                 >
-                                    <Td>{categoryMapping[k as unknown as number]}</Td>
-                                    <Td>{formatCurrency(amount)}</Td>
-                                </Tr>
+                                    <Table.Cell>{categoryMapping[k as unknown as number]}</Table.Cell>
+                                    <Table.Cell>{formatCurrency(amount)}</Table.Cell>
+                                </Table.Row>
                             );
                         })}
-                </Tbody>
-                <Tfoot>
-                    <Tr>
-                        <Th>
+                </Table.Body>
+                <Table.Footer>
+                    <Table.Row>
+                        <Table.ColumnHeader>
                             <Text fontSize="md">{texts.common.total}</Text>
-                        </Th>
-                        <Th>
+                        </Table.ColumnHeader>
+                        <Table.ColumnHeader>
                             <Text fontSize="md">{formatCurrency(totalSum)}</Text>
-                        </Th>
-                    </Tr>
-                </Tfoot>
-            </Table>
-        </TableContainer>
+                        </Table.ColumnHeader>
+                    </Table.Row>
+                </Table.Footer>
+            </Table.Root>
+        </Table.ScrollArea>
     );
 };

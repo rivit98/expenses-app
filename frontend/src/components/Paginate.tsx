@@ -8,7 +8,7 @@ interface PaginationButtonProps extends ButtonProps {
 
 const PaginationButton = ({ children, fn, ...props }: PaginationButtonProps) => {
     return (
-        <Button size="sm" m={0} colorScheme="teal" _focusVisible={{ outline: 'none' }} onClick={fn} {...props}>
+        <Button size="sm" m={0} colorPalette="teal" _focusVisible={{ outline: 'none' }} onClick={fn} {...props}>
             {children}
         </Button>
     );
@@ -144,7 +144,7 @@ export const Paginate = ({ totalPages, currentPage, setCurrentPage }: PaginatePr
     });
 
     return (
-        <HStack mt={4} spacing={1}>
+        <HStack mt={4} gap={1}>
             {items.map((item) => {
                 const { type, selected, disabled, page, onClick } = item;
                 const isDisabled = selected || disabled;
@@ -153,7 +153,7 @@ export const Paginate = ({ totalPages, currentPage, setCurrentPage }: PaginatePr
                     case 'first':
                     case 'last':
                         return (
-                            <PaginationButton key={`${type}-${page}`} fn={onClick} isDisabled={isDisabled}>
+                            <PaginationButton key={`${type}-${page}`} fn={onClick} disabled={isDisabled}>
                                 {page}
                             </PaginationButton>
                         );

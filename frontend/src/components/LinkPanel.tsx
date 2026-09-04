@@ -10,27 +10,29 @@ interface SingleLinkProps {
 
 const SingleLink = ({ url, children }: SingleLinkProps) => {
     return (
-        <ChakraLink as={ReactRouterLink} to={url} color="teal.500" _hover={{ textDecoration: 'none' }}>
-            <Flex
-                h="full"
-                py={3}
-                textAlign="center"
-                background="teal"
-                color="whiteAlpha.800"
-                rounded="md"
-                alignItems="center"
-                justifyContent="center"
-                _hover={{ background: 'teal.600' }}
-            >
-                {children}
-            </Flex>
+        <ChakraLink asChild color="teal.500" _hover={{ textDecoration: 'none' }}>
+            <ReactRouterLink to={url}>
+                <Flex
+                    h="full"
+                    py={3}
+                    textAlign="center"
+                    background="teal"
+                    color="whiteAlpha.800"
+                    rounded="md"
+                    alignItems="center"
+                    justifyContent="center"
+                    _hover={{ background: 'teal.600' }}
+                >
+                    {children}
+                </Flex>
+            </ReactRouterLink>
         </ChakraLink>
     );
 };
 
 export const LinkPanel = () => {
     return (
-        <SimpleGrid columns={{ base: 1, sm: 3 }} spacing={2} mt={8} maxW="xl" w="full">
+        <SimpleGrid columns={{ base: 1, sm: 3 }} gap={2} mt={8} maxW="xl" w="full">
             <SingleLink url="all">{texts.nav.allExpenses}</SingleLink>
             <SingleLink url="summary">{texts.nav.monthlySummary}</SingleLink>
             <SingleLink url="meters">{texts.nav.meters}</SingleLink>

@@ -1,4 +1,4 @@
-import { Badge, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
+import { Badge, Table, Text } from '@chakra-ui/react';
 import { texts } from '../../constants/texts';
 import type { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import { getBadgeColor } from '../../utils/badgeColor';
@@ -16,54 +16,54 @@ export const MetersList = ({ meters, categoryMapping }: MetersListProps) => {
     }
 
     return (
-        <TableContainer maxW="xl" w="full" mt={10}>
-            <Table size="sm" variant="striped" colorScheme="whiteAlpha">
-                <Thead>
-                    <Tr>
-                        <Th pr={1} pl={0} w="1">
+        <Table.ScrollArea maxW="xl" w="full" mt={10}>
+            <Table.Root size="sm" striped colorPalette="whiteAlpha">
+                <Table.Header>
+                    <Table.Row>
+                        <Table.ColumnHeader pr={1} pl={0} w="1">
                             {texts.common.date}
-                        </Th>
-                        <Th pr={1} w="1">
+                        </Table.ColumnHeader>
+                        <Table.ColumnHeader pr={1} w="1">
                             {texts.common.category}
-                        </Th>
-                        <Th w="1" textAlign="center">
+                        </Table.ColumnHeader>
+                        <Table.ColumnHeader w="1" textAlign="center">
                             {texts.meters.read}
-                        </Th>
-                        <Th w="1" />
-                    </Tr>
-                </Thead>
-                <Tbody>
+                        </Table.ColumnHeader>
+                        <Table.ColumnHeader w="1" />
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {meters.map((meter) => {
                         const { id, read, date, category } = meter;
                         return (
-                            <Tr
+                            <Table.Row
                                 key={id}
                                 _hover={{
                                     background: 'whiteAlpha.300',
                                     color: 'teal.300',
                                 }}
                             >
-                                <Td px={2} py={0}>
+                                <Table.Cell px={2} py={0}>
                                     {formatDate(date).substring(0, 10)}
-                                </Td>
-                                <Td px={2} py={0}>
+                                </Table.Cell>
+                                <Table.Cell px={2} py={0}>
                                     <Badge ml={2} {...getBadgeColor(categoryMapping[category].name)}>
                                         {categoryMapping[category].name}
                                     </Badge>
-                                </Td>
-                                <Td textAlign="center">
+                                </Table.Cell>
+                                <Table.Cell textAlign="center">
                                     <Text>
                                         {read} {categoryMapping[category].unit}
                                     </Text>
-                                </Td>
-                                <Td px={1}>
+                                </Table.Cell>
+                                <Table.Cell px={1}>
                                     <EditMeter meter={meter} categoryMapping={categoryMapping} />
-                                </Td>
-                            </Tr>
+                                </Table.Cell>
+                            </Table.Row>
                         );
                     })}
-                </Tbody>
-            </Table>
-        </TableContainer>
+                </Table.Body>
+            </Table.Root>
+        </Table.ScrollArea>
     );
 };

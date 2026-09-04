@@ -1,7 +1,9 @@
-import { Box, Button, Flex, Link, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, Link, Text } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as ReactRouterLink } from 'react-router-dom';
+import { toaster } from '../../components/Toaster';
+import { Tooltip } from '../../components/Tooltip';
 import { texts } from '../../constants/texts';
 import { currentUserData, isLoggedIn, removeUser } from '../../store/userReducer';
 
@@ -10,15 +12,13 @@ export const TopNavbar = () => {
     const { username } = useSelector(currentUserData);
     const logged: boolean = useSelector(isLoggedIn) || false;
     const queryClient = useQueryClient();
-    const toast = useToast();
 
     const logOut = (): void => {
-        toast({
-            title: '',
+        toaster.create({
             description: texts.auth.signedOut,
-            status: 'success',
+            type: 'success',
             duration: 3000,
-            isClosable: true,
+            closable: true,
         });
         dispatch(removeUser());
         queryClient.clear();
@@ -37,14 +37,14 @@ export const TopNavbar = () => {
                 flex={3}
                 justifyContent="center"
             >
-                <Link as={ReactRouterLink} to="/" _hover={{ textDecoration: 'none' }}>
-                    {texts.nav.appTitle}
+                <Link asChild _hover={{ textDecoration: 'none' }}>
+                    <ReactRouterLink to="/">{texts.nav.appTitle}</ReactRouterLink>
                 </Link>
             </Text>
             <Box display="flex" flex={1} justifyContent="flex-end">
                 {logged && (
                     <Tooltip label={texts.auth.loggedAs(username ?? '')}>
-                        <Button onClick={logOut} colorScheme="teal" size="sm" mx={2}>
+                        <Button onClick={logOut} colorPalette="teal" size="sm" mx={2}>
                             {texts.auth.logOut}
                         </Button>
                     </Tooltip>

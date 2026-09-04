@@ -1,4 +1,4 @@
-import { Box, Button, Center, FormControl, FormErrorMessage, Heading, Input, Stack } from '@chakra-ui/react';
+import { Box, Button, Center, Field, Heading, Input, Stack } from '@chakra-ui/react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -51,8 +51,8 @@ const Login = () => {
                 <Center mb={4}>
                     <Heading>{texts.auth.loginHeading}</Heading>
                 </Center>
-                <Stack spacing={2} color="black">
-                    <FormControl isInvalid={!!errors.username}>
+                <Stack gap={2} color="black">
+                    <Field.Root invalid={!!errors.username}>
                         <Input
                             bg="white"
                             placeholder={texts.auth.usernamePlaceholder}
@@ -60,9 +60,9 @@ const Login = () => {
                                 required: texts.auth.requiredField,
                             })}
                         />
-                        <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={!!errors.password}>
+                        <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
+                    </Field.Root>
+                    <Field.Root invalid={!!errors.password}>
                         <Input
                             bg="white"
                             type="password"
@@ -71,11 +71,11 @@ const Login = () => {
                                 required: texts.auth.requiredField,
                             })}
                         />
-                        <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-                    </FormControl>
+                        <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
+                    </Field.Root>
                 </Stack>
 
-                <Button mt={4} w="full" colorScheme="teal" isLoading={loginMutation.isPending} type="submit">
+                <Button mt={4} w="full" colorPalette="teal" loading={loginMutation.isPending} type="submit">
                     {texts.common.submit}
                 </Button>
             </form>

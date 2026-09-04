@@ -1,13 +1,11 @@
-import { createStandaloneToast } from '@chakra-ui/react';
 import type { AxiosAuthRefreshRequestConfig } from 'axios-auth-refresh';
 import { queryClient } from '../app/queryClient';
+import { toaster } from '../components/Toaster';
 import { texts } from '../constants/texts';
 import { store } from '../store/store';
 import { removeUser, updateUser } from '../store/userReducer';
 import type { LoginData, TokenPair, UserData } from '../types/api';
 import { api } from '../utils/axiosConfig';
-
-const { toast } = createStandaloneToast();
 
 const API_VERSION = 'v1';
 
@@ -51,11 +49,11 @@ const getNewAccessToken = async (refreshToken: string): Promise<TokenPair> => {
 const handleSessionExpired = () => {
     store.dispatch(removeUser());
     queryClient.clear();
-    toast({
+    toaster.create({
         description: texts.auth.sessionExpired,
-        status: 'warning',
+        type: 'warning',
         duration: 5000,
-        isClosable: true,
+        closable: true,
     });
     return Promise.reject(new Error(texts.auth.sessionExpired));
 };

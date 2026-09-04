@@ -1,4 +1,4 @@
-import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import { texts } from '../../constants/texts';
 import type { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import { round2 } from '../../utils/rounding';
@@ -59,16 +59,16 @@ export const CategorySummary = ({ meters, categoryMapping }: CategorySummaryProp
     });
 
     return (
-        <TableContainer maxW="xl" w="full" mt={10}>
-            <Table size="md" variant="striped" colorScheme="whiteAlpha">
-                <Thead>
-                    <Tr>
-                        <Th>{texts.common.category}</Th>
-                        <Th>{texts.meters.avgPerDay}</Th>
-                        <Th>{texts.meters.avgPerMonth}</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
+        <Table.ScrollArea maxW="xl" w="full" mt={10}>
+            <Table.Root size="md" striped colorPalette="whiteAlpha">
+                <Table.Header>
+                    <Table.Row>
+                        <Table.ColumnHeader>{texts.common.category}</Table.ColumnHeader>
+                        <Table.ColumnHeader>{texts.meters.avgPerDay}</Table.ColumnHeader>
+                        <Table.ColumnHeader>{texts.meters.avgPerMonth}</Table.ColumnHeader>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {Object.entries(summary)
                         .filter(
                             (entry): entry is [string, { base: ParsedMeter; end: ParsedMeter }] =>
@@ -78,25 +78,25 @@ export const CategorySummary = ({ meters, categoryMapping }: CategorySummaryProp
                             const perDay = calcPerDay(base, end);
 
                             return (
-                                <Tr
+                                <Table.Row
                                     key={k}
                                     _hover={{
                                         background: 'whiteAlpha.300',
                                         color: 'teal.300',
                                     }}
                                 >
-                                    <Td>{categoryMapping[Number(k)].name}</Td>
-                                    <Td>
+                                    <Table.Cell>{categoryMapping[Number(k)].name}</Table.Cell>
+                                    <Table.Cell>
                                         {round2(perDay)} {categoryMapping[Number(k)].unit}
-                                    </Td>
-                                    <Td>
+                                    </Table.Cell>
+                                    <Table.Cell>
                                         {round2(perDay * 30)} {categoryMapping[Number(k)].unit}
-                                    </Td>
-                                </Tr>
+                                    </Table.Cell>
+                                </Table.Row>
                             );
                         })}
-                </Tbody>
-            </Table>
-        </TableContainer>
+                </Table.Body>
+            </Table.Root>
+        </Table.ScrollArea>
     );
 };
