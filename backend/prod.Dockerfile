@@ -10,4 +10,4 @@ COPY . ./
 RUN echo "${GIT_SHA}" | cut -c1-7 > .version
 
 RUN chmod +x ./run.sh
-CMD ./run.sh
+CMD ["./run.sh"]
