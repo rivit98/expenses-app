@@ -4,6 +4,8 @@ import { round2 } from '../../utils/rounding';
 import { texts } from '../../constants/texts';
 
 const MS_IN_DAY = 1000 * 60 * 60 * 24;
+const WINDOW_DAYS = 365;
+
 const calcPerDay = (base: { date: Date; read: number }, end: { date: Date; read: number }): number => {
     const { date: baseDate, read: baseRead } = base;
     const { date: endDate, read: endRead } = end;
@@ -14,6 +16,22 @@ const calcPerDay = (base: { date: Date; read: number }, end: { date: Date; read:
     }
 
     return (endRead - baseRead) / dayDiff;
+};
+
+// pick the readings spanning the WINDOW_DAYS window that ends at the group's newest reading
+const pickWindow = (sortedGroup: ParsedMeter[]): { base: ParsedMeter | undefined; end: ParsedMeter | undefined } => {
+    const end = sortedGroup.at(-1);
+    if (end === undefined) {
+        return { base: undefined, end: undefined };
+    }
+
+    const cutoff = end.date.getTime() - WINDOW_DAYS * MS_IN_DAY;
+    const firstInWindow = sortedGroup.findIndex((m) => m.date.getTime() >= cutoff);
+
+    // the window always holds `end`, so reach back one reading when it holds nothing else
+    const baseIdx = firstInWindow === sortedGroup.length - 1 ? Math.max(firstInWindow - 1, 0) : firstInWindow;
+
+    return { base: sortedGroup[baseIdx], end };
 };
 
 interface CategorySummaryProps {
@@ -34,13 +52,10 @@ export const CategorySummary = ({ meters, categoryMapping }: CategorySummaryProp
         groups[e.category].push(e);
     });
 
-    // sort each category group by date ascending and get oldest/newest readings
+    // sort each category group by date ascending and reduce it to the window's endpoints
     Object.keys(categoryMapping).forEach((k) => {
         const sortedGroup = groups[k].sort((a, b) => a.date.getTime() - b.date.getTime());
-        summary[k] = {
-            base: sortedGroup.at(0), // oldest reading (earliest date)
-            end: sortedGroup.at(-1), // newest reading (latest date)
-        };
+        summary[k] = pickWindow(sortedGroup);
     });
 
     return (
@@ -60,6 +75,8 @@ export const CategorySummary = ({ meters, categoryMapping }: CategorySummaryProp
                                 entry[1].base !== undefined && entry[1].end !== undefined
                         )
                         .map(([k, { base, end }]) => {
+                            const perDay = calcPerDay(base, end);
+
                             return (
                                 <Tr
                                     key={k}
@@ -70,10 +87,10 @@ export const CategorySummary = ({ meters, categoryMapping }: CategorySummaryProp
                                 >
                                     <Td>{categoryMapping[Number(k)].name}</Td>
                                     <Td>
-                                        {round2(calcPerDay(base, end))} {categoryMapping[Number(k)].unit}
+                                        {round2(perDay)} {categoryMapping[Number(k)].unit}
                                     </Td>
                                     <Td>
-                                        {round2(calcPerDay(base, end) * 30)} {categoryMapping[Number(k)].unit}
+                                        {round2(perDay * 30)} {categoryMapping[Number(k)].unit}
                                     </Td>
                                 </Tr>
                             );
