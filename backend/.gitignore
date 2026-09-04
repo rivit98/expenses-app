@@ -141,3 +141,5 @@ cython_debug/
 .idea
 .run
 .ruff_cache
+# Django collectstatic output
+staticfiles/
