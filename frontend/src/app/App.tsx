@@ -1,17 +1,17 @@
-import { ReactElement, ReactNode } from 'react';
 import { ChakraProvider, Container } from '@chakra-ui/react';
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from './queryClient';
-import { Navigation } from '../features/nav/Navigation';
-import Home from '../features/home/Home';
-import { withStore } from '../store/store';
-import { ExpensesAll } from '../features/expenses/ExpensesAll';
-import { isLoggedIn } from '../store/userReducer';
+import type { ReactElement, ReactNode } from 'react';
+import { useSelector } from 'react-redux';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Login from '../features/auth/Login';
+import { ExpensesAll } from '../features/expenses/ExpensesAll';
 import { ExpensesMonthlySummary } from '../features/expenses/ExpensesSummary';
+import Home from '../features/home/Home';
 import Meters from '../features/meters/Meters';
+import { Navigation } from '../features/nav/Navigation';
+import { withStore } from '../store/store';
+import { isLoggedIn } from '../store/userReducer';
+import { queryClient } from './queryClient';
 
 type WrapperComponent = React.ComponentType<{ children?: ReactNode }>;
 

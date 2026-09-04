@@ -18,13 +18,13 @@ import {
     Stack,
     useDisclosure,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
-import { CategoryMapping, ParsedExpense } from '../../types/api';
+import { useState } from 'react';
+import { type FieldValues, useForm } from 'react-hook-form';
 import { texts } from '../../constants/texts';
+import { useDeleteExpense, useUpdateExpense } from '../../hooks/mutations';
+import type { CategoryMapping, ParsedExpense } from '../../types/api';
 import { round2 } from '../../utils/rounding';
-import { useUpdateExpense, useDeleteExpense } from '../../hooks/mutations';
 
 interface EditExpenseProps {
     expense: ParsedExpense;

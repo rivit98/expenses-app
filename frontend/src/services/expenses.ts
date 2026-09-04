@@ -1,6 +1,6 @@
-import { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig } from 'axios';
+import type { Category, Expense, ExpenseSummary } from '../types/api';
 import { api } from '../utils/axiosConfig';
-import { Category, Expense, ExpenseSummary } from '../types/api';
 
 const API_PREFIX = 'expenses';
 const API_VERSION = 'v1';

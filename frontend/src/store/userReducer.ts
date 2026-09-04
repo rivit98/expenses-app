@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserData } from '../types/api';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { UserData } from '../types/api';
 
 export interface UserState {
     id?: number;

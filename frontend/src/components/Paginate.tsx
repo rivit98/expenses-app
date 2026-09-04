@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { Button, ButtonProps, Flex, HStack } from '@chakra-ui/react';
+import { Button, type ButtonProps, Flex, HStack } from '@chakra-ui/react';
+import type { ReactNode } from 'react';
 
 interface PaginationButtonProps extends ButtonProps {
     children: ReactNode;

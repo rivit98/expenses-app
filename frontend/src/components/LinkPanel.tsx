@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { Flex, Link as ChakraLink, SimpleGrid } from '@chakra-ui/react';
+import { Link as ChakraLink, Flex, SimpleGrid } from '@chakra-ui/react';
+import type { ReactNode } from 'react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { texts } from '../constants/texts';
 

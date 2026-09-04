@@ -1,11 +1,11 @@
-import { AxiosAuthRefreshRequestConfig } from 'axios-auth-refresh';
 import { createStandaloneToast } from '@chakra-ui/react';
-import { api } from '../utils/axiosConfig';
+import type { AxiosAuthRefreshRequestConfig } from 'axios-auth-refresh';
+import { queryClient } from '../app/queryClient';
+import { texts } from '../constants/texts';
 import { store } from '../store/store';
 import { removeUser, updateUser } from '../store/userReducer';
-import { queryClient } from '../app/queryClient';
-import { LoginData, TokenPair, UserData } from '../types/api';
-import { texts } from '../constants/texts';
+import type { LoginData, TokenPair, UserData } from '../types/api';
+import { api } from '../utils/axiosConfig';
 
 const { toast } = createStandaloneToast();
 

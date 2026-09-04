@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useExpenseCategories, useAllExpenses } from '../../hooks/queries';
 import { ComponentStateHandler } from '../../components/ComponentStateHandler';
-import { ExpensesList } from './ExpensesList';
 import { Paginate } from '../../components/Paginate';
-import { CategoryMapping } from '../../types/api';
+import { useAllExpenses, useExpenseCategories } from '../../hooks/queries';
+import type { CategoryMapping } from '../../types/api';
+import { ExpensesList } from './ExpensesList';
 
 export const ExpensesAll = () => {
     const categoriesQuery = useExpenseCategories();

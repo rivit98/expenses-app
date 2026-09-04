@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
 import { Alert, AlertIcon, Spinner } from '@chakra-ui/react';
-import { UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
+import type { ReactNode } from 'react';
 import { texts } from '../constants/texts';
 
 interface ComponentStateHandlerProps {

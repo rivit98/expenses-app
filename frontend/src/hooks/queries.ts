@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { expensesService } from '../services/expenses';
 import { metersService } from '../services/meters';
-import { Category, Expense, ExpenseSummary, Meter, MeterCategory } from '../types/api';
+import type { Category, Expense, ExpenseSummary, Meter, MeterCategory } from '../types/api';
 
 export const queryKeys = {
     expenseCategories: ['expenseCategories'] as const,

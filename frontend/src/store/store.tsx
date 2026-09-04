@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
-import storage from 'redux-persist/lib/storage';
+import { combineReducers, configureStore, type Middleware } from '@reduxjs/toolkit';
+import type { ReactNode } from 'react';
 import { Provider } from 'react-redux';
+import { FLUSH, PAUSE, PERSIST, PURGE, persistReducer, persistStore, REGISTER, REHYDRATE } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
-import { combineReducers, configureStore, Middleware } from '@reduxjs/toolkit';
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import userReducer from './userReducer';
 
 const persistConfig = {
@@ -48,4 +48,4 @@ const withStore = (Wrapped: React.ComponentType<{ children?: ReactNode }>) => {
     return StoreWrapper;
 };
 
-export { store, persistor, withStore };
+export { persistor, store, withStore };

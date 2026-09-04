@@ -1,6 +1,6 @@
-import { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig } from 'axios';
+import type { Meter, MeterCategory } from '../types/api';
 import { api } from '../utils/axiosConfig';
-import { Meter, MeterCategory } from '../types/api';
 
 const API_PREFIX = 'meters';
 const API_VERSION = 'v1';

@@ -1,11 +1,11 @@
 import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useToast } from '@chakra-ui/react';
-import { useRef } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
-import { Category } from '../../types/api';
+import { useRef } from 'react';
+import { type FieldValues, useForm } from 'react-hook-form';
 import { texts } from '../../constants/texts';
-import { round2 } from '../../utils/rounding';
 import { useAddExpense } from '../../hooks/mutations';
+import type { Category } from '../../types/api';
+import { round2 } from '../../utils/rounding';
 
 interface AddExpenseProps {
     categories: Category[];
@@ -73,7 +73,7 @@ export const AddExpense = ({ categories }: AddExpenseProps) => {
 
     const dateFieldRef = useRef<HTMLInputElement>(null);
     const handleDateFieldClick = () => {
-        if (dateFieldRef && dateFieldRef.current) {
+        if (dateFieldRef?.current) {
             dateFieldRef.current.showPicker();
         }
     };

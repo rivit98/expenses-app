@@ -18,13 +18,13 @@ import {
     Stack,
     useDisclosure,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
+import { useState } from 'react';
+import { type FieldValues, useForm } from 'react-hook-form';
 import { texts } from '../../constants/texts';
+import { useDeleteMeter, useUpdateMeter } from '../../hooks/mutations';
+import type { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import { round2 } from '../../utils/rounding';
-import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
-import { useUpdateMeter, useDeleteMeter } from '../../hooks/mutations';
 
 interface EditMeterProps {
     meter: ParsedMeter;

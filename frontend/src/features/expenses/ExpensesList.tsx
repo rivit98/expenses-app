@@ -1,9 +1,9 @@
 import { Badge, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
-import { CategoryMapping, ParsedExpense } from '../../types/api';
-import formatDate from '../../utils/dateFormatter';
-import { getBadgeColor } from '../../utils/badgeColor';
-import { formatCurrency } from '../../utils/rounding';
 import { texts } from '../../constants/texts';
+import type { CategoryMapping, ParsedExpense } from '../../types/api';
+import { getBadgeColor } from '../../utils/badgeColor';
+import formatDate from '../../utils/dateFormatter';
+import { formatCurrency } from '../../utils/rounding';
 import { EditExpense } from './EditExpense';
 
 interface ExpensesListProps {

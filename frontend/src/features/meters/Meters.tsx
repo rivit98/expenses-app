@@ -1,9 +1,9 @@
-import { useMeterCategories, useMeters } from '../../hooks/queries';
 import { ComponentStateHandler } from '../../components/ComponentStateHandler';
+import { useMeterCategories, useMeters } from '../../hooks/queries';
+import type { MeterCategoryMapping, ParsedMeter } from '../../types/api';
 import { AddMeter } from './AddMeter';
-import { MetersList } from './MetersList';
 import { CategorySummary } from './CategorySummary';
-import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
+import { MetersList } from './MetersList';
 
 const Meters = () => {
     const categoriesQuery = useMeterCategories();

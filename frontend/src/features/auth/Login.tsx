@@ -1,12 +1,12 @@
-import { useForm } from 'react-hook-form';
 import { Box, Button, Center, FormControl, FormErrorMessage, Heading, Input, Stack } from '@chakra-ui/react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { texts } from '../../constants/texts';
-import { removeUser, updateUser } from '../../store/userReducer';
-import { LoginData, UserData } from '../../types/api';
 import { useLogin } from '../../hooks/mutations';
+import { removeUser, updateUser } from '../../store/userReducer';
+import type { LoginData, UserData } from '../../types/api';
 
 const Login = () => {
     const {
@@ -60,7 +60,7 @@ const Login = () => {
                                 required: texts.auth.requiredField,
                             })}
                         />
-                        <FormErrorMessage>{errors.username && errors.username.message}</FormErrorMessage>
+                        <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={!!errors.password}>
                         <Input
@@ -71,7 +71,7 @@ const Login = () => {
                                 required: texts.auth.requiredField,
                             })}
                         />
-                        <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
+                        <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
                     </FormControl>
                 </Stack>
 

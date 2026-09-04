@@ -1,11 +1,11 @@
 import { Box, Button, FormControl, FormErrorMessage, Input, Select, Stack, useToast } from '@chakra-ui/react';
-import { useRef } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
 import { Parser } from 'expr-eval';
+import { useRef } from 'react';
+import { type FieldValues, useForm } from 'react-hook-form';
 import { texts } from '../../constants/texts';
-import { round2 } from '../../utils/rounding';
-import { MeterCategory } from '../../types/api';
 import { useAddMeter } from '../../hooks/mutations';
+import type { MeterCategory } from '../../types/api';
+import { round2 } from '../../utils/rounding';
 
 interface AddMeterProps {
     categories: MeterCategory[];
@@ -72,7 +72,7 @@ export const AddMeter = ({ categories }: AddMeterProps) => {
 
     const dateFieldRef = useRef<HTMLInputElement>(null);
     const handleDateFieldClick = () => {
-        if (dateFieldRef && dateFieldRef.current) {
+        if (dateFieldRef?.current) {
             dateFieldRef.current.showPicker();
         }
     };

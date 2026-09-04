@@ -1,7 +1,7 @@
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
-import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
-import { round2 } from '../../utils/rounding';
 import { texts } from '../../constants/texts';
+import type { MeterCategoryMapping, ParsedMeter } from '../../types/api';
+import { round2 } from '../../utils/rounding';
 
 const MS_IN_DAY = 1000 * 60 * 60 * 24;
 const WINDOW_DAYS = 365;

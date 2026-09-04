@@ -1,8 +1,8 @@
 import { Badge, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
-import { MeterCategoryMapping, ParsedMeter } from '../../types/api';
-import formatDate from '../../utils/dateFormatter';
-import { getBadgeColor } from '../../utils/badgeColor';
 import { texts } from '../../constants/texts';
+import type { MeterCategoryMapping, ParsedMeter } from '../../types/api';
+import { getBadgeColor } from '../../utils/badgeColor';
+import formatDate from '../../utils/dateFormatter';
 import { EditMeter } from './EditMeter';
 
 interface MetersListProps {

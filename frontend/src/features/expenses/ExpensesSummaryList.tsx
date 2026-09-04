@@ -1,7 +1,7 @@
 import { Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
-import { formatCurrency } from '../../utils/rounding';
 import { texts } from '../../constants/texts';
-import { CategoryMapping, SummaryGroup, SummaryGroups } from '../../types/api';
+import type { CategoryMapping, SummaryGroup, SummaryGroups } from '../../types/api';
+import { formatCurrency } from '../../utils/rounding';
 
 interface ExpensesSummaryListProps {
     summaryGroups: [string, SummaryGroup][];
@@ -24,11 +24,11 @@ const calcAvgs = (
         .filter((date) => date !== todayStr)
         .map((date) => summaryGroups[date]);
 
-    filteredGroups.forEach((g) =>
+    filteredGroups.forEach((g) => {
         Object.entries(g).forEach(([k, v]) => {
             categorySums[k] += v;
-        })
-    );
+        });
+    });
     const total = Object.values(categorySums).reduce((acc, x) => acc + x, 0);
     const count = filteredGroups.length;
     const totalAvg = count > 0 ? total / count : 0;

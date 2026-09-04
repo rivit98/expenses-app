@@ -1,9 +1,9 @@
 import { Box, Button, Flex, Link, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
-import { removeUser, currentUserData, isLoggedIn } from '../../store/userReducer';
 import { texts } from '../../constants/texts';
+import { currentUserData, isLoggedIn, removeUser } from '../../store/userReducer';
 
 export const TopNavbar = () => {
     const dispatch = useDispatch();
