@@ -1,8 +1,9 @@
 {
     "name": "Visual Studio Code - NodeJS dev env",
 
-    // Keep the major in step with frontend/.node-version and the CI workflow.
-    "image": "node:24",
+    // Must match .node-version. Devcontainer cannot read that file, so this is the
+    // one place the version is duplicated; CI and the prod image both derive it.
+    "image": "node:24.19.0",
 
     "shutdownAction": "stopContainer",
 

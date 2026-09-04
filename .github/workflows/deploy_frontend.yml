@@ -41,6 +41,10 @@ jobs:
         with:
           submodules: "recursive"
 
+      - name: Read pinned Node version
+        id: node
+        run: echo "version=$(cat .node-version)" >> "$GITHUB_OUTPUT"   # cwd is ./frontend (see defaults)
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -56,6 +60,8 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/prod.Dockerfile
+          build-args: |
+            NODE_VERSION=${{ steps.node.outputs.version }}
           push: true
           tags: registry.rivit.dev/ef:latest
           cache-from: type=gha
